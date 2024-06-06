@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/theme/colors.dart';
 
-
 class MyTextField extends StatelessWidget {
   const MyTextField({
-    super.key,
+    Key? key,
     required this.hint,
     required this.isPassword,
     required this.icon, required BuildContext context,
-  });
+  }) : super(key: key);
 
   final String hint;
-  final bool isPassword; 
+  final bool isPassword;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     final Color fillColor = Theme.of(context).brightness == Brightness.light ? colorTextField : colorTextFieldDark;
-    Color iconColor = Theme.of(context).brightness == Brightness.light ? iconLightColor : iconDarkColor;
+    final Color iconColor = Theme.of(context).brightness == Brightness.light ? iconLightColor : iconDarkColor;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),

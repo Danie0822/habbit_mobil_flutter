@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/utils/theme/colors.dart';
-
-
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -20,7 +19,9 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light ? secondaryColor : lightTextColor;
+    final Color colorTexto = Theme.of(context).brightness == Brightness.light
+        ? secondaryColor
+        : lightTextColor;
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: SingleChildScrollView(
@@ -62,18 +63,11 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 20),
                       Text(
                         "Bienvenido de vuelta",
-                        style: theme.textTheme.headline6?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorTexto,
-                        ),
+                        style: AppStyles.headline6(context, colorTexto),
                       ),
-                      const SizedBox(height: 10),
                       Text(
                         "Inicia sesión para continuar",
-                        style: theme.textTheme.subtitle1?.copyWith(
-                          color: theme.textTheme.bodyText2?.color?.withOpacity(0.6),
-                          height: 1.5,
-                        ),
+                        style: AppStyles.subtitle1(context),
                       ),
                       const SizedBox(height: 20),
                       MyTextField(
@@ -123,7 +117,8 @@ class _LoginState extends State<Login> {
                           TextSpan(
                             text: "No tienes cuenta? ",
                             style: TextStyle(
-                              color: theme.textTheme.bodyText2?.color?.withOpacity(0.6),
+                              color: theme.textTheme.bodyText2?.color
+                                  ?.withOpacity(0.6),
                               fontSize: 16,
                             ),
                             children: [
