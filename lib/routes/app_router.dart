@@ -9,6 +9,8 @@ class Routes {
         return _materialPageRoute(HomeScreen());
       case AppRoutes.like:
         return _materialPageRoute(LikeScreen());
+      case AppRoutes.login:
+        return _materialPageRoute(const LoginScreen());
       case AppRoutes.messages:
         return _materialPageRoute(MessagesScreen());
       case AppRoutes.profile:

@@ -6,12 +6,20 @@ class MyTextField extends StatelessWidget {
     Key? key,
     required this.hint,
     required this.isPassword,
-    required this.icon, required BuildContext context,
+    required this.icon,
+    required this.context,
+    this.controller,
+    this.validator,
+    this.suffixIcon,
   }) : super(key: key);
 
   final String hint;
   final bool isPassword;
   final IconData icon;
+  final BuildContext context;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +40,10 @@ class MyTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
+        controller: controller,
         obscureText: isPassword,
+        validator: validator,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           border: OutlineInputBorder(
@@ -46,6 +56,7 @@ class MyTextField extends StatelessWidget {
             fontSize: 16,
           ),
           prefixIcon: Icon(icon, color: iconColor),
+          suffixIcon: suffixIcon,
           filled: true,
           fillColor: fillColor,
         ),
