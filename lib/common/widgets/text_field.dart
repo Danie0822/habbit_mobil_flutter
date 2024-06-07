@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/utils/theme/colors.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField({

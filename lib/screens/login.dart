@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
-import 'package:habbit_mobil_flutter/utils/theme/colors.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

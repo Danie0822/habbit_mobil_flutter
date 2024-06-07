@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/screens/login.dart';
+import 'package:habbit_mobil_flutter/screens/main_screen.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme.dart';
 
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system, 
-      home: const Login(),
+      home:  MainScreen(),
     );
   }
 }
