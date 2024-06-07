@@ -45,7 +45,7 @@ class MyTextField extends StatelessWidget {
         obscureText: isPassword,
         validator: validator,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20), // Adjusted padding
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -55,8 +55,14 @@ class MyTextField extends StatelessWidget {
             color: Colors.grey[500]!,
             fontSize: 16,
           ),
-          prefixIcon: Icon(icon, color: iconColor),
-          suffixIcon: suffixIcon,
+          prefixIcon: Container( // Added container for prefix icon
+            padding: const EdgeInsets.all(12),
+            child: Icon(icon, color: iconColor),
+          ),
+          suffixIcon: suffixIcon != null ? Container( // Added container for suffix icon
+            padding: const EdgeInsets.all(12),
+            child: suffixIcon,
+          ) : null,
           filled: true,
           fillColor: fillColor,
         ),

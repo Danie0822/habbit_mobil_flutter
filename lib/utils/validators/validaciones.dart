@@ -1,7 +1,7 @@
 class CustomValidator {
   // Validación de correo electrónico
   static String? validateEmail(String? value) {
-    const pattern = r'^[^@]+@[^@]+\.[^@]+';
+    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
     final regExp = RegExp(pattern);
 
     if (value == null || value.isEmpty) {
@@ -13,10 +13,10 @@ class CustomValidator {
   }
 
   // Validación de números enteros
-  static String? validateInteger(String value) {
+  static String? validateInteger(String? value) {
     final regExp = RegExp(r'^\d+$');
 
-    if (value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (!regExp.hasMatch(value)) {
       return 'Ingrese un número entero válido';
@@ -25,10 +25,10 @@ class CustomValidator {
   }
 
   // Validación de números decimales
-  static String? validateDecimal(String value) {
+  static String? validateDecimal(String? value) {
     final regExp = RegExp(r'^\d+(\.\d+)?$');
 
-    if (value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (!regExp.hasMatch(value)) {
       return 'Ingrese un número decimal válido';
@@ -37,10 +37,10 @@ class CustomValidator {
   }
 
   // Validación de alfanumérico con comas y puntos
-  static String? validateAlphaNumericWithCommaAndDot(String value) {
+  static String? validateAlphaNumericWithCommaAndDot(String? value) {
     final regExp = RegExp(r'^[a-zA-Z0-9,\.]+$');
 
-    if (value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (!regExp.hasMatch(value)) {
       return 'Ingrese solo letras, números, comas o puntos';
@@ -49,9 +49,9 @@ class CustomValidator {
   }
 
   // Validación de longitud de cadena
-  static String? validateLength(String value,
+  static String? validateLength(String? value,
       {int minLength = 4, int maxLength = 100}) {
-    if (value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (value.length < minLength) {
       return 'La longitud mínima es $minLength caracteres';
@@ -60,4 +60,12 @@ class CustomValidator {
     }
     return null;
   }
+  static String? validatePassword(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'El campo no puede estar vacío';
+  } else if (value.length < 8) {
+    return 'La contraseña debe tener al menos 8 caracteres';
+  }
+  return null;
+}
 }
