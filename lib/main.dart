@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/screens/login.dart';
-import 'package:habbit_mobil_flutter/screens/main_screen.dart';
+import 'package:habbit_mobil_flutter/routes/routes.dart'; 
 import 'package:habbit_mobil_flutter/utils/theme/theme.dart';
 
 
@@ -16,8 +15,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system, 
-      home:  MainScreen(),
+      themeMode: ThemeMode.system,
+      onGenerateRoute: Routes.generateRoute,
+      initialRoute: AppRoutes.mainScreen, 
     );
   }
 }
