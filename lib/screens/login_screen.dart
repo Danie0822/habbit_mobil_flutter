@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
-import 'package:habbit_mobil_flutter/common/widgets/button.dart';
-import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
+import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -43,10 +43,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light
-        ? secondaryColor
-        : lightTextColor;
-
+    Color colorTexto = ThemeUtils.getColorBasedOnBrightness(
+        context, secondaryColor, lightTextColor);
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: SingleChildScrollView(

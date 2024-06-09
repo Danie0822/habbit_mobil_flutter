@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
-import 'package:habbit_mobil_flutter/screens/home_page.dart';
-import 'package:habbit_mobil_flutter/screens/like_screen.dart';
-import 'package:habbit_mobil_flutter/screens/messages_screen.dart';
-import 'package:habbit_mobil_flutter/screens/profile_screen.dart';
-
+import 'package:habbit_mobil_flutter/screens/screens.dart';
+import 'package:animations/animations.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -13,6 +10,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  PageController _pageController = PageController();
 
   final List<Widget> _screens = [
     HomeScreen(),
@@ -24,15 +22,39 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.jumpToPage(index);
+    });
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedSwitcher(
+      body: PageTransitionSwitcher(
         duration: const Duration(milliseconds: 300),
-        child: _screens[_selectedIndex],
+        reverse: true,
+        transitionBuilder: (
+          Widget child,
+          Animation<double> primaryAnimation,
+          Animation<double> secondaryAnimation,
+        ) {
+          return SharedAxisTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.horizontal,
+            child: child,
+          );
+        },
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,

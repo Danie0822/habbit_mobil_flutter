@@ -14,9 +14,9 @@ final GoRouter router = GoRouter(
     ),
   ],
   errorBuilder: (context, state) => Scaffold(
-    appBar: AppBar(title: Text('Error')),
+    appBar: AppBar(title: const Text('Error')),
     body: Center(
-      child: Text('Página no encontrada: ${state.location}'),
+      child: Text('Página no encontrada: ${state.uri.toString()}'),
     ),
   ),
 );
