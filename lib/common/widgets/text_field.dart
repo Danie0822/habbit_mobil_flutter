@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class MyTextField extends StatelessWidget {
@@ -11,6 +12,7 @@ class MyTextField extends StatelessWidget {
     this.controller,
     this.validator,
     this.suffixIcon,
+    this.inputFormatters, // Añadido para permitir inputFormatters personalizados
   }) : super(key: key);
 
   final String hint;
@@ -20,6 +22,7 @@ class MyTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
+  final List<TextInputFormatter>? inputFormatters; // Añadido para permitir inputFormatters personalizados
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +47,9 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword,
         validator: validator,
+        inputFormatters: inputFormatters ?? [], // Si no se proporcionan inputFormatters, se usa una lista vacía
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20), // Adjusted padding
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -55,11 +59,11 @@ class MyTextField extends StatelessWidget {
             color: Colors.grey[500]!,
             fontSize: 16,
           ),
-          prefixIcon: Container( // Added container for prefix icon
+          prefixIcon: Container(
             padding: const EdgeInsets.all(12),
             child: Icon(icon, color: iconColor),
           ),
-          suffixIcon: suffixIcon != null ? Container( // Added container for suffix icon
+          suffixIcon: suffixIcon != null ? Container(
             padding: const EdgeInsets.all(12),
             child: suffixIcon,
           ) : null,
