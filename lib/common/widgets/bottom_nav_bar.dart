@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
@@ -29,8 +30,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightBackgroundColor, darkBackgroundColor);
+    Color shadowColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightShadowColor, darkShadowColor);
+    Color activeColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightActiveColor, darkActiveColor);
+    Color inactiveColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightInactiveColor, darkInactiveColor);
+    Color splashColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightSplashColor, darkSplashColor);
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: backgroundColor,
         boxShadow: [
           BoxShadow(

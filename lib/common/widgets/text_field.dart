@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField({
@@ -26,9 +27,10 @@ class MyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color fillColor = Theme.of(context).brightness == Brightness.light ? colorTextField : colorTextFieldDark;
-    final Color iconColor = Theme.of(context).brightness == Brightness.light ? iconLightColor : iconDarkColor;
-
+    Color fillColor = ThemeUtils.getColorBasedOnBrightness(
+        context, colorTextField, colorTextFieldDark);
+    Color iconColor = ThemeUtils.getColorBasedOnBrightness(
+        context, iconLightColor, iconDarkColor);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -49,7 +51,8 @@ class MyTextField extends StatelessWidget {
         validator: validator,
         inputFormatters: inputFormatters ?? [], // Si no se proporcionan inputFormatters, se usa una lista vacía
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: 16, horizontal: 20), // Adjusted padding
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -60,13 +63,17 @@ class MyTextField extends StatelessWidget {
             fontSize: 16,
           ),
           prefixIcon: Container(
+            // Added container for prefix icon
             padding: const EdgeInsets.all(12),
             child: Icon(icon, color: iconColor),
           ),
-          suffixIcon: suffixIcon != null ? Container(
-            padding: const EdgeInsets.all(12),
-            child: suffixIcon,
-          ) : null,
+          suffixIcon: suffixIcon != null
+              ? Container(
+                  // Added container for suffix icon
+                  padding: const EdgeInsets.all(12),
+                  child: suffixIcon,
+                )
+              : null,
           filled: true,
           fillColor: fillColor,
         ),
