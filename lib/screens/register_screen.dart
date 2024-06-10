@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                   const SizedBox(height: 60),
                                   Text(
                                     "Registrar",
-                                    style: AppStyles.headline6(
+                                    style: AppStyles.headline5(
                                         context, colorTexto),
                                   ),
                                   const SizedBox(height: 10),
