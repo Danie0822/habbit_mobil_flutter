@@ -6,7 +6,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => RegisterScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       path: '/main',
