@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                             child: Form(
                               key: _formKey,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 60),
                                   Text(
@@ -84,6 +84,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                                         context, colorTexto),
                                   ),
                                   const SizedBox(height: 10),
+                                  Text(
+                                    "¡Regístrate y enteráte de las ventajas de Habit mobile!",
+                                    style: AppStyles.subtitle1(
+                                        context),
+                                  ),
+                                  const SizedBox(height: 40),
                                   //Inicio de los txt para el formulario
                                   MyTextField(
                                     context: context,
@@ -91,14 +97,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     isPassword: false,
                                     icon: Icons.drive_file_rename_outline,
                                     key: const Key('nombre'),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  MyTextField(
-                                    context: context,
-                                    hint: "Apellido",
-                                    isPassword: false,
-                                    icon: Icons.drive_file_rename_outline,
-                                    key: const Key('apellido'),
                                   ),
                                   const SizedBox(height: 10),
                                   MyTextField(
