@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
-import 'package:habbit_mobil_flutter/common/widgets/search.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 import 'package:animations/animations.dart';
 
@@ -14,7 +13,7 @@ class _MainScreenState extends State<MainScreen> {
   PageController _pageController = PageController();
 
   final List<Widget> _screens = [
-    Search(),
+    HomeScreen(),
     LikeScreen(),
     MessagesScreen(),
     ProfileScreen(),
