@@ -9,6 +9,13 @@ class AppStyles {
       color: colorTexto,
     );
   }
+  static TextStyle? headline5(BuildContext context, Color colorTexto) {
+    final theme = Theme.of(context);
+    return theme.textTheme.headline4?.copyWith(
+      fontWeight: FontWeight.bold,
+      color: colorTexto,
+    );
+  }
   static TextStyle? subtitle1(BuildContext context) {
     final theme = Theme.of(context);
     return theme.textTheme.subtitle1?.copyWith(
