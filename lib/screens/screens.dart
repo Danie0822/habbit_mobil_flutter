@@ -6,3 +6,4 @@ export 'package:habbit_mobil_flutter/screens/profile_screen.dart';
 export 'package:habbit_mobil_flutter/screens/main_screen.dart';
 export 'package:habbit_mobil_flutter/screens/login_screen.dart';
 export 'package:habbit_mobil_flutter/screens/register_screen.dart';
+export 'package:habbit_mobil_flutter/screens/price_pref_screen.dart';
