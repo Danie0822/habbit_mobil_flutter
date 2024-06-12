@@ -8,6 +8,7 @@ const Color textColor = Color(0xff212121);
 const Color secondaryColor = Color(0xff0d47a1);
 const Color iconLightColor = Color(0xff212121);
 const Color colorTextField = Color(0xffffffff);
+const Color colorTextFieldSerach = Color(0xfff8f8f8);
 const Color colorTextPrimaryLight = Color(0xff0d47a1); 
 const Color colorTextSecondaryLight = Color(0xff1976d2); 
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
- Widget buildFilter(String text, bool isSelected, IconData icon) {
+ Widget buildFilter(String text, bool isSelected, IconData icon, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blueAccent : Colors.grey[850],
+          color: isSelected ? Theme.of(context).primaryColor : Colors.grey[420],
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(

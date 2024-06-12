@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
-class TextFieldSearch extends StatelessWidget {
-  const TextFieldSearch({
-    super.key,
-  });
+class TextFieldSearch extends StatefulWidget {
+  @override
+  _TextFieldSearchState createState() => _TextFieldSearchState();
+}
+
+class _TextFieldSearchState extends State<TextFieldSearch> {
+  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
+    Color fillColor = ThemeUtils.getColorBasedOnBrightness(
         context, colorTextField, colorTextFieldDark);
     Color iconColor = ThemeUtils.getColorBasedOnBrightness(
         context, iconLightColor, iconDarkColor);
-        
+
     return TextField(
-      style: const TextStyle(
+      controller: _controller,
+      style: TextStyle(
         fontSize: 18,
-        color: Colors.white,
+        color: iconColor,
         height: 1.0,
         fontWeight: FontWeight.bold,
       ),
@@ -35,15 +39,23 @@ class TextFieldSearch extends StatelessWidget {
           Icons.search,
           color: iconColor,
         ),
-        border:  OutlineInputBorder(
+        suffixIcon: IconButton(
+          icon: Icon(Icons.clear, color: iconColor),
+          onPressed: () {
+            setState(() {
+              _controller.clear();
+            });
+          },
+        ), 
+        border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: iconColor),
         ),
-        enabledBorder:  OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: iconColor),
         ),
-        focusedBorder:  OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: iconColor),
         ),
