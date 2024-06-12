@@ -7,3 +7,5 @@ export 'package:habbit_mobil_flutter/screens/main_screen.dart';
 export 'package:habbit_mobil_flutter/screens/login_screen.dart';
 export 'package:habbit_mobil_flutter/screens/register_screen.dart';
 export 'package:habbit_mobil_flutter/screens/category_screen.dart';
+export 'package:habbit_mobil_flutter/screens/zone_screen.dart';
+

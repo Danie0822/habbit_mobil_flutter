@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-//import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-class PriceScreen extends StatefulWidget {
-  const PriceScreen({super.key});
+class CategoryScreen extends StatefulWidget {
+  const CategoryScreen({super.key});
 
   @override
-  State<PriceScreen> createState() => _PriceScreenState();
+  State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _PriceScreenState extends State<PriceScreen> with TickerProviderStateMixin {
+class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
@@ -40,13 +39,11 @@ class _PriceScreenState extends State<PriceScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? secondaryColor
         : lightTextColor;
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
       body: Column(
         children: [
           AnimatedBuilder(
@@ -56,9 +53,8 @@ class _PriceScreenState extends State<PriceScreen> with TickerProviderStateMixin
                   opacity: _fadeInAnimation.value,
                   child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: theme.backgroundColor,
-                      borderRadius: const BorderRadius.only(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30),
                       ),
@@ -100,13 +96,14 @@ class _PriceScreenState extends State<PriceScreen> with TickerProviderStateMixin
                               alignment: Alignment.center,
                               child: CustomButton(
                                 onPressed: () {
-                                  context.push('/main');
+                                  context.push('/zone');
                                 },
                                 text: "Siguiente",
                               ),
                             ),
                           ],
-                        )),
+                        )
+                      ),
                   ),
                 );
               })
