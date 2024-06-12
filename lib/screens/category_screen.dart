@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:go_router/go_router.dart';
@@ -13,15 +12,12 @@ class PriceScreen extends StatefulWidget {
   State<PriceScreen> createState() => _PriceScreenState();
 }
 
-class _PriceScreenState extends State<PriceScreen>
-    with TickerProviderStateMixin {
+class _PriceScreenState extends State<PriceScreen> with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-  final List<String> _checkboxItems = ["100k", "500k", "300k"];
-  List<bool> _checkboxValues = List.filled(3, false);
-  final List<String> _checkboxItems2 = ["100k", "500k", "300k"];
-  List<bool> _checkboxValues2 = List.filled(3, false);
+  final List<String> _radioItems = ["Casas", "Departamentos", "Locales", "Ranchos", "Apartamentos"];
+  String? _selectedRadioItem;
 
   @override
   void initState() {
@@ -70,51 +66,35 @@ class _PriceScreenState extends State<PriceScreen>
                     child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 60),
                             Text(
-                              "Precio máximo y mínimo",
+                              "Elige una categoría",
                               style: AppStyles.headline5(context, colorTexto),
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "Selecciona el precio máximo",
+                              "Selecciona una categoría para mostrarte propiedades similares",
                               style: AppStyles.subtitle1(context),
                             ),
-                            for (int i = 0; i < _checkboxItems.length; i++)
-                            CheckboxListTile(
-                                  value: _checkboxValues[i],
-                                  onChanged: (value) {
-                                    _checkboxValues[i] = value!;
-                                    setState(() {});
-                                  },
-                                  title: Text(_checkboxItems[i]),
-                                  checkColor: whiteColor,
-                                  activeColor: colorTextYellow,
-                                  shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
+                            const SizedBox(height: 10),
+                            for (int i = 0; i < _radioItems.length; i++)
+                              RadioListTile<String>(
+                                value: _radioItems[i],
+                                groupValue: _selectedRadioItem,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedRadioItem = value!;
+                                  });
+                                },
+                                title: Text(_radioItems[i]),
+                                activeColor: colorTextYellow,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
                                 controlAffinity: ListTileControlAffinity.leading,
-                            ),
-                            const SizedBox(height: 30),
-                            Text(
-                              "Selecciona el precio mínimo",
-                              style: AppStyles.subtitle1(context),
-                            ),
-                            for (int i = 0; i < _checkboxItems2.length; i++)
-                            CheckboxListTile(
-                                  value: _checkboxValues2[i],
-                                  onChanged: (value) {
-                                    _checkboxValues2[i] = value!;
-                                    setState(() {});
-                                  },
-                                  title: Text(_checkboxItems2[i]),
-                                  checkColor: whiteColor,
-                                  activeColor: colorTextYellow,
-                                  shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                                controlAffinity: ListTileControlAffinity.leading,
-                            ),
+                              ),
                             const SizedBox(height: 50),
                             Align(
                               alignment: Alignment.center,
