@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 //import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
+import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class PriceScreen extends StatefulWidget {
@@ -16,8 +18,10 @@ class _PriceScreenState extends State<PriceScreen>
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-  final List<String> _checkboxItems = ["100k", "50k", "300k"];
+  final List<String> _checkboxItems = ["100k", "500k", "300k"];
   List<bool> _checkboxValues = List.filled(3, false);
+  final List<String> _checkboxItems2 = ["100k", "500k", "300k"];
+  List<bool> _checkboxValues2 = List.filled(3, false);
 
   @override
   void initState() {
@@ -86,8 +90,41 @@ class _PriceScreenState extends State<PriceScreen>
                                     setState(() {});
                                   },
                                   title: Text(_checkboxItems[i]),
-                                  activeColor: Colors.yellowAccent,
-                            )
+                                  checkColor: whiteColor,
+                                  activeColor: colorTextYellow,
+                                  shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                                controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "Selecciona el precio mínimo",
+                              style: AppStyles.subtitle1(context),
+                            ),
+                            for (int i = 0; i < _checkboxItems2.length; i++)
+                            CheckboxListTile(
+                                  value: _checkboxValues2[i],
+                                  onChanged: (value) {
+                                    _checkboxValues2[i] = value!;
+                                    setState(() {});
+                                  },
+                                  title: Text(_checkboxItems2[i]),
+                                  checkColor: whiteColor,
+                                  activeColor: colorTextYellow,
+                                  shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                                controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                            const SizedBox(height: 50),
+                            Align(
+                              alignment: Alignment.center,
+                              child: CustomButton(
+                                onPressed: () {
+                                  context.push('/main');
+                                },
+                                text: "Siguiente",
+                              ),
+                            ),
                           ],
                         )),
                   ),
