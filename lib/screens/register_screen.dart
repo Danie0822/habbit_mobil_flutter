@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     alignment: Alignment.center,
                                     child: CustomButton(
                                       onPressed: () {
-                                        context.push('/main');
+                                        context.push('/category');
                                       },
                                       text: "Crear cuenta",
                                     ),

@@ -6,11 +6,23 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       path: '/main',
       builder: (context, state) => MainScreen(),
+    ),
+    GoRoute(
+      path: '/registar',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/zone',
+      builder: (context, state) => const ZoneScreen(),
+    ),
+    GoRoute(
+      path: '/category',
+      builder: (context, state) => const CategoryScreen(),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

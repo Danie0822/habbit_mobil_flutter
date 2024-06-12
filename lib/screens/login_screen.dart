@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
+import 'package:habbit_mobil_flutter/screens/build_login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,25 +19,52 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   bool showPassword = false;
 
   late AnimationController _fadeInController;
+  late AnimationController _buttonController;
   late Animation<double> _fadeInAnimation;
+  late Animation<double> _buttonScaleAnimation;
 
   @override
   void initState() {
     super.initState();
     _fadeInController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 1500),
     );
     _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
+      CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOutCubic),
     );
     _fadeInController.forward();
+
+    _buttonController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+      lowerBound: 0.0,
+      upperBound: 0.1,
+    );
+    _buttonScaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _buttonController, curve: Curves.easeInOut),
+    );
   }
 
   @override
   void dispose() {
     _fadeInController.dispose();
+    _buttonController.dispose();
     super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _buttonController.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _buttonController.reverse();
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      showPassword = !showPassword;
+    });
   }
 
   @override
@@ -45,153 +73,115 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     final theme = Theme.of(context);
     Color colorTexto = ThemeUtils.getColorBasedOnBrightness(
         context, secondaryColor, lightTextColor);
+
     return Scaffold(
       backgroundColor: theme.backgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: screenHeight * 0.35,
-              decoration: BoxDecoration(
-                color: theme.primaryColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-              child: Center(
-                child: Image.asset(
-                  'assets/images/logoLight.png',
-                  height: screenHeight * 0.25,
-                ),
-              ),
-            ),
-            AnimatedBuilder(
-              animation: _fadeInAnimation,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _fadeInAnimation.value,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: theme.backgroundColor,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 20),
-                            Text(
-                              "Bienvenido de vuelta",
-                              style: AppStyles.headline6(context, colorTexto),
-                            ),
-                            Text(
-                              "Inicia sesión para continuar",
-                              style: AppStyles.subtitle1(context),
-                            ),
-                            const SizedBox(height: 20),
-                            MyTextField(
-                              context: context,
-                              hint: "Email",
-                              isPassword: false,
-                              icon: Icons.email_outlined,
-                              key: const Key('email'),
-                            ),
-                            Stack(
-                              children: [
-                                MyTextField(
-                                  context: context,
-                                  hint: "Password",
-                                  isPassword: !showPassword,
-                                  icon: Icons.lock_outline,
-                                  key: const Key('password'),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 14,
-                                  child: IconButton(
-                                    icon: Icon(showPassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: () {
-                                      setState(() {
-                                        showPassword = !showPassword;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Align(
-                              alignment: Alignment.center,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Olvidaste tu contraseña?",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: colorTexto,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Align(
-                              alignment: Alignment.center,
-                              child: CustomButton(
-                                onPressed: () {
-                                  context.push('/main');
-                                },
-                                text: "Inicia sesión",
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text.rich(
-                                TextSpan(
-                                  text: "No tienes cuenta? ",
-                                  style: TextStyle(
-                                    color: theme.textTheme.bodyText2?.color
-                                        ?.withOpacity(0.6),
-                                    fontSize: 16,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: "Crea una nueva",
-                                      style: TextStyle(
-                                        color: colorTexto,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          // Navigate to registration
-                                        },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+      body: FadeTransition(
+        opacity: _fadeInAnimation,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeader(context, screenHeight),
+              _buildForm(context, theme, colorTexto),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, double screenHeight) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      height: screenHeight * 0.35,
+      decoration: BoxDecoration(
+        color: theme.primaryColor,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Center(
+        child: Image.asset(
+          'assets/images/logoLight.png',
+          height: screenHeight * 0.25,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto) {
+    return AnimatedBuilder(
+      animation: _fadeInAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _fadeInAnimation.value,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.backgroundColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      "Bienvenido de vuelta",
+                      style: AppStyles.headline6(context, colorTexto),
+                    ),
+                    Text(
+                      "Inicia sesión para continuar",
+                      style: AppStyles.subtitle1(context),
+                    ),
+                    const SizedBox(height: 20),
+                    LoginWidgets.buildAnimatedField(
+                      context,
+                      MyTextField(
+                        context: context,
+                        hint: "Email",
+                        isPassword: false,
+                        icon: Icons.email_outlined,
+                        key: const Key('email'),
+                      ),
+                      _fadeInAnimation,
+                    ),
+                    LoginWidgets.buildAnimatedField(
+                      context,
+                      LoginWidgets.buildPasswordField(
+                        context,
+                        showPassword,
+                        _togglePasswordVisibility,
+                      ),
+                      _fadeInAnimation,
+                    ),
+                    const SizedBox(height: 10),
+                    LoginWidgets.buildForgotPasswordButton(context, colorTexto),
+                    const SizedBox(height: 20),
+                    LoginWidgets.buildLoginButton(
+                      context,
+                      _buttonScaleAnimation,
+                      _onTapDown,
+                      _onTapUp,
+                    ),
+                    const SizedBox(height: 20),
+                    LoginWidgets.buildSignUpPrompt(context, colorTexto),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
