@@ -17,9 +17,9 @@ class ThankScreen extends StatelessWidget {
         body: Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 60),
           Text(
             "¡Muchas gracias por contestar!",
             style: AppStyles.headline5(context, colorTexto),
@@ -30,15 +30,14 @@ class ThankScreen extends StatelessWidget {
             style: AppStyles.subtitle1(context),
           ),
           const SizedBox(height: 20), // Espacio entre el texto y la imagen
-          Image.asset('assets/images/thanks.png'), // Imagen local
-          const SizedBox(height: 20), // Espacio entre la imagen y el botón
+          Image.asset('assets/images/thanks.png'), // Imagen local // Espacio entre la imagen y el botón
           Align(
             alignment: Alignment.center,
             child: CustomButton(
               onPressed: () {
                 context.push('/ubi');
               },
-              text: "Crear cuenta",
+              text: "Finalizar",
             ),
           ),
         ],

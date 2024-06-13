@@ -6,7 +6,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const LoginScreen(), state),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ChangeProfile(), state),
     ),
     GoRoute(
       path: '/chat',
@@ -40,6 +40,11 @@ final GoRouter router = GoRouter(
       path: '/thanks',
       pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ThankScreen(), state),
     ),
+    /*
+    GoRoute(
+      path: '/changeProfile',
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ChangeProfile(), state),
+    ),*/
   ],
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),

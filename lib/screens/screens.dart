@@ -12,4 +12,5 @@ export 'package:habbit_mobil_flutter/screens/chat_screen.dart';
 export 'package:habbit_mobil_flutter/screens/price_screen.dart';
 export 'package:habbit_mobil_flutter/screens/ubi_screen.dart';
 export 'package:habbit_mobil_flutter/screens/thanks_screen.dart';
+export 'package:habbit_mobil_flutter/screens/change_profile.dart';
 
