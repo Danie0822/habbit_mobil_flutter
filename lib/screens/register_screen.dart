@@ -52,7 +52,6 @@ class _RegisterScreenState extends State<RegisterScreen>
         : lightTextColor;
 
     return Scaffold(
-        backgroundColor: theme.backgroundColor,
         body: SingleChildScrollView(
           child: Column(
             children: [
