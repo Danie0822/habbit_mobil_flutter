@@ -28,6 +28,14 @@ final GoRouter router = GoRouter(
       path: '/category',
       builder: (context, state) => const CategoryScreen(),
     ),
+    GoRoute(
+      path: '/price',
+      builder: (context, state) => const PriceScreen(),
+    ),
+    GoRoute(
+      path: '/ubi',
+      builder: (context, state) => const UbiScreen(),
+    ),
   ],
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),

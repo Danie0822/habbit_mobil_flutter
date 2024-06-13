@@ -4,23 +4,15 @@ import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-class ZoneScreen extends StatefulWidget {
-  const ZoneScreen({super.key});
+class UbiScreen extends StatefulWidget {
+  const UbiScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ZoneScreenState();
+  State<StatefulWidget> createState() => _UbiScreenState();
 }
 
-class _ZoneScreenState extends State<ZoneScreen> {
-  final List<String> _radioItems = [
-    "Norte",
-    "Sur",
-    "Este",
-    "Oeste",
-    "Playa",
-    "Montaña"
-  ];
-  String? _selectedRadioItem;
+class _UbiScreenState extends State<UbiScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,39 +28,25 @@ class _ZoneScreenState extends State<ZoneScreen> {
         children: [
           const SizedBox(height: 60),
           Text(
-            "Zona",
+            "Ubicación",
             style: AppStyles.headline5(context, colorTexto),
           ),
           const SizedBox(height: 10),
           Text(
-            "Selecciona la zona preferida para tu propiedad",
+            "Selecciona tu ubicación preferida",
             style: AppStyles.subtitle1(context),
           ),
           const SizedBox(height: 10),
-          for (int i = 0; i < _radioItems.length; i++)
-            RadioListTile<String>(
-              value: _radioItems[i],
-              groupValue: _selectedRadioItem,
-              onChanged: (value) {
-                setState(() {
-                  _selectedRadioItem = value!;
-                });
-              },
-              title: Text(_radioItems[i]),
-              activeColor: colorTextYellow,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              controlAffinity: ListTileControlAffinity.leading,
-            ),
+          
+            
           const SizedBox(height: 150),
           Align(
             alignment: Alignment.center,
             child: CustomButton(
               onPressed: () {
-                context.push('/main');
+                context.push('/price');
               },
-              text: "Terminar",
+              text: "Siguiente",
             ),
           ),
         ],

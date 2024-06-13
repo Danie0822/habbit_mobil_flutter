@@ -91,7 +91,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                                 ),
                                 controlAffinity: ListTileControlAffinity.leading,
                               ),
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 170),
                             Align(
                               alignment: Alignment.center,
                               child: CustomButton(

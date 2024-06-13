@@ -103,12 +103,12 @@ class _PriceScreenState extends State<PriceScreen>
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 350),
+                            const SizedBox(height: 300),
                             Align(
                               alignment: Alignment.center,
                               child: CustomButton(
                                 onPressed: () {
-                                  context.push('/zone');
+                                  context.push('/category');
                                 },
                                 text: "Siguiente",
                               ),
