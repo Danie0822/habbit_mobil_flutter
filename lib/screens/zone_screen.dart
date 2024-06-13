@@ -66,7 +66,7 @@ class _ZoneScreenState extends State<ZoneScreen> {
             alignment: Alignment.center,
             child: CustomButton(
               onPressed: () {
-                context.push('/main');
+                context.push('/thanks');
               },
               text: "Terminar",
             ),
