@@ -5,6 +5,7 @@ const Color primaryColor = Color(0xff0d47a1);
 const Color accentColor = Color(0xff1976d2);
 const Color whiteColor = Color(0xffffffff);
 const Color textColor = Color(0xff212121);
+const Color textColorNegro = Color.fromARGB(255, 0, 0, 0);
 const Color secondaryColor = Color(0xff0d47a1);
 const Color iconLightColor = Color(0xff212121);
 const Color colorTextField = Color(0xffffffff);

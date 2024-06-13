@@ -9,6 +9,10 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
+      path: '/chat',
+      builder: (context, state) => ChatScreen(),
+    ),
+    GoRoute(
       path: '/main',
       builder: (context, state) => MainScreen(),
     ),
