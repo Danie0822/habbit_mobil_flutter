@@ -36,6 +36,10 @@ final GoRouter router = GoRouter(
       path: '/ubi',
       pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const UbiScreen(), state),
     ),
+    GoRoute(
+      path: '/thanks',
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ThankScreen(), state),
+    ),
   ],
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),
