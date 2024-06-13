@@ -62,9 +62,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                       opacity: _fadeInAnimation.value,
                       child: Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: theme.backgroundColor,
-                          borderRadius: const BorderRadius.only(
+                        decoration: const BoxDecoration(
+                          borderRadius:  BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30),
                           ),

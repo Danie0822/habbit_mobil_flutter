@@ -6,35 +6,35 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => LoginScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const LoginScreen(), state),
     ),
     GoRoute(
       path: '/chat',
-      builder: (context, state) => ChatScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(ChatScreen(), state),
     ),
     GoRoute(
       path: '/main',
-      builder: (context, state) => MainScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(MainScreen(), state),
     ),
     GoRoute(
       path: '/registar',
-      builder: (context, state) => const RegisterScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const RegisterScreen(), state),
     ),
     GoRoute(
       path: '/zone',
-      builder: (context, state) => const ZoneScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ZoneScreen(), state),
     ),
     GoRoute(
       path: '/category',
-      builder: (context, state) => const CategoryScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const CategoryScreen(), state),
     ),
-    GoRoute(
+        GoRoute(
       path: '/price',
-      builder: (context, state) => const PriceScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const PriceScreen(), state),
     ),
     GoRoute(
       path: '/ubi',
-      builder: (context, state) => const UbiScreen(),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const UbiScreen(), state),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(
@@ -44,3 +44,23 @@ final GoRouter router = GoRouter(
     ),
   ),
 );
+
+Page<void> _buildPageWithFuturisticTransition(Widget child, GoRouterState state) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        ),
+      );
+      return FadeTransition(
+        opacity: fadeAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
