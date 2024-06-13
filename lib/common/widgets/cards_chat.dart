@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class ChatCard extends StatelessWidget {
   final String name;
@@ -21,6 +21,7 @@ class ChatCard extends StatelessWidget {
 
     final Color textName = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
+
     return GestureDetector(
       onTap: () {
         context.push('/chat');
