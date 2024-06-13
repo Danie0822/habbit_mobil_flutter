@@ -78,24 +78,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildPropertyList() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: ListView.builder(
-          padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
-          itemCount: properties.length,
-          itemBuilder: (context, index) {
-            return Hero(
-              tag: properties[index].frontImage,
-              child: buildProperty(properties[index], index),
-            );
-          },
-        ),
+Widget _buildPropertyList() {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      child: ListView.builder(
+        padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
+        itemCount: properties.length,
+        itemBuilder: (context, index) {
+          return Hero(
+            tag: properties[index].frontImage,
+            child: PropertyCard(property: properties[index], index: index),
+          );
+        },
       ),
-    );
-  }
-
+    ),
+  );
+}
   void _onFilterSelected(String filter) {
     setState(() {
       selectedFilter = filter;

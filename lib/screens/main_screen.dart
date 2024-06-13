@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
-import 'package:animations/animations.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,12 +26,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void _onPageChanged(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +46,8 @@ class _MainScreenState extends State<MainScreen> {
         },
         child: PageView(
           controller: _pageController,
-          onPageChanged: _onPageChanged,
+          onPageChanged: _onItemTapped,
+          physics: const AlwaysScrollableScrollPhysics(), 
           children: _screens,
         ),
       ),
