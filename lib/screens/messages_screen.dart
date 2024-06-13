@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
+        context, colorBackGroundMessageContainerLight, almostBlackColor);
+    
+    final Color containerMessage = ThemeUtils.getColorBasedOnBrightness(
+        context, contenedorMensajeLight, contenedorMensajeDark);
+
+    final Color textName = ThemeUtils.getColorBasedOnBrightness(
+        context, textColor, lightTextColor);
+        
     return Scaffold(
+      backgroundColor: colorBackGroundMessage,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,12 +30,12 @@ class MessagesScreen extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
-                        color: Colors.black),
+                        color: whiteColor),
                   ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.search),
-                    color: Colors.black,
+                    color: whiteColor,
                     iconSize: 35.0,
                   )
                 ],
@@ -35,9 +47,9 @@ class MessagesScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                    color: containerMain,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     )),
@@ -56,9 +68,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3), // Cambia la posición del sombreado
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -67,23 +87,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Alessandro Morales',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '12:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
+                              Text(
                                 'alessandro.morales@gmail.com',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -97,9 +117,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -108,23 +136,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Fernando Gomez',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
+                              Text(
                                 'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -138,9 +166,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -149,23 +185,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Fernando Gomez',
+                                  Text(
+                                    'Adriana Oreo',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
-                                'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                              Text(
+                                'Hola, no me gusta la casa',
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -179,9 +215,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -190,23 +234,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Fernando Gomez',
+                                  Text(
+                                    'Jose Sanchez',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
-                                'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                              Text(
+                                'Hola, me gusta braw',
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -220,9 +264,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -231,23 +283,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Fernando Gomez',
+                                  Text(
+                                    'Emiliano Jacobo',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
-                                'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                              Text(
+                                'Holi',
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -261,9 +313,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -272,23 +332,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Fernando Gomez',
+                                  Text(
+                                    'Oscar Gomez',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
+                              Text(
                                 'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
@@ -302,9 +362,17 @@ class MessagesScreen extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 82, 81, 81),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: containerMessage,
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textName.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -313,23 +381,23 @@ class MessagesScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    'Fernando Gomez',
+                                  Text(
+                                    'Daniel Gomez',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textName,
                                       fontSize: 17,
                                     ),
                                   ),
                                   Text(
                                     '15:00',
-                                    style: TextStyle(color: Colors.deepOrange[300]),
+                                    style: TextStyle(color: textName),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Text(
+                              Text(
                                 'Hola, me gustas',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: textName),
                               ),
                             ],
                           ),
