@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
@@ -8,7 +7,7 @@ import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -75,7 +74,6 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
         context, secondaryColor, lightTextColor);
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
       body: FadeTransition(
         opacity: _fadeInAnimation,
         child: SingleChildScrollView(
@@ -120,9 +118,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
           opacity: _fadeInAnimation.value,
           child: Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: theme.backgroundColor,
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius:  BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
