@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/message_widget.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field_chat.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -93,12 +96,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Alessandro Morales'),
-        backgroundColor: Colors.blueGrey,
+        title: const Text('Alessandro Morales', style: TextStyle(color: Colors.white),),
+        backgroundColor: colorBackGroundMessage, 
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.of(context).pop();
+           context.pop();
           },
         ),
       ),

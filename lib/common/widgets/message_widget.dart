@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart'; // Asegúrate de importar tu archivo de temas
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart'; 
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class MessageWidget extends StatelessWidget {
