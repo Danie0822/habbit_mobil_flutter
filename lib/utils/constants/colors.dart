@@ -13,7 +13,9 @@ const Color colorTextFieldSerach = Color(0xfff8f8f8);
 const Color colorTextPrimaryLight = Color(0xff0d47a1); 
 const Color colorTextSecondaryLight = Color(0xff1976d2); 
 const Color colorTextYellowLight = Color(0xFFFFBF3E);
+const Color colorBackGroundMessageLight =  Color(0xffe1e1e1);
 const Color colorBackGroundMessage = Color(0xFF06065E);
+const Color colorBackGroundMessageWidget = Color.fromARGB(255, 107, 107, 107);
 const Color colorBackGroundMessageContainerLight = Color(0xFFFDFFFF);
 const Color contenedorMensajeLight = Color(0xFFF8FBFB);
 

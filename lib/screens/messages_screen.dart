@@ -13,13 +13,55 @@ class MessagesScreen extends StatefulWidget {
 
 class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
   final List<ChatCard> _chatCards = const [
-    ChatCard(name: 'Alessandro Morales', message: 'Hola, esta propiedad esta en oferta', time: '12:00'),
-    ChatCard(name: 'Fernando Gomez', message: 'Hola, la casa esta ubicada en Cabañas', time: '15:00'),
-    ChatCard(name: 'Adriana Oreo', message: 'Hola, esa casa esta alquilada, no ves', time: '15:00'),
-    ChatCard(name: 'Jose Sanchez', message: 'Hola, Este casa esta en venta', time: '15:00'),
-    ChatCard(name: 'Emiliano Jacobo', message: 'Hola, te gustaria hacer una cita', time: '15:00'),
-    ChatCard(name: 'Oscar Gomez', message: 'Hola, si ese dia se puede', time: '15:00'),
-    ChatCard(name: 'Daniel Gomez', message: 'Hola, el martes se puede', time: '15:00'),
+    ChatCard(
+      title: 'Villa San Salvador',
+      name: 'Alessandro Morales',
+      message: 'Hola, esta propiedad esta en oferta',
+      time: '12:00',
+      imageUrl: 'assets/images/house_01.jpg',
+    ),
+    ChatCard(
+      title: 'Casa Santa Tecla',
+      name: 'Fernando Gomez',
+      message: 'Hola, la casa esta ubicada en Cabañas',
+      time: 'Lunes',
+      imageUrl: 'assets/images/house_04.jpg',
+    ),
+    ChatCard(
+      title: 'Casa Libertad',
+      name: 'Adriana Oreo',
+      message: 'Hola, esa casa esta alquilada, no ves',
+      time: '15/06/2024',
+      imageUrl: 'assets/images/house_02.jpg',
+    ),
+    ChatCard(
+      title: 'Casa San Miguel',
+      name: 'Jose Sanchez',
+      message: 'Hola, Este casa esta en venta',
+      time: '15:00',
+      imageUrl: 'assets/images/house_03.jpg',
+    ),
+    ChatCard(
+      title: 'Casa Aventura',
+      name: 'Emiliano Jacobo',
+      message: 'Hola, te gustaria hacer una cita',
+      time: '15:00',
+      imageUrl: 'assets/images/house_05.jpg',
+    ),
+    ChatCard(
+      title: 'Casa Norte',
+      name: 'Oscar Gomez',
+      message: 'Hola, si ese dia se puede',
+      time: '15:00',
+      imageUrl: 'assets/images/house_06.jpg',
+    ),
+    ChatCard(
+      title: 'Residencia Rasmus',
+      name: 'Daniel Gomez',
+      message: 'Hola, el martes se puede',
+      time: '15:00',
+      imageUrl: 'assets/images/house_07.jpg',
+    ),
   ];
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();

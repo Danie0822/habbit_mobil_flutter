@@ -16,12 +16,15 @@ class MessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final Color mandado = ThemeUtils.getColorBasedOnBrightness(
-        context, contenedorMensajeLight, contenedorMensajeDark);
+        context, colorBackGroundMessageLight, contenedorMensajeDark);
+
+    final Color contestador = ThemeUtils.getColorBasedOnBrightness(
+    context, colorBackGroundMessageWidget, backgroundColor);
     
     final Color textoColor = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
 
-    Color bgColor = isSentByMe ? mandado : backgroundColor;
+    Color bgColor = isSentByMe ? mandado : contestador;
     Color textColor = isSentByMe ? textoColor : lightTextColor;
 
     return Align(
