@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/appbar.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/data/data.dart';
-import './../common/widgets/appbar_theme.dart';
 
 class LikeScreen extends StatefulWidget {
   LikeScreen({Key? key}) : super(key: key);
@@ -24,14 +23,30 @@ class _LikeScreenState extends State<LikeScreen> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Bienvenido a", style: Theme.of(context).textTheme.labelMedium!.apply(color: const Color.fromARGB(255, 250, 250, 250))),
-                Text("Habit Inmobiliaria", style: Theme.of(context).textTheme.headlineSmall!.apply(color: const Color.fromARGB(255, 255, 255, 255))),
+                Text("Guardados",
+                    style: Theme.of(context).textTheme.headlineSmall!.apply(
+                        color: const Color.fromARGB(255, 255, 255, 255))),
               ],
             ),
             action: [
-              IconButton(onPressed: (){}, icon: const Icon(Icons.supervised_user_circle, color: Colors.white))
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
+                tooltip: 'Profile', 
+                splashColor: Colors
+                    .blue,
+                highlightColor:
+                    Color.fromARGB(255, 24, 1, 131), 
+                padding: EdgeInsets.symmetric(horizontal: 20.0), 
+                iconSize: 25.0,
+              )
             ],
           ),
+          SizedBox(height: 10.0),
           _buildPropertyList(),
         ],
       ),
