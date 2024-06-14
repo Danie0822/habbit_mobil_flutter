@@ -17,7 +17,7 @@ class ThankScreen extends StatelessWidget {
         body: Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 60),
           Text(
