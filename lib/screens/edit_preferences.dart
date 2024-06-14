@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/common/widgets/card_pref.dart'; // Importa el archivo con las tarjetas y la lista
 
 class EditPreferences extends StatefulWidget {
   const EditPreferences({super.key});
@@ -10,10 +11,26 @@ class EditPreferences extends StatefulWidget {
 }
 
 class _EditPreferencesState extends State<EditPreferences> {
+  // Lista de tarjetas de preferencia
   final List<Map<String, String>> preferences = [
-    {'image': 'assets/images/image1.jpg', 'text': 'Preferencia 1'},
-    {'image': 'assets/images/image2.jpg', 'text': 'Preferencia 2'},
-    {'image': 'assets/images/image3.jpg', 'text': 'Preferencia 3'},
+    {
+      'text': 'Ubicación',
+      'lottieUrl':
+          'https://lottie.host/bf2fe8d3-d5a5-4302-88d3-55daea2d8531/RuRaGNd3Ut.json',
+      'destinationRoute': '/registar'
+    },
+    {
+      'text': 'Precio',
+      'lottieUrl':
+          'https://lottie.host/3ac43d64-bac4-4254-a583-418a5a6c6c9a/LOQKQYlQrn.json',
+      'destinationRoute': '/registar'
+    },
+    {
+      'text': 'Categorías',
+      'lottieUrl':
+          'https://lottie.host/364ca2da-0dfc-4b02-a81b-9256b549b8a0/H5iV4ugv5l.json',
+      'destinationRoute': '/registar'
+    },
   ];
 
   @override
@@ -24,7 +41,7 @@ class _EditPreferencesState extends State<EditPreferences> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -35,60 +52,24 @@ class _EditPreferencesState extends State<EditPreferences> {
             ),
             const SizedBox(height: 10),
             Text(
-              "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
+              "Elige la opción que deseas editar",
               style: AppStyles.subtitle1(context),
             ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 itemCount: preferences.length,
                 itemBuilder: (context, index) {
                   return PrefWidget(
-                    url: preferences[index]['image']!,
-                    text: preferences[index]['text']!,
-                  );
+                      text: preferences[index]['text']!,
+                      lottieUrl: preferences[index]['lottieUrl']!,
+                      destinationRoute: preferences[index][
+                          'destinationRoute']! // Pasa el parámetro destinationUrl
+                      );
                 },
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class PrefWidget extends StatelessWidget {
-  final String url;
-  final String text;
-
-  const PrefWidget({Key? key, required this.url, required this.text})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light
-        ? secondaryColor
-        : lightTextColor;
-
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Ink.image(
-            image: AssetImage(url),
-            height: 240,
-            fit: BoxFit.cover,
-            child: InkWell(
-              onTap: () {},
-            ),
-          ),
-          Text(
-            text,
-            style: AppStyles.headline5(context, colorTexto),
-          ),
-        ],
       ),
     );
   }
