@@ -21,6 +21,7 @@ dependencies:
   go_router: ^14.1.4
   page_transition: ^2.0.8
   animations: ^2.0.0
+  get: ^4.6.5
 
 # Dependencias de desarrollo
 dev_dependencies:

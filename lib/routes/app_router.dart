@@ -6,7 +6,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ChangeProfile(), state),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const LoginScreen(), state),
     ),
     GoRoute(
       path: '/chat',
