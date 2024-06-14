@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/common/widgets/appbar.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/data/data.dart';
-import './../common/widgets/appbar_theme.dart';
 
 class LikeScreen extends StatefulWidget {
   LikeScreen({Key? key}) : super(key: key);
@@ -20,18 +18,6 @@ class _LikeScreenState extends State<LikeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TAppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Bienvenido a", style: Theme.of(context).textTheme.labelMedium!.apply(color: const Color.fromARGB(255, 250, 250, 250))),
-                Text("Habit Inmobiliaria", style: Theme.of(context).textTheme.headlineSmall!.apply(color: const Color.fromARGB(255, 255, 255, 255))),
-              ],
-            ),
-            action: [
-              IconButton(onPressed: (){}, icon: const Icon(Icons.supervised_user_circle, color: Colors.white))
-            ],
-          ),
           _buildPropertyList(),
         ],
       ),
