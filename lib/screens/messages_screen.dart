@@ -1,9 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -12,23 +11,37 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> {
+class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
   final List<ChatCard> _chatCards = const [
-    ChatCard(name: 'Alessandro Morales', message: 'alessandro.morales@gmail.com', time: '12:00'),
-    ChatCard(name: 'Fernando Gomez', message: 'Hola, me gustas', time: '15:00'),
-    ChatCard(name: 'Adriana Oreo', message: 'Hola, no me gusta la casa', time: '15:00'),
-    ChatCard(name: 'Jose Sanchez', message: 'Hola, me gusta braw', time: '15:00'),
-    ChatCard(name: 'Emiliano Jacobo', message: 'Holi', time: '15:00'),
-    ChatCard(name: 'Oscar Gomez', message: 'Hola, me gustas', time: '15:00'),
-    ChatCard(name: 'Daniel Gomez', message: 'Hola, me gustas', time: '15:00'),
+    ChatCard(name: 'Alessandro Morales', message: 'Hola, esta propiedad esta en oferta', time: '12:00'),
+    ChatCard(name: 'Fernando Gomez', message: 'Hola, la casa esta ubicada en Cabañas', time: '15:00'),
+    ChatCard(name: 'Adriana Oreo', message: 'Hola, esa casa esta alquilada, no ves', time: '15:00'),
+    ChatCard(name: 'Jose Sanchez', message: 'Hola, Este casa esta en venta', time: '15:00'),
+    ChatCard(name: 'Emiliano Jacobo', message: 'Hola, te gustaria hacer una cita', time: '15:00'),
+    ChatCard(name: 'Oscar Gomez', message: 'Hola, si ese dia se puede', time: '15:00'),
+    ChatCard(name: 'Daniel Gomez', message: 'Hola, el martes se puede', time: '15:00'),
   ];
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  bool _isSearchVisible = false;
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
     super.initState();
     _addChatCards();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(-1.0, 0.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
   }
 
   void _addChatCards() async {
@@ -36,6 +49,23 @@ class _MessagesScreenState extends State<MessagesScreen> {
       await Future.delayed(const Duration(milliseconds: 200));
       _listKey.currentState?.insertItem(i);
     }
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearchVisible = !_isSearchVisible;
+      if (_isSearchVisible) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,23 +116,44 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          const Text(
-            'Mensajes',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-              color: whiteColor,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Mensajes',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: whiteColor,
+                ),
+              ),
+              IconButton(
+                onPressed: _toggleSearch,
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return RotationTransition(
+                      turns: child.key == ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
+                      child: FadeTransition(opacity: animation, child: child),
+                    );
+                  },
+                  child: Icon(
+                    _isSearchVisible ? Icons.close : Icons.search,
+                    key: ValueKey(_isSearchVisible ? 'close' : 'search'),
+                    color: whiteColor,
+                    size: 25.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (_isSearchVisible)
+            SlideTransition(
+              position: _offsetAnimation,
+              child: const SearchInput(),
             ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-            color: whiteColor,
-            iconSize: 35.0,
-          ),
         ],
       ),
     );
@@ -113,9 +164,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
-        
         position: Tween<Offset>(
-          begin: const Offset(-1, 0), // Cambia aquí el offset inicial para que venga de la izquierda
+          begin: const Offset(-1, 0),
           end: Offset.zero,
         ).animate(animation),
         child: chatCard,

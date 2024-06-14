@@ -10,52 +10,58 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   // Lista de mensajes
   final List<Map<String, dynamic>> mensajes = [
-    {"mensaje": "Hola, ¿cómo estás?", "isSentByMe": false},
-    {"mensaje": "Bien, ¿y tú?", "isSentByMe": true},
+    {"mensaje": "Hola, ¿cómo estás?", "isSentByMe": true},
+    {"mensaje": "Bien, ¿y tú?", "isSentByMe": false},
     {
       "mensaje":
-          "Muy bien, gracias por preguntar. Estoy aquí para ayudarte a encontrar lo que necesitas. ¿Estás buscando algo en particular hoy?",
-      "isSentByMe": false
-    },
-    {
-      "mensaje":
-          "Sí, estoy buscando una computadora portátil para juegos. ¿Tienes alguna recomendación?",
+          "Muy bien, gracias por preguntar. Estoy interesado en comprar una casa y quisiera hacer una cita para verla.",
       "isSentByMe": true
     },
     {
       "mensaje":
-          "¡Claro! Tenemos varias opciones excelentes en computadoras portátiles para juegos. ¿Cuál es tu presupuesto?",
+          "¡Claro! Estaré encantado de ayudarte. ¿Tienes alguna casa en particular que te interese?",
       "isSentByMe": false
     },
     {
-      "mensaje": "Mi presupuesto es de alrededor de 1500 dolares.",
+      "mensaje":
+          "Sí, me interesa la casa que vi en su sitio web en la Calle Elm. ¿Está disponible para una visita?",
       "isSentByMe": true
     },
     {
       "mensaje":
-          "Perfecto, con ese presupuesto podemos ofrecerte algunas opciones con excelente rendimiento. ¿Prefieres una marca en particular?",
+          "Sí, la casa en la Calle Elm está disponible para visitas. ¿Cuál sería un buen momento para ti?",
       "isSentByMe": false
     },
     {
       "mensaje":
-          "Estoy abierto a sugerencias, pero he escuchado buenas cosas sobre ASUS y MSI.",
+          "Podría el viernes por la tarde, alrededor de las 3 PM. ¿Ese horario les conviene?",
       "isSentByMe": true
     },
     {
       "mensaje":
-          "Ambas marcas son excelentes para juegos. Te recomendaría considerar el ASUS ROG Strix o el MSI GE66 Raider. ¿Te gustaría conocer más detalles sobre alguno de ellos?",
+          "Perfecto, podemos programar la visita para el viernes a las 3 PM. ¿Te gustaría que te enviemos más detalles sobre la propiedad antes de la cita?",
       "isSentByMe": false
     },
     {
-      "mensaje": "Sí, por favor, dime más sobre el ASUS ROG Strix.",
+      "mensaje":
+          "Sí, por favor, me gustaría recibir más información sobre la casa, especialmente sobre el vecindario y las escuelas cercanas.",
       "isSentByMe": true
     },
     {
       "mensaje":
-          "El ASUS ROG Strix tiene una potente tarjeta gráfica NVIDIA RTX, un procesador rápido y una pantalla de alta frecuencia de actualización. Es perfecto para juegos exigentes.",
+          "Con mucho gusto, te enviaré toda la información por correo electrónico. ¿Hay algo más que te gustaría saber antes de la visita?",
       "isSentByMe": false
     },
-    {"mensaje": "Suena genial. ¿Viene con garantía?", "isSentByMe": true}
+    {
+      "mensaje":
+          "No, eso sería todo por ahora. Gracias por la ayuda y nos vemos el viernes.",
+      "isSentByMe": true
+    },
+    {
+      "mensaje":
+          "De nada, ¡nos vemos el viernes! Si necesitas algo más, no dudes en contactarnos.",
+      "isSentByMe": false
+    }
   ];
 
   final ScrollController _scrollController = ScrollController();
@@ -76,7 +82,8 @@ class _ChatScreenState extends State<ChatScreen> {
       // Luego anima una pequeña cantidad para asegurarse de que esté al final
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(seconds: 1), // Ajusta la duración según sea necesario
+        duration:
+            Duration(seconds: 1), // Ajusta la duración según sea necesario
         curve: Curves.easeOut,
       );
     }
