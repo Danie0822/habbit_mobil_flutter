@@ -7,7 +7,7 @@ class MyTextField extends StatelessWidget {
   final TextEditingController? controller;
   final VoidCallback? onClearPressed;
   final ValueChanged<String>? onChanged;
-  final Widget? suffixIcon; // Cambiado a Widget?
+  final Widget? suffixIcon;
 
   const MyTextField({
     Key? key,
@@ -17,7 +17,7 @@ class MyTextField extends StatelessWidget {
     this.controller,
     this.onClearPressed,
     this.onChanged,
-    this.suffixIcon, // Cambiado a Widget?
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -47,6 +47,8 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword,
         onChanged: onChanged,
+        maxLines: 5, // Máximo de 5 líneas
+        minLines: 1, // Mínimo de 1 línea
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(
@@ -62,7 +64,7 @@ class MyTextField extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Icon(icon, color: iconColor),
           ),
-          suffixIcon: suffixIcon, // Usar directamente el widget pasado como suffixIcon
+          suffixIcon: suffixIcon,
           filled: true,
           fillColor: fillColor,
         ),

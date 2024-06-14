@@ -14,14 +14,24 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = isSentByMe ? contenedorMensajeLight : backgroundColor;
-    Color textColor = isSentByMe ? textColorNegro : lightTextColor;
+
+    final Color mandado = ThemeUtils.getColorBasedOnBrightness(
+        context, contenedorMensajeLight, contenedorMensajeDark);
+    
+    final Color textoColor = ThemeUtils.getColorBasedOnBrightness(
+        context, textColorNegro, lightTextColor);
+
+    Color bgColor = isSentByMe ? mandado : backgroundColor;
+    Color textColor = isSentByMe ? textoColor : lightTextColor;
 
     return Align(
       alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        margin: const EdgeInsets.only(bottom: 20.0), // Incrementar el margen inferior
         padding: const EdgeInsets.all(12.0),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.8, // Limitar el ancho al 80%
+        ),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(8.0),
