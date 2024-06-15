@@ -10,11 +10,11 @@ class PrefWidget extends StatefulWidget {
   final String destinationRoute;
 
   const PrefWidget({
-    Key? key,
+    super.key,
     required this.text,
     required this.lottieUrl,
     required this.destinationRoute,
-  }) : super(key: key);
+  });
 
   @override
   _PrefWidgetState createState() => _PrefWidgetState();
@@ -58,7 +58,7 @@ class _PrefWidgetState extends State<PrefWidget>
         : lightTextColor;
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500), 
+      duration: const Duration(milliseconds: 500), 
       curve: Curves.easeInOut, 
       margin: EdgeInsets.all(8), 
       decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class _PrefWidgetState extends State<PrefWidget>
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3), // Cambio animado de la sombra
+            offset: const Offset(0, 3), // Cambio animado de la sombra
           ),
         ],
       ),
@@ -87,7 +87,7 @@ class _PrefWidgetState extends State<PrefWidget>
                 height: 85,
                 controller: _lottieController,
                 onLoaded: (composition) {
-                  final double startFrame = 0.0; // Frame de inicio
+                  //final double startFrame = 0.0; // Frame de inicio
                   final double endFrame = composition.duration.inMilliseconds / 2; 
 
                   _lottieController
