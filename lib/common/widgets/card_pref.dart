@@ -84,7 +84,7 @@ class _PrefWidgetState extends State<PrefWidget>
               opacity: _fadeAnimation, // Opacidad animada para el contenido
               child: Lottie.network(
                 widget.lottieUrl,
-                height: 100,
+                height: 85,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   final double startFrame = 0.0; // Frame de inicio
@@ -109,7 +109,7 @@ class _PrefWidgetState extends State<PrefWidget>
                 style: AppStyles.headlinee6(context, colorTexto),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
           ],
         ),
       ),

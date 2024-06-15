@@ -15,7 +15,7 @@ class _PriceScreenState extends State<PriceScreen>
     with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
-  var selectedRange = RangeValues(400, 1000);
+  var selectedRange = RangeValues(500, 1000);
 
   @override
   void initState() {
