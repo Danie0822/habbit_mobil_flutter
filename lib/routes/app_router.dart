@@ -8,7 +8,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const EditPreferences(), state),
+          _buildPageWithFuturisticTransition(const LoginScreen(), state),
     ),
     GoRoute(
       path: '/detalle',
