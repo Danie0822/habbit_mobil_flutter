@@ -1,44 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const EditPreferences(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const LoginScreen(), state),
+    ),
+    GoRoute(
+      path: '/detalle',
+      pageBuilder: (context, state) {
+        final propiedad = state.extra as Property;
+        return _buildPageWithFuturisticTransition(
+          Detalle(propiedad: propiedad),
+          state,
+        );
+      },
     ),
     GoRoute(
       path: '/chat',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(ChatScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(ChatScreen(), state),
     ),
     GoRoute(
       path: '/main',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(MainScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(MainScreen(), state),
     ),
     GoRoute(
       path: '/registar',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const RegisterScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const RegisterScreen(), state),
     ),
     GoRoute(
       path: '/zone',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ZoneScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const ZoneScreen(), state),
     ),
     GoRoute(
       path: '/category',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const CategoryScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const CategoryScreen(), state),
     ),
-        GoRoute(
+    GoRoute(
       path: '/price',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const PriceScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const PriceScreen(), state),
     ),
     GoRoute(
       path: '/ubi',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const UbiScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const UbiScreen(), state),
     ),
     GoRoute(
       path: '/thanks',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(const ThankScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const ThankScreen(), state),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(
@@ -49,7 +69,8 @@ final GoRouter router = GoRouter(
   ),
 );
 
-Page<void> _buildPageWithFuturisticTransition(Widget child, GoRouterState state) {
+Page<void> _buildPageWithFuturisticTransition(
+    Widget child, GoRouterState state) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
     child: child,
@@ -67,4 +88,3 @@ Page<void> _buildPageWithFuturisticTransition(Widget child, GoRouterState state)
     },
   );
 }
-

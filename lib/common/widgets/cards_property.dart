@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/data.dart';
 
 class PropertyCard extends StatefulWidget {
@@ -14,7 +15,14 @@ class PropertyCard extends StatefulWidget {
 }
 
 class _PropertyCardState extends State<PropertyCard> {
+  late final Property property;
   bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    property = widget.property;
+  }
 
   void toggleFavorite() {
     setState(() {
@@ -26,7 +34,7 @@ class _PropertyCardState extends State<PropertyCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Manejar el evento de tap
+        context.push('/detalle', extra: property);
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
