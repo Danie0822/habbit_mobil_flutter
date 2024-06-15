@@ -23,6 +23,7 @@ dependencies:
   animations: ^2.0.0
   get: ^4.6.5
   lottie: ^3.1.2
+  flutter_screenutil: ^5.9.3
 
 # Dependencias de desarrollo
 dev_dependencies:
