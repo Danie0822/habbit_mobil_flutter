@@ -20,24 +20,34 @@ class PrefWidget extends StatefulWidget {
   _PrefWidgetState createState() => _PrefWidgetState();
 }
 
-class _PrefWidgetState extends State<PrefWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+class _PrefWidgetState extends State<PrefWidget>
+    with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late Animation<double> _fadeAnimation;
+  late AnimationController _lottieController;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+
+    // Inicializa el controlador de animación de opacidad
+    _fadeController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500), // Duración de la animación
+      duration: Duration(milliseconds: 500), // Duración de la animación de aparición
     );
-    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
-    _controller.forward(); // Inicia la animación cuando el widget se monta
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+    _fadeController.forward(); // Inicia la animación cuando el widget se monta
+
+    // Inicializa el controlador de animación de Lottie
+    _lottieController = AnimationController(
+      vsync: this,
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _fadeController.dispose();
+    _lottieController.dispose();
     super.dispose();
   }
 
@@ -48,7 +58,7 @@ class _PrefWidgetState extends State<PrefWidget> with SingleTickerProviderStateM
         : lightTextColor;
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500), // Duración de la animación
+      duration: Duration(milliseconds: 500), // Duración de la animación de aparición
       curve: Curves.easeInOut, // Curva de la animación
       margin: EdgeInsets.all(8), // Margen animado
       decoration: BoxDecoration(
@@ -71,12 +81,29 @@ class _PrefWidgetState extends State<PrefWidget> with SingleTickerProviderStateM
           mainAxisSize: MainAxisSize.min,
           children: [
             FadeTransition(
-              opacity: _animation, // Opacidad animada para el contenido
-              child: Lottie.network(widget.lottieUrl, height: 100),
+              opacity: _fadeAnimation, // Opacidad animada para el contenido
+              child: Lottie.network(
+                widget.lottieUrl,
+                height: 100,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  final double startFrame = 0.0; // Frame de inicio
+                  final double endFrame = composition.duration.inMilliseconds / 2; // Aquí defines el punto de parada (en este caso, la mitad)
+
+                  _lottieController
+                    ..duration = composition.duration
+                    ..addStatusListener((status) {
+                      if (status == AnimationStatus.completed) {
+                        _lottieController.stop();
+                      }
+                    })
+                    ..animateTo(endFrame / composition.duration.inMilliseconds); // Anima hasta el frame final definido
+                },
+              ),
             ),
             const SizedBox(height: 10),
             FadeTransition(
-              opacity: _animation, // Opacidad animada para el contenido
+              opacity: _fadeAnimation, // Opacidad animada para el contenido
               child: Text(
                 widget.text,
                 style: AppStyles.headlinee6(context, colorTexto),

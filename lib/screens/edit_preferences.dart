@@ -28,7 +28,7 @@ class _EditPreferencesState extends State<EditPreferences> {
     {
       'text': 'Categorías',
       'lottieUrl':
-          'https://lottie.host/364ca2da-0dfc-4b02-a81b-9256b549b8a0/H5iV4ugv5l.json',
+          'https://lottie.host/ca5bf7aa-8e8a-40c6-b2b9-aad377a37773/k3mtC3AYsm.json',
       'destinationRoute': '/registar'
     },
   ];
