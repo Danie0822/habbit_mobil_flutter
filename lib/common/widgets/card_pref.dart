@@ -33,7 +33,7 @@ class _PrefWidgetState extends State<PrefWidget>
     // Inicializa el controlador de animación de opacidad
     _fadeController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500), // Duración de la animación de aparición
+      duration: Duration(milliseconds: 500), 
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
     _fadeController.forward(); // Inicia la animación cuando el widget se monta
@@ -58,11 +58,11 @@ class _PrefWidgetState extends State<PrefWidget>
         : lightTextColor;
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500), // Duración de la animación de aparición
-      curve: Curves.easeInOut, // Curva de la animación
-      margin: EdgeInsets.all(8), // Margen animado
+      duration: Duration(milliseconds: 500), 
+      curve: Curves.easeInOut, 
+      margin: EdgeInsets.all(8), 
       decoration: BoxDecoration(
-        color: Colors.white, // Color de fondo animado
+        color: Colors.white, 
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -81,14 +81,14 @@ class _PrefWidgetState extends State<PrefWidget>
           mainAxisSize: MainAxisSize.min,
           children: [
             FadeTransition(
-              opacity: _fadeAnimation, // Opacidad animada para el contenido
+              opacity: _fadeAnimation, 
               child: Lottie.network(
                 widget.lottieUrl,
                 height: 85,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   final double startFrame = 0.0; // Frame de inicio
-                  final double endFrame = composition.duration.inMilliseconds / 2; // Aquí defines el punto de parada (en este caso, la mitad)
+                  final double endFrame = composition.duration.inMilliseconds / 2; 
 
                   _lottieController
                     ..duration = composition.duration
@@ -97,13 +97,13 @@ class _PrefWidgetState extends State<PrefWidget>
                         _lottieController.stop();
                       }
                     })
-                    ..animateTo(endFrame / composition.duration.inMilliseconds); // Anima hasta el frame final definido
+                    ..animateTo(endFrame / composition.duration.inMilliseconds); 
                 },
               ),
             ),
             const SizedBox(height: 10),
             FadeTransition(
-              opacity: _fadeAnimation, // Opacidad animada para el contenido
+              opacity: _fadeAnimation, 
               child: Text(
                 widget.text,
                 style: AppStyles.headlinee6(context, colorTexto),
