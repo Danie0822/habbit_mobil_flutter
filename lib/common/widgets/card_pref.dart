@@ -29,16 +29,12 @@ class _PrefWidgetState extends State<PrefWidget>
   @override
   void initState() {
     super.initState();
-
-    // Inicializa el controlador de animación de opacidad
     _fadeController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500), 
+      duration: const Duration(milliseconds: 500), 
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
-    _fadeController.forward(); // Inicia la animación cuando el widget se monta
-
-    // Inicializa el controlador de animación de Lottie
+    _fadeController.forward(); 
     _lottieController = AnimationController(
       vsync: this,
     );
@@ -58,9 +54,9 @@ class _PrefWidgetState extends State<PrefWidget>
         : lightTextColor;
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500), 
+      duration: const Duration(milliseconds: 500), 
       curve: Curves.easeInOut, 
-      margin: EdgeInsets.all(8), 
+      margin: const EdgeInsets.all(8), 
       decoration: BoxDecoration(
         color: Colors.white, 
         borderRadius: BorderRadius.circular(24),
@@ -69,7 +65,7 @@ class _PrefWidgetState extends State<PrefWidget>
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3), // Cambio animado de la sombra
+            offset: const Offset(0, 3), 
           ),
         ],
       ),
@@ -87,9 +83,7 @@ class _PrefWidgetState extends State<PrefWidget>
                 height: 85,
                 controller: _lottieController,
                 onLoaded: (composition) {
-                  final double startFrame = 0.0; // Frame de inicio
                   final double endFrame = composition.duration.inMilliseconds / 2; 
-
                   _lottieController
                     ..duration = composition.duration
                     ..addStatusListener((status) {
