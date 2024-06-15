@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme.dart';
 import 'package:habbit_mobil_flutter/routes/app_router.dart';
 
@@ -9,13 +10,20 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: router,
+    return ScreenUtilInit(
+      designSize: Size(360, 690), // Ajusta esto según el diseño de tu aplicación
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.system,
+          routerConfig: router,
+        );
+      },
     );
   }
 }

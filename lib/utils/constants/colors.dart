@@ -12,7 +12,7 @@ const Color colorTextField = Color(0xffffffff);
 const Color colorTextFieldSerach = Color(0xfff8f8f8);
 const Color colorTextPrimaryLight = Color(0xff0d47a1); 
 const Color colorTextSecondaryLight = Color(0xff1976d2); 
-const Color colorTextYellowLight = Color(0xFFFFBF3E);
+const Color colorTextYellowLight = Color.fromRGBO(255, 191, 62, 1);
 const Color colorBackGroundMessageLight =  Color(0xffe1e1e1);
 const Color colorBackGroundMessage = Color(0xFF06065E);
 const Color colorBackGroundMessageWidget = Color.fromARGB(255, 107, 107, 107);
@@ -30,6 +30,6 @@ const Color iconDarkColor = Color(0xffe0e0e0);
 const Color colorTextFieldDark = Color(0xff1e1e1e);
 const Color colorTextPrimaryDark = Color(0xff2c387e); 
 const Color colorTextSecondaryDark = Color(0xff1e88e5);
-const Color colorTextYellow = Color(0xFFFFBF3E);
+const Color colorTextYellow = Color.fromRGBO(255, 191, 62, 1);
 const Color contenedorMensajeDark = Color.fromARGB(255, 53, 52, 52);
 
