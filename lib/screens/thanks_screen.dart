@@ -14,34 +14,39 @@ class ThankScreen extends StatelessWidget {
         : lightTextColor;
 
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 60),
-          Text(
-            "¡Muchas gracias por contestar!",
-            style: AppStyles.headline5(context, colorTexto),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
-            style: AppStyles.subtitle1(context),
-          ),
-          const SizedBox(height: 20), // Espacio entre el texto y la imagen
-          Image.asset('assets/images/thanks.png'), // Imagen local // Espacio entre la imagen y el botón
-          Align(
-            alignment: Alignment.center,
-            child: CustomButton(
-              onPressed: () {
-                context.push('/ubi');
-              },
-              text: "Finalizar",
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 90),
+                Text(
+                  "¡Muchas gracias por contestar!",
+                  textAlign: TextAlign.center,
+                  style: AppStyles.headline5(context, colorTexto),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
+                  textAlign: TextAlign.center,
+                  style: AppStyles.subtitle1(context),
+                ),
+                const SizedBox(height: 50),// Espacio entre el texto y la imagen
+                Image.asset('assets/images/thanks.png'), // Imagen local
+                const SizedBox(height: 130), // Espacio entre la imagen y el botón
+                Align(
+                  alignment: Alignment.center,
+                  child: CustomButton(
+                    onPressed: () {
+                      context.push('/ubi');
+                    },
+                    text: "Finalizar",
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-    ));
+        ));
   }
-}  
+}
