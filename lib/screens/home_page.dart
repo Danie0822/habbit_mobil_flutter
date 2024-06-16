@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/buildFilter.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/common/widgets/filters.dart';
@@ -131,7 +132,7 @@ Widget _buildPropertyList() {
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                     context.pop();
                     },
                   ),
                 ],

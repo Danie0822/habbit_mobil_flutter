@@ -6,16 +6,19 @@ import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
-class Detalle extends StatelessWidget {
+class PropertyDetailsScreen  extends StatelessWidget {
   final Property propiedad;
 
-  const Detalle({required this.propiedad});
+  const PropertyDetailsScreen ({required this.propiedad});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Color colorTexto = ThemeUtils.getColorBasedOnBrightness(
         context, secondaryColor, lightTextColor);
+    double horizontalPadding = size.width * 0.06;
+    double verticalPadding = size.height * 0.02;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -25,18 +28,14 @@ class Detalle extends StatelessWidget {
               height: size.height * 0.35,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(
-                      20.0), 
-                  bottomRight: Radius.circular(
-                      20.0), 
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
                 ),
               ),
               child: ClipRRect(
-                borderRadius:const BorderRadius.only(
-                  bottomLeft: Radius.circular(
-                      20.0), 
-                  bottomRight: Radius.circular(
-                      20.0), 
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -63,8 +62,9 @@ class Detalle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: verticalPadding * 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -93,15 +93,17 @@ class Detalle extends StatelessWidget {
                 ),
                 Expanded(child: Container()),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: verticalPadding / 2),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.yellow[700],
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
-                    width: 80,
-                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    width: size.width * 0.2,
+                    padding:
+                        EdgeInsets.symmetric(vertical: verticalPadding / 5),
                     child: Center(
                       child: Text(
                         propiedad.label,
@@ -115,21 +117,24 @@ class Detalle extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        propiedad.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                      Flexible(
+                        child: Text(
+                          propiedad.name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Container(
-                        height: 50,
-                        width: 50,
+                        height: size.width * 0.13,
+                        width: size.width * 0.13,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -153,8 +158,11 @@ class Detalle extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 24, right: 24, top: 8, bottom: 16),
+                  padding: EdgeInsets.only(
+                      left: horizontalPadding,
+                      right: horizontalPadding,
+                      top: verticalPadding / 2,
+                      bottom: verticalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -165,7 +173,7 @@ class Detalle extends StatelessWidget {
                             color: Colors.white,
                             size: 16,
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: size.width * 0.01),
                           Text(
                             propiedad.location,
                             style: const TextStyle(
@@ -194,7 +202,7 @@ class Detalle extends StatelessWidget {
               ),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(horizontalPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -208,7 +216,7 @@ class Detalle extends StatelessWidget {
                                 "Daniel Morales",
                                 style: AppStyles.headline6(context, colorTexto),
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: verticalPadding / 4),
                               Text(
                                 "Propietario",
                                 style: AppStyles.subtitle1(context),
@@ -216,12 +224,12 @@ class Detalle extends StatelessWidget {
                             ],
                           ),
                           Container(
-                            height: 50,
-                            width: 50,
+                            height: size.width * 0.13,
+                            width: size.width * 0.13,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child:  Center(
+                            child: Center(
                               child: Icon(
                                 Icons.message,
                                 color: Colors.blueAccent[700],
@@ -231,41 +239,41 @@ class Detalle extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: verticalPadding * 1.5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          buildFeature(Icons.hotel, "3 Dormitorios"),
-                          buildFeature(Icons.bathtub, "2 Baños"),
-                          buildFeature(Icons.directions_car, "1 Garage"),
-                          buildFeature(Icons.beach_access, "Playa"),
-                          buildFeature(Icons.home, "Casa"),
+                          buildFeature(Icons.hotel, "3"),
+                          buildFeature(Icons.bathtub, "2"),
+                          buildFeature(Icons.directions_car, "1"),
+                          buildFeature(Icons.dashboard_customize, "Casas"),
+                          buildFeature(Icons.place, "Playa"),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: verticalPadding * 1.5),
                       Text(
                         "Descripción",
                         style: AppStyles.headline6(context, colorTexto),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: verticalPadding / 2),
                       Text(
                         propiedad.description,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: verticalPadding * 1.5),
                       Text(
                         "Fotos",
                         style: AppStyles.headline6(context, colorTexto),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: verticalPadding / 2),
                       SizedBox(
-                        height: 150,
+                        height: size.height * 0.2,
                         child: ListView(
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
-                          children: buildFotos(propiedad.images),
+                          children: buildPhotos(context, propiedad.images),
                         ),
                       ),
                     ],

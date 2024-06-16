@@ -15,7 +15,17 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final propiedad = state.extra as Property;
         return _buildPageWithFuturisticTransition(
-          Detalle(propiedad: propiedad),
+          PropertyDetailsScreen(propiedad: propiedad),
+          state,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/PhotoDetailScreen',
+      pageBuilder: (context, state) {
+        final String imagen = state.extra as String;
+        return _buildPageWithFuturisticTransition(
+          PhotoDetailScreen(imageUrl: imagen),
           state,
         );
       },
