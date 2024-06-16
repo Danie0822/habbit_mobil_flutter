@@ -62,23 +62,23 @@ class _EditPreferencesState extends State<EditPreferences> {
               style: AppStyles.subtitle1(context),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: preferences.length,
-                      itemBuilder: (context, index) {
-                        return PrefWidget(
-                          text: preferences[index]['text']!,
-                          lottieUrl: preferences[index]['lottieUrl']!,
-                          destinationRoute: preferences[index]['destinationRoute']!,
-                        );
-                      },
-                    ),
-                  ],
+              child: GridView.builder(
+                itemCount: preferences.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Dos elementos por fila
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio:
+                      1.0, // Relación de aspecto 1:1 para círculos
                 ),
+                itemBuilder: (context, index) {
+                  return PrefWidget(
+                    text: preferences[index]['text']!,
+                    lottieUrl: preferences[index]['lottieUrl']!,
+                    destinationRoute: preferences[index]['destinationRoute']!,
+                    index: index, // Pasa el índice a PrefWidget
+                  );
+                },
               ),
             ),
           ],

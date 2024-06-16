@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -28,7 +27,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
   @override
   Widget build(BuildContext context) {
     //final screenHeight = MediaQuery.of(context).size.height;
-    final theme = Theme.of(context);
+    Theme.of(context);
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? secondaryColor
         : lightTextColor;
@@ -84,7 +83,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    
+
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.center,
@@ -95,7 +94,6 @@ class _ChangeProfileState extends State<ChangeProfile> {
                         text: "Actualizar información",
                       ),
                     ),
-                
                   ],
                 ),
               )),
