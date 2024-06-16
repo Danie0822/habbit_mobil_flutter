@@ -22,10 +22,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
 
   final labelList = <String>[
-    'Home',
-    'Favorite',
-    'Message',
-    'User',
+    'Inicio',
+    'Favorito',
+    'Mensaje',
+    'Perfil',
   ];
 
   @override
@@ -64,7 +64,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 size: 28,
                 color: color,
               ),
-              if (isActive) // Show text only if the tab is active
+              if (isActive) 
                 Text(
                   labelList[index],
                   style: TextStyle(

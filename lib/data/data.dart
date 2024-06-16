@@ -1,5 +1,4 @@
 class Property {
-
   String label;
   String name;
   String price;
@@ -11,11 +10,20 @@ class Property {
   String ownerImage;
   List<String> images;
 
-  Property(this.label, this.name, this.price, this.location, this.sqm, this.review, this.description, this.frontImage, this.ownerImage, this.images);
-
+  Property(
+      this.label,
+      this.name,
+      this.price,
+      this.location,
+      this.sqm,
+      this.review,
+      this.description,
+      this.frontImage,
+      this.ownerImage,
+      this.images);
 }
 
-List<Property> getPropertyList(){
+List<Property> getPropertyList() {
   return <Property>[
     Property(
       "VENTA",
@@ -28,8 +36,8 @@ List<Property> getPropertyList(){
       "assets/images/house_01.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -46,8 +54,8 @@ List<Property> getPropertyList(){
       "assets/images/house_04.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -64,8 +72,8 @@ List<Property> getPropertyList(){
       "assets/images/house_02.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -82,8 +90,8 @@ List<Property> getPropertyList(){
       "assets/images/house_03.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -100,8 +108,8 @@ List<Property> getPropertyList(){
       "assets/images/house_05.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -118,8 +126,8 @@ List<Property> getPropertyList(){
       "assets/images/house_06.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -136,8 +144,8 @@ List<Property> getPropertyList(){
       "assets/images/house_07.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
@@ -154,8 +162,8 @@ List<Property> getPropertyList(){
       "assets/images/house_08.jpg",
       "assets/images/owner.jpg",
       [
-        "assets/images/kitchen.jpg",
         "assets/images/bath_room.jpg",
+        "assets/images/kitchen.jpg",
         "assets/images/swimming_pool.jpg",
         "assets/images/bed_room.jpg",
         "assets/images/living_room.jpg",
