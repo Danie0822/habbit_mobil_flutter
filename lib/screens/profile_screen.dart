@@ -36,6 +36,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+
+
 Widget _buildProfileHeader() {
   return const Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,15 +48,14 @@ Widget _buildProfileHeader() {
         backgroundColor: Colors.transparent,
         child: Icon(
           Icons.person,
-          size: kSpacingUnit * 10,  // Tamaño del icono ajustable según necesites
-          color: primaryColor,  // Color del icono ajustable según necesites
+          size: kSpacingUnit * 10, 
+          color: primaryColor, 
         ),
       ),
       SizedBox(width: kSpacingUnit * 3),
     ],
   );
 }
-
 
   Widget _buildEditProfileButton() {
     return ElevatedButton(
