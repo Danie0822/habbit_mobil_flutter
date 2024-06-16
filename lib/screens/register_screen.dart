@@ -8,10 +8,8 @@ import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class RegisterScreen extends StatefulWidget {
-  //Tenemos el constructor
   const RegisterScreen({super.key});
 
-  //Creacion del estado
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -21,176 +19,210 @@ class _RegisterScreenState extends State<RegisterScreen>
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
 
-  late AnimationController _fadeInController;
-  late Animation<double> _fadeInAnimation;
+  late AnimationController _textController;
+  late Animation<Offset> _textAnimation;
+  late AnimationController _inputsController;
+  late Animation<Offset> _inputsAnimation;
 
   @override
   void initState() {
     super.initState();
-    _fadeInController = AnimationController(
+    
+    // Animation for the text
+    _textController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
+    _textAnimation = Tween<Offset>(
+      begin: const Offset(-1.0, 0.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _textController, curve: Curves.easeInOut),
     );
-    _fadeInController.forward();
+    
+    _inputsController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _inputsAnimation = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _inputsController, curve: Curves.easeInOut),
+    );
+    
+    _textController.forward().then((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _inputsController.forward();
+      });
+    });
   }
 
   @override
   void dispose() {
-    _fadeInController.dispose();
+    _textController.dispose();
+    _inputsController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? secondaryColor
         : lightTextColor;
 
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              AnimatedBuilder(
-                  animation: _fadeInAnimation,
-                  builder: (context, child) {
-                    return Opacity(
-                      opacity: _fadeInAnimation.value,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          borderRadius:  BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SlideTransition(
+              position: _textAnimation,
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 60),
+                      Text(
+                        "Registrar",
+                        style: AppStyles.headline5(context, colorTexto),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "¡Regístrate y entérate de las ventajas de Habit mobile!",
+                        style: AppStyles.subtitle1(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SlideTransition(
+              position: _inputsAnimation,
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        MyTextField(
+                          context: context,
+                          hint: "Nombre",
+                          isPassword: false,
+                          icon: Icons.drive_file_rename_outline,
+                          key: const Key('nombre'),
+                        ),
+                        const SizedBox(height: 10),
+                        MyTextField(
+                          context: context,
+                          hint: "Email",
+                          isPassword: false,
+                          icon: Icons.email_outlined,
+                          key: const Key('email'),
+                        ),
+                        const SizedBox(height: 10),
+                        MyTextField(
+                          context: context,
+                          hint: "Teléfono",
+                          isPassword: false,
+                          icon: Icons.smartphone,
+                          key: const Key('telefono'),
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(8),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Stack(
+                          children: [
+                            MyTextField(
+                              context: context,
+                              hint: "Contraseña",
+                              isPassword: !showPassword,
+                              icon: Icons.lock_outline,
+                              key: const Key('contraseña'),
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 14,
+                              child: IconButton(
+                                icon: Icon(showPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Align(
+                          alignment: Alignment.center,
+                          child: CustomButton(
+                            onPressed: () {
+                              context.push('/ubi');
+                            },
+                            text: "Crear cuenta",
                           ),
                         ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 60),
-                                  Text(
-                                    "Registrar",
-                                    style: AppStyles.headline5(
-                                        context, colorTexto),
+                        const SizedBox(height: 20),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text.rich(
+                            TextSpan(
+                              text: "¿Ya tienes una cuenta? ",
+                              style: TextStyle(
+                                color: theme.textTheme.bodyText2?.color
+                                    ?.withOpacity(0.6),
+                                fontSize: 16,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "Inicia sesión",
+                                  style: TextStyle(
+                                    color: colorTexto,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "¡Regístrate y enteráte de las ventajas de Habit mobile!",
-                                    style: AppStyles.subtitle1(
-                                        context),
-                                  ),
-                                  const SizedBox(height: 40),
-                                  //Inicio de los txt para el formulario
-                                  MyTextField(
-                                    context: context,
-                                    hint: "Nombre",
-                                    isPassword: false,
-                                    icon: Icons.drive_file_rename_outline,
-                                    key: const Key('nombre'),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  MyTextField(
-                                    context: context,
-                                    hint: "Email",
-                                    isPassword: false,
-                                    icon: Icons.email_outlined,
-                                    key: const Key('email'),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  MyTextField(
-                                    context: context,
-                                    hint: "Telefóno",
-                                    isPassword: false,
-                                    icon: Icons.smartphone,
-                                    key: const Key('telefono'),
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly,
-                                      LengthLimitingTextInputFormatter(8),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Stack(
-                                    children: [
-                                      MyTextField(
-                                        context: context,
-                                        hint: "Contraseña",
-                                        isPassword: !showPassword,
-                                        icon: Icons.lock_outline,
-                                        key: const Key('contraseña'),
-                                      ),
-                                      Positioned(
-                                        right: 0,
-                                        top: 14,
-                                        child: IconButton(
-                                          icon: Icon(showPassword
-                                              ? Icons.visibility
-                                              : Icons.visibility_off),
-                                          onPressed: () {
-                                            setState(() {
-                                              showPassword = !showPassword;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: CustomButton(
-                                      onPressed: () {
-                                        context.push('/ubi');
-                                      },
-                                      text: "Crear cuenta",
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text.rich(
-                                      TextSpan(
-                                        text: "¿Ya tienes una cuenta? ",
-                                        style: TextStyle(
-                                          color: theme
-                                              .textTheme.bodyText2?.color
-                                              ?.withOpacity(0.6),
-                                          fontSize: 16,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: "Inicia sesión",
-                                            style: TextStyle(
-                                              color: colorTexto,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {
-                                                // Navigate to registration
-                                              },
-                                          ),
-                                        ],
-                                      ),
-                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      context.push('/');
+                                    },
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ),
-                      ),
-                    );
-                  }
-              )
-            ],
-          ),
-        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

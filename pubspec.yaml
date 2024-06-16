@@ -24,6 +24,9 @@ dependencies:
   get: ^4.6.5
   lottie: ^3.1.2
   flutter_screenutil: ^5.9.3
+  google_maps_flutter: ^2.6.1
+  geocoding: ^2.0.5
+
 
 # Dependencias de desarrollo
 dev_dependencies:
