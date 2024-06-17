@@ -2,7 +2,7 @@
 
 ## Descripción del Proyecto
 
-El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, diseñada para facilitar la búsqueda y visualización de propiedades inmobiliarias. Con una interfaz intuitiva y moderna, esta aplicación permite a los usuarios explorar un catálogo de propiedades, ver detalles específicos, y localizar las propiedades en un mapa interactivo integrado con Google Maps.
+El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, diseñada para facilitar la búsqueda y visualización de propiedades inmobiliarias. Con una interfaz intuitiva y moderna, esta aplicación permite a los usuarios explorar un catálogo de propiedades y ver detalles específicos.
 
 ## Estudiantes
 
