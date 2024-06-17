@@ -11,7 +11,10 @@ class ZoneScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _ZoneScreenState();
 }
 
-class _ZoneScreenState extends State<ZoneScreen> {
+class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
+  late AnimationController _fadeInController;
+  late Animation<double> _fadeInAnimation;
+
   final List<String> _radioItems = [
     "Norte",
     "Sur",
@@ -23,56 +26,110 @@ class _ZoneScreenState extends State<ZoneScreen> {
   String? _selectedRadioItem;
 
   @override
+  void initState() {
+    super.initState();
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
+    );
+    _fadeInController.forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeInController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return Scaffold(
       body: Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 60),
-          Text(
-            "Zona",
-            style: AppStyles.headline5(context, colorTexto),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "Selecciona la zona preferida para tu propiedad",
-            style: AppStyles.subtitle1(context),
-          ),
-          const SizedBox(height: 10),
-          for (int i = 0; i < _radioItems.length; i++)
-            RadioListTile<String>(
-              value: _radioItems[i],
-              groupValue: _selectedRadioItem,
-              onChanged: (value) {
-                setState(() {
-                  _selectedRadioItem = value!;
-                });
+        padding: EdgeInsets.symmetric(
+          vertical: height * 0,
+          horizontal: width * 0.03,
+        ),
+        child: Column(
+          children: [
+            AnimatedBuilder(
+              animation: _fadeInAnimation,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _fadeInAnimation.value,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: height * 0.02,
+                        horizontal: width * 0.05,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: height * 0.08),
+                          Text(
+                            "Elige una Zona",
+                            style: AppStyles.headline5(context, colorTexto),
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Text(
+                            "Selecciona una zona para mostrarte propiedades similares",
+                            style: AppStyles.subtitle1(context),
+                          ),
+                          SizedBox(height: height * 0.02),
+                          for (int i = 0; i < _radioItems.length; i++)
+                            RadioListTile<String>(
+                              value: _radioItems[i],
+                              groupValue: _selectedRadioItem,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedRadioItem = value!;
+                                });
+                              },
+                              title: Text(_radioItems[i]),
+                              activeColor: colorTextYellow,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          SizedBox(height: height * 0.2),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CustomButton(
+                              onPressed: () {
+                                context.push('/thanks');
+                              },
+                              text: "Terminar",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
-              title: Text(_radioItems[i]),
-              activeColor: colorTextYellow,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              controlAffinity: ListTileControlAffinity.leading,
             ),
-          const SizedBox(height: 150),
-          Align(
-            alignment: Alignment.center,
-            child: CustomButton(
-              onPressed: () {
-                context.push('/thanks');
-              },
-              text: "Terminar",
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

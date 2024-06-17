@@ -17,10 +17,9 @@ class UbiScreen extends StatefulWidget {
 class _UbiScreenState extends State<UbiScreen> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
 
-  // Ajusta la posición inicial de la cámara a El Salvador
   static const CameraPosition _kElSalvador = CameraPosition(
-    target: LatLng(13.794185, -88.896530), // Coordenadas aproximadas de El Salvador
-    zoom: 9.0, // Ajusta el nivel de zoom según sea necesario
+    target: LatLng(13.794185, -88.896530),
+    zoom: 9.0,
   );
 
   Marker? _selectedLocationMarker;
@@ -35,7 +34,6 @@ class _UbiScreenState extends State<UbiScreen> {
       _selectedLocationAddress = "Cargando dirección...";
     });
 
-    // Obtener dirección basada en la latitud y longitud
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
       if (placemarks.isNotEmpty) {
@@ -61,25 +59,32 @@ class _UbiScreenState extends State<UbiScreen> {
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(
+          vertical: height * 0.02,
+          horizontal: width * 0.05,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 60),
+            SizedBox(height: height * 0.08),
             Text(
               "Ubicación",
               style: AppStyles.headline5(context, colorTexto),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height * 0.01),
             Text(
               "Selecciona tu ubicación preferida",
               style: AppStyles.subtitle1(context),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height * 0.01),
             SizedBox(
-              height: 450.0,
+              height: height * 0.5,
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _kElSalvador,
@@ -90,12 +95,12 @@ class _UbiScreenState extends State<UbiScreen> {
                 onTap: _onMapTapped,
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height * 0.01),
             Text(
               _selectedLocationAddress ?? "No hay una ubicación seleccionada",
               style: AppStyles.subtitle1(context)?.copyWith(color: colorTexto),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height * 0.02),
             Align(
               alignment: Alignment.center,
               child: CustomButton(

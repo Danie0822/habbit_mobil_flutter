@@ -15,9 +15,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // Get screen size
     final Size screenSize = MediaQuery.of(context).size;
-    final double padding = screenSize.width * 0.04; // Adjust padding based on screen size
-    final double avatarRadius = screenSize.width * 0.1; // Adjust avatar size based on screen size
-    final double fontSize = screenSize.width * 0.04; // Adjust font size based on screen size
+    final double padding =
+        screenSize.width * 0.04; 
+    final double avatarRadius =
+        screenSize.width * 0.1; 
+    final double fontSize =
+        screenSize.width * 0.04; 
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -29,11 +32,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildProfileHeader(avatarRadius),
             SizedBox(height: screenSize.width * 0.02),
             Center(
-              child: Text('Usuario:', style: kCaptionTextStyle.copyWith(fontSize: fontSize)),
+              child: Text('Usuario:',
+                  style: kCaptionTextStyle.copyWith(fontSize: fontSize)),
             ),
             SizedBox(height: screenSize.width * 0.005),
             Center(
-              child: Text('Fernando Gómez', style: kTitleTextStyle.copyWith(fontSize: fontSize * 1.2)),
+              child: Text('Fernando Gómez',
+                  style: kTitleTextStyle.copyWith(fontSize: fontSize * 1.2)),
             ),
             SizedBox(height: screenSize.width * 0.02),
             Center(
@@ -68,6 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       style: ElevatedButton.styleFrom(
         foregroundColor: const Color(0xFF000000),
         backgroundColor: const Color(0xFFFFBF3E),
+        splashFactory: NoSplash.splashFactory,
         elevation: 2,
         padding: EdgeInsets.symmetric(
           vertical: fontSize * 0.6,
@@ -79,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       onPressed: () {
-         context.push('/registar');
+        context.push('/registar');
       },
       child: Text(
         'Editar perfil',
@@ -96,14 +102,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
-        _buildProfileListItem(context, text: 'Editar Preferencias', icon: Icons.settings, fontSize: fontSize, ruta: '/editPreferences'),
-        _buildProfileListItem(context, text: 'Cambio de Modo', icon: Icons.brightness_medium, fontSize: fontSize, ruta: 'darkMode'),
-        _buildProfileListItem(context, text: 'Cerrar sesión', icon: Icons.logout, fontSize: fontSize,  ruta: '/'),
+        _buildProfileListItem(context,
+            text: 'Ajustes',
+            icon: Icons.settings,
+            fontSize: fontSize,
+            ruta: 'darkMode'),
+        _buildProfileListItem(context,
+            text: 'Editar Preferencias',
+            icon: Icons.widgets,
+            fontSize: fontSize,
+            ruta: '/editPreferences'),
+        _buildProfileListItem(context,
+            text: 'Cerrar sesión',
+            icon: Icons.logout,
+            fontSize: fontSize,
+            ruta: '/'),
       ],
     );
   }
 
-  Widget _buildProfileListItem(BuildContext context, {required String text, required IconData icon, required double fontSize, required  ruta}) {
+  Widget _buildProfileListItem(BuildContext context,
+      {required String text,
+      required IconData icon,
+      required double fontSize,
+      required ruta}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Material(
@@ -113,6 +135,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             context.push(ruta);
           },
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           child: ListTile(
             leading: Icon(icon, color: Colors.grey, size: fontSize * 1.5),
             title: Text(

@@ -7,7 +7,8 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     required this.onPressed,
     required this.text,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,28 +17,24 @@ class CustomButton extends StatelessWidget {
 
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1.3,
-      height: 60,
+      height: 65,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(MediaQuery.of(context).size.width, 50),
-          padding: const EdgeInsets.symmetric(vertical: 0),
           backgroundColor: buttonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
           elevation: 5,
           shadowColor: Colors.black.withOpacity(0.2),
+          splashFactory: NoSplash.splashFactory, 
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: textColor,
-              fontSize: 16,
-            ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: textColor,
+            fontSize: 16,
           ),
         ),
       ),

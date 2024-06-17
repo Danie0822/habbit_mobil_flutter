@@ -42,10 +42,19 @@ class _PriceScreenState extends State<PriceScreen>
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return Scaffold(
-      body: Column(
-        children: [
-          AnimatedBuilder(
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: height * 0.02,
+          horizontal: width * 0.05,
+        ),
+        child: Column(
+          children: [
+            AnimatedBuilder(
               animation: _fadeInAnimation,
               builder: (context, child) {
                 return Opacity(
@@ -59,66 +68,72 @@ class _PriceScreenState extends State<PriceScreen>
                       ),
                     ),
                     child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 60),
-                            Text(
-                              "Elige el precio máximo y mínimo",
-                              style: AppStyles.headline5(context, colorTexto),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "Selecciona un precio máximo y un precio mínimo de los que están en el rango",
-                              style: AppStyles.subtitle1(context),
-                            ),
-                            const SizedBox(height: 50),
-                            RangeSlider(
-                              values: selectedRange,
-                              onChanged: (RangeValues newRange) {
-                                setState(() {
-                                  selectedRange = newRange;
-                                });
-                              },
-                              min: 70,
-                              max: 1000,
-                              activeColor: Theme.of(context).primaryColor,
-                              inactiveColor: Colors.grey[300],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "\$${selectedRange.start.round()}k", // Display start of range
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: height * 0,
+                        horizontal: width * 0.01,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: height * 0.08),
+                          Text(
+                            "Elige el precio máximo y mínimo",
+                            style: AppStyles.headline5(context, colorTexto),
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Text(
+                            "Selecciona un precio máximo y un precio mínimo de los que están en el rango",
+                            style: AppStyles.subtitle1(context),
+                          ),
+                          SizedBox(height: height * 0.05),
+                          RangeSlider(
+                            values: selectedRange,
+                            onChanged: (RangeValues newRange) {
+                              setState(() {
+                                selectedRange = newRange;
+                              });
+                            },
+                            min: 70,
+                            max: 1000,
+                            activeColor: Theme.of(context).primaryColor,
+                            inactiveColor: Colors.grey[300],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "\$${selectedRange.start.round()}k",
+                                style: const TextStyle(
+                                  fontSize: 14,
                                 ),
-                                Text(
-                                  "\$${selectedRange.end.round()}k", // Display end of range
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 300),
-                            Align(
-                              alignment: Alignment.center,
-                              child: CustomButton(
-                                onPressed: () {
-                                  context.push('/category');
-                                },
-                                text: "Siguiente",
                               ),
+                              Text(
+                                "\$${selectedRange.end.round()}k",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: height * 0.3),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CustomButton(
+                              onPressed: () {
+                                context.push('/category');
+                              },
+                              text: "Siguiente",
                             ),
-                          ],
-                        )),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
-              })
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

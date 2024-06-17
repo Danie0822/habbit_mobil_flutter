@@ -13,40 +13,53 @@ class ThankScreen extends StatelessWidget {
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 90),
-                Text(
-                  "¡Muchas gracias por contestar!",
-                  textAlign: TextAlign.center,
-                  style: AppStyles.headline5(context, colorTexto),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
-                  textAlign: TextAlign.center,
-                  style: AppStyles.subtitle1(context),
-                ),
-                const SizedBox(height: 50),// Espacio entre el texto y la imagen
-                Image.asset('assets/images/thanks.png'), // Imagen local
-                const SizedBox(height: 130), // Espacio entre la imagen y el botón
-                Align(
-                  alignment: Alignment.center,
-                  child: CustomButton(
-                    onPressed: () {
-                    context.push('/');
-                    },
-                    text: "Finalizar",
-                  ),
-                ),
-              ],
-            ),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: height * 0.02,
+            horizontal: width * 0.05,
           ),
-        ));
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: height * 0.1),
+              Text(
+                "¡Muchas gracias por contestar!",
+                textAlign: TextAlign.center,
+                style: AppStyles.headline5(context, colorTexto),
+              ),
+              SizedBox(height: height * 0.02),
+              Text(
+                "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
+                textAlign: TextAlign.center,
+                style: AppStyles.subtitle1(context),
+              ),
+              SizedBox(height: height * 0.05), // Espacio entre el texto y la imagen
+              Image.asset(
+                'assets/images/thanks.png',
+                height: height * 0.3, // Ajusta la altura de la imagen
+                width: width * 0.6, // Ajusta el ancho de la imagen
+                fit: BoxFit.contain,
+              ),
+              SizedBox(height: height * 0.1), // Espacio entre la imagen y el botón
+              Align(
+                alignment: Alignment.center,
+                child: CustomButton(
+                  onPressed: () {
+                    context.push('/');
+                  },
+                  text: "Finalizar",
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

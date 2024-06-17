@@ -5,7 +5,6 @@ import 'package:habbit_mobil_flutter/screens/build_login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -69,6 +68,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     Color colorTexto = ThemeUtils.getColorBasedOnBrightness(
         context, secondaryColor, lightTextColor);
@@ -79,8 +79,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildHeader(context, screenHeight),
-              _buildForm(context, theme, colorTexto),
+              _buildHeader(context, screenHeight, screenWidth),
+              _buildForm(context, theme, colorTexto, screenWidth),
             ],
           ),
         ),
@@ -88,7 +88,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildHeader(BuildContext context, double screenHeight) {
+  Widget _buildHeader(BuildContext context, double screenHeight, double screenWidth) {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
@@ -104,13 +104,14 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
         child: Image.asset(
           'assets/images/logoLight.png',
           height: screenHeight * 0.25,
+          width: screenWidth * 0.5,
           fit: BoxFit.contain,
         ),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto) {
+  Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto, double screenWidth) {
     return AnimatedBuilder(
       animation: _fadeInAnimation,
       builder: (context, child) {
@@ -119,13 +120,16 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
           child: Container(
             width: double.infinity,
             decoration: const BoxDecoration(
-              borderRadius:  BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.1, // Ajuste de padding para hacerlo más responsivo
+                vertical: 20,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(

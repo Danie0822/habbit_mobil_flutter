@@ -72,6 +72,9 @@ class _RegisterScreenState extends State<RegisterScreen>
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -87,16 +90,19 @@ class _RegisterScreenState extends State<RegisterScreen>
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.symmetric(
+                    vertical: height * 0.02,
+                    horizontal: width * 0.05,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 60),
+                      SizedBox(height: height * 0.08),
                       Text(
                         "Registrar",
                         style: AppStyles.headline5(context, colorTexto),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: height * 0.01),
                       Text(
                         "¡Regístrate y entérate de las ventajas de Habit mobile!",
                         style: AppStyles.subtitle1(context),
@@ -117,13 +123,16 @@ class _RegisterScreenState extends State<RegisterScreen>
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.symmetric(
+                    vertical: height * 0.02,
+                    horizontal: width * 0.05,
+                  ),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: height * 0.02),
                         MyTextField(
                           context: context,
                           hint: "Nombre",
@@ -131,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           icon: Icons.drive_file_rename_outline,
                           key: const Key('nombre'),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: height * 0.02),
                         MyTextField(
                           context: context,
                           hint: "Email",
@@ -139,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           icon: Icons.email_outlined,
                           key: const Key('email'),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: height * 0.02),
                         MyTextField(
                           context: context,
                           hint: "Teléfono",
@@ -151,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                             LengthLimitingTextInputFormatter(8),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: height * 0.02),
                         Stack(
                           children: [
                             MyTextField(
@@ -177,7 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: height * 0.02),
                         Align(
                           alignment: Alignment.center,
                           child: CustomButton(
@@ -187,14 +196,14 @@ class _RegisterScreenState extends State<RegisterScreen>
                             text: "Crear cuenta",
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: height * 0.02),
                         Align(
                           alignment: Alignment.center,
                           child: Text.rich(
                             TextSpan(
                               text: "¿Ya tienes una cuenta? ",
                               style: TextStyle(
-                                color: theme.textTheme.bodyText2?.color
+                                color: theme.textTheme.bodyMedium?.color
                                     ?.withOpacity(0.6),
                                 fontSize: 16,
                               ),

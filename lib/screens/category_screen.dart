@@ -43,10 +43,19 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
         ? secondaryColor
         : lightTextColor;
 
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return Scaffold(
-      body: Column(
-        children: [
-          AnimatedBuilder(
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: height * 0,
+          horizontal: width * 0.03,
+        ),
+        child: Column(
+          children: [
+            AnimatedBuilder(
               animation: _fadeInAnimation,
               builder: (context, child) {
                 return Opacity(
@@ -60,54 +69,59 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                       ),
                     ),
                     child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 60),
-                            Text(
-                              "Elige una categoría",
-                              style: AppStyles.headline5(context, colorTexto),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "Selecciona una categoría para mostrarte propiedades similares",
-                              style: AppStyles.subtitle1(context),
-                            ),
-                            const SizedBox(height: 10),
-                            for (int i = 0; i < _radioItems.length; i++)
-                              RadioListTile<String>(
-                                value: _radioItems[i],
-                                groupValue: _selectedRadioItem,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedRadioItem = value!;
-                                  });
-                                },
-                                title: Text(_radioItems[i]),
-                                activeColor: colorTextYellow,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                controlAffinity: ListTileControlAffinity.leading,
-                              ),
-                            const SizedBox(height: 170),
-                            Align(
-                              alignment: Alignment.center,
-                              child: CustomButton(
-                                onPressed: () {
-                                  context.push('/zone');
-                                },
-                                text: "Siguiente",
-                              ),
-                            ),
-                          ],
-                        )
+                      padding: EdgeInsets.symmetric(
+                        vertical: height * 0.02,
+                        horizontal: width * 0.05,
                       ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: height * 0.08),
+                          Text(
+                            "Elige una categoría",
+                            style: AppStyles.headline5(context, colorTexto),
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Text(
+                            "Selecciona una categoría para mostrarte propiedades similares",
+                            style: AppStyles.subtitle1(context),
+                          ),
+                          SizedBox(height: height * 0.02),
+                          for (int i = 0; i < _radioItems.length; i++)
+                            RadioListTile<String>(
+                              value: _radioItems[i],
+                              groupValue: _selectedRadioItem,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedRadioItem = value!;
+                                });
+                              },
+                              title: Text(_radioItems[i]),
+                              activeColor: colorTextYellow,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          SizedBox(height: height * 0.2),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CustomButton(
+                              onPressed: () {
+                                context.push('/zone');
+                              },
+                              text: "Siguiente",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
-              })
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
