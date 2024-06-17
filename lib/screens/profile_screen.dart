@@ -1,105 +1,123 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/constants/const.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    // Get screen size
+    final Size screenSize = MediaQuery.of(context).size;
+    final double padding = screenSize.width * 0.04; // Adjust padding based on screen size
+    final double avatarRadius = screenSize.width * 0.1; // Adjust avatar size based on screen size
+    final double fontSize = screenSize.width * 0.04; // Adjust font size based on screen size
+
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: kSpacingUnit.w * 7),
-          _buildProfileHeader(),
-          SizedBox(height: kSpacingUnit.w * 2),
-          Text('Usuario:', style: kCaptionTextStyle),
-          SizedBox(height: kSpacingUnit.w * 0.5),
-          Text('Fernando Gómez', style: kTitleTextStyle),
-          SizedBox(height: kSpacingUnit.w * 2),
-          _buildEditProfileButton(),
-          SizedBox(height: kSpacingUnit.w * 3),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: kSpacingUnit.w * 4),
-              children: <Widget>[
-                _buildProfileListItem(context,
-                    text: 'Editar Preferencias', icon: Icons.settings),
-                _buildProfileListItem(context,
-                    text: 'Modo Oscuro', icon: Icons.dark_mode),
-                _buildProfileListItem(context,
-                    text: 'Cerrar sesión', icon: Icons.logout),
-              ],
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: padding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(height: screenSize.width * 0.12),
+            _buildProfileHeader(avatarRadius),
+            SizedBox(height: screenSize.width * 0.02),
+            Center(
+              child: Text('Usuario:', style: kCaptionTextStyle.copyWith(fontSize: fontSize)),
             ),
-          ),
-        ],
+            SizedBox(height: screenSize.width * 0.005),
+            Center(
+              child: Text('Fernando Gómez', style: kTitleTextStyle.copyWith(fontSize: fontSize * 1.2)),
+            ),
+            SizedBox(height: screenSize.width * 0.02),
+            Center(
+              child: _buildEditProfileButton(fontSize),
+            ),
+            _buildProfileList(fontSize),
+          ],
+        ),
       ),
     );
   }
 
-
-
-Widget _buildProfileHeader() {
-  return const Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      SizedBox(width: kSpacingUnit * 3),
-      CircleAvatar(
-        radius: kSpacingUnit * 5,
-        backgroundColor: Colors.transparent,
-        child: Icon(
-          Icons.person,
-          size: kSpacingUnit * 10, 
-          color: primaryColor, 
+  Widget _buildProfileHeader(double avatarRadius) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: avatarRadius,
+          backgroundColor: Colors.transparent,
+          child: Icon(
+            Icons.person,
+            size: avatarRadius * 2,
+            color: primaryColor,
+          ),
         ),
-      ),
-      SizedBox(width: kSpacingUnit * 3),
-    ],
-  );
-}
+      ],
+    );
+  }
 
-  Widget _buildEditProfileButton() {
+  Widget _buildEditProfileButton(double fontSize) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: const Color(0xFF000000),
         backgroundColor: const Color(0xFFFFBF3E),
         elevation: 2,
         padding: EdgeInsets.symmetric(
-          vertical: kSpacingUnit.w * 1.2,
-          horizontal: kSpacingUnit.w * 6,
+          vertical: fontSize * 0.6,
+          horizontal: fontSize * 2.2,
         ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kSpacingUnit.w * 2),
-            side: const BorderSide(color: Colors.transparent)),
+          borderRadius: BorderRadius.circular(16.0),
+          side: const BorderSide(color: Colors.transparent),
+        ),
       ),
       onPressed: () {
-        // Acción al presionar el botón
+         context.push('/registar');
       },
       child: Text(
         'Editar perfil',
-        style: kButtonTextStyle.copyWith(
-          fontSize: kSpacingUnit.w * 1.8, 
-          fontWeight: FontWeight.w600, 
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 
-  Widget _buildProfileListItem(BuildContext context,
-      {required String text, required IconData icon}) {
+  Widget _buildProfileList(double fontSize) {
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: <Widget>[
+        _buildProfileListItem(context, text: 'Editar Preferencias', icon: Icons.settings, fontSize: fontSize, ruta: '/editPreferences'),
+        _buildProfileListItem(context, text: 'Cambio de Modo', icon: Icons.brightness_medium, fontSize: fontSize, ruta: 'darkMode'),
+        _buildProfileListItem(context, text: 'Cerrar sesión', icon: Icons.logout, fontSize: fontSize,  ruta: '/'),
+      ],
+    );
+  }
+
+  Widget _buildProfileListItem(BuildContext context, {required String text, required IconData icon, required double fontSize, required  ruta}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: kSpacingUnit.w * 1.5),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Material(
-        borderRadius: BorderRadius.circular(kSpacingUnit.w * 3),
+        borderRadius: BorderRadius.circular(24.0),
         child: InkWell(
-          borderRadius: BorderRadius.circular(kSpacingUnit.w * 3),
+          borderRadius: BorderRadius.circular(24.0),
           onTap: () {
-            // Acción al presionar el elemento
+            context.push(ruta);
           },
           child: ListTile(
-            leading: Icon(icon, color: Colors.grey),
+            leading: Icon(icon, color: Colors.grey, size: fontSize * 1.5),
             title: Text(
               text,
-              style: kTitleTextStyle,
+              style: kTitleTextStyle.copyWith(fontSize: fontSize),
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),

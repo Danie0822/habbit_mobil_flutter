@@ -39,7 +39,7 @@ class ThankScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: CustomButton(
                     onPressed: () {
-                      context.push('/ubi');
+                    context.push('/');
                     },
                     text: "Finalizar",
                   ),

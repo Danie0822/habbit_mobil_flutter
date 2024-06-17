@@ -70,6 +70,11 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const ThankScreen(), state),
     ),
+    GoRoute(
+      path: '/editPreferences',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const EditPreferences(), state),
+    ),
   ],
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),

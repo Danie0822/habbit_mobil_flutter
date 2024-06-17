@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/feature_widget.dart';
 import 'package:habbit_mobil_flutter/common/widgets/foto_widget.dart';
@@ -6,11 +7,23 @@ import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
-class PropertyDetailsScreen  extends StatelessWidget {
+class PropertyDetailsScreen  extends StatefulWidget {
   final Property propiedad;
 
   const PropertyDetailsScreen ({required this.propiedad});
 
+  @override
+  State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
+  
+}
+
+class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
+   bool isFavorite = false;
+    void toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -23,7 +36,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
       body: Stack(
         children: [
           Hero(
-            tag: propiedad.frontImage,
+            tag: widget.propiedad.frontImage,
             child: Container(
               height: size.height * 0.35,
               decoration: const BoxDecoration(
@@ -40,7 +53,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(propiedad.frontImage),
+                      image: AssetImage(widget.propiedad.frontImage),
                       fit: BoxFit.cover,
                     ),
                     gradient: RadialGradient(
@@ -70,7 +83,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          context.pop();
                         },
                         child: const Icon(
                           Icons.arrow_back_ios,
@@ -80,7 +93,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(
-                          Icons.map,
+                          Icons.near_me,
                           color: Colors.white,
                           size: 24,
                         ),
@@ -106,7 +119,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                         EdgeInsets.symmetric(vertical: verticalPadding / 5),
                     child: Center(
                       child: Text(
-                        propiedad.label,
+                        widget.propiedad.label,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -123,7 +136,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          propiedad.name,
+                          widget.propiedad.name,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 32,
@@ -132,28 +145,22 @@ class PropertyDetailsScreen  extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Container(
-                        height: size.width * 0.13,
-                        width: size.width * 0.13,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10,
-                              offset: Offset(0, 5),
+                       GestureDetector(
+                            onTap: toggleFavorite,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isFavorite ? Colors.white : Colors.transparent,
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Icon(
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.redAccent : Colors.white,
+                                size: 28,
+                              ),
                             ),
-                          ],
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.favorite,
-                            color: Colors.redAccent,
-                            size: 24,
                           ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -175,7 +182,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                           ),
                           SizedBox(width: size.width * 0.01),
                           Text(
-                            propiedad.location,
+                            widget.propiedad.location,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -257,7 +264,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                       ),
                       SizedBox(height: verticalPadding / 2),
                       Text(
-                        propiedad.description,
+                        widget.propiedad.description,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -273,7 +280,7 @@ class PropertyDetailsScreen  extends StatelessWidget {
                         child: ListView(
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
-                          children: buildPhotos(context, propiedad.images),
+                          children: buildPhotos(context, widget.propiedad.images),
                         ),
                       ),
                     ],

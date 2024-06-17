@@ -7,8 +7,7 @@ class PropertyCard extends StatefulWidget {
   final Property property;
   final int index;
 
-  const PropertyCard({Key? key, required this.property, required this.index})
-      : super(key: key);
+  const PropertyCard({Key? key, required this.property, required this.index}) : super(key: key);
 
   @override
   _PropertyCardState createState() => _PropertyCardState();
@@ -32,6 +31,8 @@ class _PropertyCardState extends State<PropertyCard> {
 
   @override
   Widget build(BuildContext context) {
+    double containerHeight = MediaQuery.of(context).size.width * 0.6; // Ajustar según tus necesidades
+
     return GestureDetector(
       onTap: () {
         context.push('/detalle', extra: property);
@@ -48,18 +49,18 @@ class _PropertyCardState extends State<PropertyCard> {
         child: Stack(
           children: [
             AnimatedContainer(
-              duration: 800.ms,
+              duration: const Duration(milliseconds: 800),
               curve: Curves.easeInOut,
-              height: 210,
+              height: containerHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(widget.property.frontImage),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.cover, // Ajusta el fit para cubrir completamente el contenedor
                 ),
               ),
             ),
             Container(
-              height: 210,
+              height: containerHeight,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(15),
@@ -75,7 +76,7 @@ class _PropertyCardState extends State<PropertyCard> {
               ),
             ),
             Positioned(
-              top: 16,
+              top: containerHeight * 0.08,
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
@@ -93,10 +94,11 @@ class _PropertyCardState extends State<PropertyCard> {
                     fontWeight: FontWeight.bold,
                   ),
                 ).animate().fadeIn(duration: 800.ms).slideX(
-                    begin: 1.0,
-                    end: 0.0,
-                    duration: 800.ms,
-                    curve: Curves.easeInOut),
+                  begin: 1.0,
+                  end: 0.0,
+                  duration: 800.ms,
+                  curve: Curves.easeInOut,
+                ),
               ),
             ),
             Positioned(
@@ -117,34 +119,29 @@ class _PropertyCardState extends State<PropertyCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ).animate().fadeIn(duration: 800.ms).slideX(
-                          begin: -1.0,
-                          end: 0.0,
-                          duration: 800.ms,
-                          curve: Curves.easeInOut),
+                        begin: -1.0,
+                        end: 0.0,
+                        duration: 800.ms,
+                        curve: Curves.easeInOut,
+                      ),
                       Row(
                         children: [
                           GestureDetector(
                             onTap: toggleFavorite,
                             child: AnimatedContainer(
-                              duration: Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 300),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: isFavorite
-                                    ? Colors.red
-                                    : Colors.transparent,
+                                color: isFavorite ? Colors.white : Colors.transparent,
                               ),
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Icon(
-                                isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: isFavorite
-                                    ? Colors.white
-                                    : Colors.grey[600],
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.redAccent : Colors.white,
                                 size: 24,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
@@ -180,10 +177,11 @@ class _PropertyCardState extends State<PropertyCard> {
                   ),
                 ],
               ).animate().fadeIn(duration: 800.ms).slideY(
-                  begin: 1.0,
-                  end: 0.0,
-                  duration: 800.ms,
-                  curve: Curves.easeInOut),
+                begin: 1.0,
+                end: 0.0,
+                duration: 800.ms,
+                curve: Curves.easeInOut,
+              ),
             ),
           ],
         ),

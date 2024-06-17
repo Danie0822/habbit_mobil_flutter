@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/build_option_filter.dart';
 
 class Filter extends StatefulWidget {
-  const Filter({super.key});
+  const Filter({Key? key}) : super(key: key);
 
   @override
   _FilterState createState() => _FilterState();
@@ -28,10 +28,11 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity, 
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        
           const Text(
             "Rango de Precios",
             style: TextStyle(

@@ -102,47 +102,50 @@ Widget _buildPropertyList() {
     });
   }
 
-  void _showBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
+ void _showBottomSheet() {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        topRight: Radius.circular(30),
       ),
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Filtros',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+    ),
+    builder: (BuildContext context) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Filtros',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                     context.pop();
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Filter(),
-            ],
-          ),
-        );
-      },
-    );
-  }
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                   context.pop();
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            const Filter(),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+
 }
