@@ -1,16 +1,42 @@
-# habbit_mobil_flutter
+# 🏡 Sistema de Inmuebles
 
-A new Flutter project.
+## Descripción del Proyecto
 
-## Getting Started
+El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, diseñada para facilitar la búsqueda y visualización de propiedades inmobiliarias. Con una interfaz intuitiva y moderna, esta aplicación permite a los usuarios explorar un catálogo de propiedades, ver detalles específicos, y localizar las propiedades en un mapa interactivo integrado con Google Maps.
 
-This project is a starting point for a Flutter application.
+## Estudiantes
 
-A few resources to get you started if this is your first Flutter project:
+- **Alessandro Daniel Morales Sandoval** - *20190652*
+- **Fernando José Gómez Martínez** - *20190369*
+- **Josué Emiliano Valdés Jacobo** - *20190010*
+- **Adriana Elizabeth Orellana Aguilar** - *20220227*
+- **José Alejandro Sánchez Henríquez** - *20220141*
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Características Principales
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 🏠 **Catálogo de Inmuebles**: Visualiza una amplia gama de propiedades con imágenes y descripciones detalladas.
+- 🌐 **Integración con Google Maps**: Encuentra la ubicación exacta de las propiedades en un mapa interactivo.
+- 🔄 **Animaciones y Transiciones**: Navegación fluida y atractiva entre vistas con animaciones modernas.
+- 📸 **Visualización de Imágenes**: Ampliación y desplazamiento de imágenes de alta calidad para una mejor visualización.
+- 📏 **Diseño Responsivo**: Adaptación perfecta a diferentes tamaños de pantalla y dispositivos.
+
+## Dependencias
+
+Este proyecto utiliza las siguientes dependencias de Flutter:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  animated_bottom_navigation_bar: 1.3.3
+  flutter_animate: ^4.5.0
+  go_router: ^14.1.4
+  page_transition: ^2.0.8
+  animations: ^2.0.0
+  get: ^4.6.5
+  lottie: ^3.1.2
+  flutter_screenutil: ^5.9.3
+  google_maps_flutter: ^2.6.1
+  geocoding: ^2.0.5
+  photo_view: ^0.15.0
