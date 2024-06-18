@@ -27,9 +27,10 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          routerConfig: router,
+          routerConfig: router, // Asegúrate de pasar el router aquí
         );
       },
     );
   }
 }
+

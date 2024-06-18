@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             text: 'Cerrar sesión',
             icon: Icons.logout,
             fontSize: fontSize,
-            ruta: '/'),
+            ruta: '/login'),
       ],
     );
   }

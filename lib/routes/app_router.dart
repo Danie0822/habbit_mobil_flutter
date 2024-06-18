@@ -8,6 +8,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const SplashScreen(), state),
+    ),GoRoute(
+      path: '/login',
+      pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const LoginScreen(), state),
     ),
     GoRoute(

@@ -51,7 +51,7 @@ class ThankScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 child: CustomButton(
                   onPressed: () {
-                    context.push('/');
+                    context.push('/login');
                   },
                   text: "Finalizar",
                 ),

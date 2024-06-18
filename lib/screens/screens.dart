@@ -16,6 +16,6 @@ export 'package:habbit_mobil_flutter/screens/change_profile.dart';
 export 'package:habbit_mobil_flutter/screens/detail_screen.dart';
 export 'package:habbit_mobil_flutter/screens/edit_preferences.dart';
 export 'package:habbit_mobil_flutter/screens/view_foto.dart';
-
+export 'package:habbit_mobil_flutter/screens/splash_screen.dart';
 
 
