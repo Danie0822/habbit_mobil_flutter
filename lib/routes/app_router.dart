@@ -15,6 +15,11 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const LoginScreen(), state),
     ),
     GoRoute(
+      path: '/onboard',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const OnboardingView(), state),
+    ),
+    GoRoute(
       path: '/detalle',
       pageBuilder: (context, state) {
         final propiedad = state.extra as Property;

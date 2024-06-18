@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'login_screen.dart'; // Importa el archivo login_screen.dart si es necesario
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; // Asegúrate de importar tus constantes de colores si las tienes
+import 'package:habbit_mobil_flutter/screens/on_board.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; 
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        context.push('/login'); // Navega a la pantalla de login
+        context.push('/onboard'); // Navega a la pantalla de login
       }
     });
   }
@@ -92,7 +92,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
           ),
         ],
       ),
-      nextScreen: const LoginScreen(),
+      nextScreen: const OnboardingView(),
       splashTransition: SplashTransition.fadeTransition,
       backgroundColor: primaryColor,
       splashIconSize: double.infinity,
