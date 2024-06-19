@@ -21,3 +21,4 @@ export 'package:habbit_mobil_flutter/screens/on_board.dart';
 export 'package:habbit_mobil_flutter/screens/forgot_password.dart';
 export 'package:habbit_mobil_flutter/screens/forgot_code.dart';
 export 'package:habbit_mobil_flutter/screens/forgot_confirm_password.dart';
+export 'package:habbit_mobil_flutter/screens/password_done.dart';

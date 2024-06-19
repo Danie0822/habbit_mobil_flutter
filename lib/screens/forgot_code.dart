@@ -16,8 +16,13 @@ class CodeView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.network(
-                  "https://lottie.host/94694577-8cf3-4fd1-96a0-aca85b318bc9/lL7IY9NZCI.json"),
+              SizedBox(
+                width: 250, 
+                height: 250, 
+                child: Lottie.network(
+                  "https://lottie.host/94694577-8cf3-4fd1-96a0-aca85b318bc9/lL7IY9NZCI.json",
+                ),
+              ),
               const SizedBox(height: 24),
               const Text(
                 'Verifica tu correo',
@@ -33,6 +38,7 @@ class CodeView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,
+                  
                   fontSize: 16,
                 ),
               ),
