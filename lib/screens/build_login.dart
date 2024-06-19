@@ -36,7 +36,9 @@ class LoginWidgets {
     return Align(
       alignment: Alignment.center,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          context.push('/forgot');
+        },
         child: Text(
           "Olvidaste tu contraseña?",
           style: TextStyle(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/button_2.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
@@ -24,7 +24,7 @@ class _ForgotViewState extends State<ForgotView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      
       body: Center(
         child: SingleChildScrollView(
           // Añadido SingleChildScrollView
@@ -47,7 +47,7 @@ class _ForgotViewState extends State<ForgotView> {
                 const Text(
                   'No te preocupes ingresa tu correo asociado a la aplicación para poder modificar tu contraseña.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70),
+                  style: TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 20),
                 Padding(
@@ -65,7 +65,7 @@ class _ForgotViewState extends State<ForgotView> {
                 const SizedBox(height: 40),
                 CustomButton(
                   onPressed: () {
-                    context.push('/main');
+                    context.push('/code');
                   },
                   text: "Enviar Código",
                 ),

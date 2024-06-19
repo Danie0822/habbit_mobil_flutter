@@ -26,6 +26,16 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const ForgotView(), state),
     ),
     GoRoute(
+      path: '/code',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const CodeView(), state),
+    ),
+    GoRoute(
+      path: '/pass',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const ConfirmView(), state),
+    ),
+    GoRoute(
       path: '/detalle',
       pageBuilder: (context, state) {
         final propiedad = state.extra as Property;
