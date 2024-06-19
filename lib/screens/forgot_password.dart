@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
-import 'package:habbit_mobil_flutter/screens/build_login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
 
@@ -25,17 +26,22 @@ class _ForgotViewState extends State<ForgotView> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: SingleChildScrollView( // Añadido SingleChildScrollView
+        child: SingleChildScrollView(
+          // Añadido SingleChildScrollView
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Lottie.network("https://lottie.host/1982cc47-0163-4195-ad13-f2e02e0a251d/GQl2vmuCqF.json"),
+                Lottie.network(
+                    "https://lottie.host/1982cc47-0163-4195-ad13-f2e02e0a251d/GQl2vmuCqF.json"),
                 const SizedBox(height: 30),
                 const Text(
                   '¿Olvidaste tu contraseña?',
-                  style: TextStyle(color: colorTextSecondaryLight, fontSize: 28, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: colorTextSecondaryLight,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 const Text(
@@ -45,7 +51,9 @@ class _ForgotViewState extends State<ForgotView> {
                 ),
                 const SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0), // Ajusta este valor para cambiar el tamaño
+                  padding: const EdgeInsets.symmetric(
+                      horizontal:
+                          10.0), // Ajusta este valor para cambiar el tamaño
                   child: MyTextField(
                     context: context,
                     hint: "Email",
@@ -55,14 +63,11 @@ class _ForgotViewState extends State<ForgotView> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
+                CustomButton(
                   onPressed: () {
+                    context.push('/main');
                   },
-                  child: const Text('Enviar Código'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    textStyle: const TextStyle(fontSize: 16),
-                  ),
+                  text: "Enviar Código",
                 ),
               ],
             ),
