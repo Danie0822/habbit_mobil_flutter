@@ -37,35 +37,10 @@ class CodeView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(4, (index) {
-                  return Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const TextField(
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        counterText: '',
-                      ),
-                    ),
-                  );
-                }),
-              ),
+              const CodeInputFields(),
               const SizedBox(height: 24),
-              TextButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   // Handle resend code action
                 },
                 child: const Text(
@@ -85,6 +60,58 @@ class CodeView extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CodeInputFields extends StatelessWidget {
+  const CodeInputFields({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CodeInputField(),
+        CodeInputField(),
+        CodeInputField(),
+        CodeInputField(),
+      ],
+    );
+  }
+}
+
+class CodeInputField extends StatelessWidget {
+  const CodeInputField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: TextField(
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 24,
+          letterSpacing: 2.0,
+          fontWeight: FontWeight.bold,
+        ),
+        keyboardType: TextInputType.number,
+        maxLength: 1,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none, // Sin borde
+          ),
+          filled: true,
+          fillColor: Colors.grey[850],
+          counterText: '',
+          contentPadding: const EdgeInsets.all(0),
         ),
       ),
     );

@@ -15,12 +15,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // Get screen size
     final Size screenSize = MediaQuery.of(context).size;
-    final double padding =
-        screenSize.width * 0.04; 
-    final double avatarRadius =
-        screenSize.width * 0.1; 
-    final double fontSize =
-        screenSize.width * 0.04; 
+    final double padding = screenSize.width * 0.04;
+    final double avatarRadius = screenSize.width * 0.1;
+    final double fontSize = screenSize.width * 0.04;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -76,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         splashFactory: NoSplash.splashFactory,
         elevation: 2,
         padding: EdgeInsets.symmetric(
-          vertical: fontSize * 0.6,
+          vertical: 16,
           horizontal: fontSize * 2.2,
         ),
         shape: RoundedRectangleBorder(
@@ -125,23 +122,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       {required String text,
       required IconData icon,
       required double fontSize,
-      required ruta}) {
+      required String ruta}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Material(
         borderRadius: BorderRadius.circular(24.0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(24.0),
+        child: GestureDetector(
           onTap: () {
             context.push(ruta);
           },
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
           child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0),
+            ),
             leading: Icon(icon, color: Colors.grey, size: fontSize * 1.5),
             title: Text(
               text,
-              style: kTitleTextStyle.copyWith(fontSize: fontSize),
+              style: TextStyle(fontSize: fontSize),
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),

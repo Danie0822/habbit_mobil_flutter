@@ -4,7 +4,8 @@ import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginWidgets {
-  static Widget buildPasswordField(BuildContext context, bool showPassword,  togglePasswordVisibility) {
+  static Widget buildPasswordField(
+      BuildContext context, bool showPassword, togglePasswordVisibility) {
     return Stack(
       children: [
         MyTextField(
@@ -32,11 +33,12 @@ class LoginWidgets {
     );
   }
 
-  static Widget buildForgotPasswordButton(BuildContext context, Color colorTexto) {
+  static Widget buildForgotPasswordButton(
+      BuildContext context, Color colorTexto) {
     return Align(
       alignment: Alignment.center,
-      child: TextButton(
-        onPressed: () {
+      child: GestureDetector(
+        onTap: () {
           context.push('/forgot');
         },
         child: Text(
@@ -50,18 +52,19 @@ class LoginWidgets {
     );
   }
 
-  static Widget buildLoginButton(BuildContext context, Animation<double> buttonScaleAnimation,  onTapDown, onTapUp) {
+  static Widget buildLoginButton(BuildContext context,
+      Animation<double> buttonScaleAnimation, onTapDown, onTapUp) {
     return Align(
       alignment: Alignment.center,
       child: ScaleTransition(
-          scale: buttonScaleAnimation,
-          child: CustomButton(
-            onPressed: () {
-              context.push('/main');
-            },
-            text: "Inicia sesión",
-          ),
+        scale: buttonScaleAnimation,
+        child: CustomButton(
+          onPressed: () {
+            context.push('/main');
+          },
+          text: "Inicia sesión",
         ),
+      ),
     );
   }
 
@@ -72,7 +75,8 @@ class LoginWidgets {
         TextSpan(
           text: "No tienes cuenta? ",
           style: TextStyle(
-            color: Theme.of(context).textTheme.bodyText2?.color?.withOpacity(0.6),
+            color:
+                Theme.of(context).textTheme.bodyText2?.color?.withOpacity(0.6),
             fontSize: 16,
           ),
           children: [
@@ -93,7 +97,8 @@ class LoginWidgets {
     );
   }
 
-  static Widget buildAnimatedField(BuildContext context, Widget child, Animation<double> fadeInAnimation) {
+  static Widget buildAnimatedField(
+      BuildContext context, Widget child, Animation<double> fadeInAnimation) {
     return AnimatedBuilder(
       animation: fadeInAnimation,
       builder: (context, child) {
