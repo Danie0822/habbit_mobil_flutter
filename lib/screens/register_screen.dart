@@ -216,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      context.push('/');
+                                      context.push('/login');
                                     },
                                 ),
                               ],
