@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button_2.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
-import 'package:habbit_mobil_flutter/screens/build_login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,6 +11,17 @@ class ConfirmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0, 
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+           context.pop();
+          },
+        ),
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -21,7 +31,7 @@ class ConfirmView extends StatelessWidget {
               ),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -32,9 +42,10 @@ class ConfirmView extends StatelessWidget {
                           "https://lottie.host/e9aa8268-3e70-4865-a5d0-79a44f310d0d/WIp8LUl9TY.json",
                         ),
                       ),
+                      const SizedBox(height: 20.0),
                       const Text(
                         'Ingrese su nueva contraseña',
-                        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold,color: colorTextSecondaryLight),
+                        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: colorTextSecondaryLight),
                       ),
                       const SizedBox(height: 20.0),
                       const Text(

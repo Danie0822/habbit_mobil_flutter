@@ -42,7 +42,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        context.push('/onboard'); // Navega a la pantalla de login
+        context.go('/onboard'); 
       }
     });
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:habbit_mobil_flutter/utils/theme/theme.dart';
 import 'package:habbit_mobil_flutter/routes/app_router.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +27,9 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          routerConfig: router, // Asegúrate de pasar el router aquí
+          routerConfig: router,
         );
       },
     );
   }
 }
-

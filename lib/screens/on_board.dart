@@ -6,7 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({Key? key}) : super(key: key);
+  const OnboardingView({super.key});
 
   @override
   State<OnboardingView> createState() => OnboardingViewState();
@@ -26,13 +26,17 @@ class OnboardingViewState extends State<OnboardingView> {
 
     return Scaffold(
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.01),
-        child: isLastPage ? getStartedButton() : buildBottomNavigationBar(width, height),
+        padding: EdgeInsets.symmetric(
+            horizontal: width * 0.05, vertical: height * 0.01),
+        child: isLastPage
+            ? getStartedButton()
+            : buildBottomNavigationBar(width, height),
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: width * 0.04),
         child: PageView.builder(
-          onPageChanged: (index) => setState(() => isLastPage = controller.items.length - 1 == index),
+          onPageChanged: (index) =>
+              setState(() => isLastPage = controller.items.length - 1 == index),
           itemCount: controller.items.length,
           controller: pageController,
           itemBuilder: (context, index) {
@@ -81,7 +85,8 @@ class OnboardingViewState extends State<OnboardingView> {
         // Skip Button
         if (!isLastPage)
           TextButton(
-            onPressed: () => pageController.jumpToPage(controller.items.length - 1),
+            onPressed: () =>
+                pageController.jumpToPage(controller.items.length - 1),
             child: const Text("Saltar", style: TextStyle(color: primaryColor)),
           ),
         SmoothPageIndicator(
@@ -105,7 +110,8 @@ class OnboardingViewState extends State<OnboardingView> {
               duration: const Duration(milliseconds: 550),
               curve: Curves.easeIn,
             ),
-            child: const Text("Siguiente", style: TextStyle(color: primaryColor)),
+            child:
+                const Text("Siguiente", style: TextStyle(color: primaryColor)),
           ),
       ],
     );
@@ -121,7 +127,7 @@ class OnboardingViewState extends State<OnboardingView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         gradient: const LinearGradient(
-          colors: [Color(0xFF007AFF), Color(0xFF00A3FF)],
+          colors: [Color(0xff0d47a1), Color(0xff0d47a1)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -139,7 +145,7 @@ class OnboardingViewState extends State<OnboardingView> {
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
-          context.push('/login');
+            context.push('/login');
           },
           child: const Center(
             child: Row(
@@ -149,7 +155,7 @@ class OnboardingViewState extends State<OnboardingView> {
                   Icons.login,
                   color: Colors.white,
                 ),
-                SizedBox(width: 10), 
+                SizedBox(width: 10),
                 Text(
                   "Iniciemos",
                   style: TextStyle(
