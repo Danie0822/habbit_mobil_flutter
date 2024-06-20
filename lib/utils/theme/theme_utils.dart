@@ -5,4 +5,8 @@ class ThemeUtils {
     final Brightness brightness = Theme.of(context).brightness;
     return brightness == Brightness.light ? lightColor : darkColor;
   }
+    static Colors getColosrBasedOnBrightness(BuildContext context, Colors lightColor, Colors darkColor) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return brightness == Brightness.light ? lightColor : darkColor;
+  }
 }

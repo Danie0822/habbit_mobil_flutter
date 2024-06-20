@@ -10,30 +10,36 @@ class PasswordDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final verticalPadding = screenWidth < 600 ? 16.0 : 32.0;
+    final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
+    final headingFontSize = screenWidth < 600 ? 30.0 : 40.0;
+
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(verticalPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Restablecimiento exitoso',
                 style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: colorTextSecondaryLight),
+                  fontSize: headingFontSize,
+                  fontWeight: FontWeight.bold,
+                  color: colorTextSecondaryLight,
+                ),
               ),
-              const SizedBox(height: 16),
-              const Text(
+             const SizedBox(height: 16),
+              Text(
                 'Tu contraseña ha sido restablecida con éxito. Ahora puedes usar tu nueva contraseña para iniciar sesión.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: textFontSize, color: Colors.grey),
               ),
               const SizedBox(height: 32),
               SizedBox(
-                width: 300,
-                height: 300,
+                width: screenWidth * 0.8,
+                height: screenWidth * 0.8,
                 child: Lottie.network(
                   "https://lottie.host/db1ab1ca-5c14-440f-85e1-6c0f352586d7/ceNVRPZRYQ.json",
                 ),

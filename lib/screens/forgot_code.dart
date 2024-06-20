@@ -10,9 +10,19 @@ class CodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:  AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0, 
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+           context.pop();
+          },
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -94,6 +104,7 @@ class CodeInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       width: 60,
       height: 60,
@@ -112,12 +123,11 @@ class CodeInputField extends StatelessWidget {
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none, // Sin borde
           ),
           filled: true,
-          fillColor: Colors.grey[850],
           counterText: '',
           contentPadding: const EdgeInsets.all(0),
+          
         ),
       ),
     );
