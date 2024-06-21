@@ -5,6 +5,7 @@ import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
+// Definición del estado de la pantalla de "Guardados" (LikeScreen)
 class LikeScreen extends StatefulWidget {
   LikeScreen({Key? key}) : super(key: key);
 
@@ -12,46 +13,51 @@ class LikeScreen extends StatefulWidget {
   State<LikeScreen> createState() => _LikeScreenState();
 }
 
+// Clase de estado para manejar la lógica y el estado de LikeScreen
 class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateMixin {
+  // Lista de propiedades obtenidas de una fuente de datos
   List<Property> properties = getPropertyList();
-  bool _isSearchVisible = false;
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
+  bool _isSearchVisible = false; // Indicador para mostrar/ocultar la barra de búsqueda
+  late AnimationController _controller; // Controlador para las animaciones
+  late Animation<Offset> _offsetAnimation; // Animación para la transición de la barra de búsqueda
 
   @override
   void initState() {
     super.initState();
+    // Inicialización del controlador de animaciones
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
+    // Definición de la animación para la barra de búsqueda
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: const Offset(0, 0),
+      begin: const Offset(0, -1), // La animación empieza fuera de la pantalla (arriba)
+      end: const Offset(0, 0), // La animación termina en su posición original
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeInOut,
+      curve: Curves.easeInOut, // Curva de animación
     ));
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // Liberar recursos del controlador cuando ya no se necesite
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Obtener color de fondo basado en el tema (claro u oscuro)
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
 
     return Scaffold(
-      backgroundColor: colorBackGroundMessage,
+      backgroundColor: colorBackGroundMessage, // Color de fondo de la pantalla
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(), // Construir el encabezado de la pantalla
             const SizedBox(height: 20.0),
             Expanded(
               child: Container(
@@ -70,8 +76,8 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 20.0), 
-                      _buildPropertyList(),
+                      const SizedBox(height: 20.0),
+                      _buildPropertyList(), // Construir la lista de propiedades
                     ],
                   ),
                 ),
@@ -83,6 +89,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     );
   }
 
+  // Método para construir el encabezado de la pantalla
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -99,6 +106,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
                   color: whiteColor,
                 ),
               ),
+              // Botón para mostrar/ocultar la barra de búsqueda
               IconButton(
                 onPressed: _toggleSearch,
                 icon: AnimatedSwitcher(
@@ -120,6 +128,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
             ],
           ),
           if (_isSearchVisible)
+            // Animación para la barra de búsqueda
             SlideTransition(
               position: _offsetAnimation,
               child: const SearchInput(),
@@ -129,6 +138,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     );
   }
 
+  // Método para construir la lista de propiedades
   Widget _buildPropertyList() {
     return Expanded(
       child: Padding(
@@ -147,18 +157,19 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     );
   }
 
+  // Método para alternar la visibilidad de la barra de búsqueda
   void _toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;
       if (_isSearchVisible) {
-        _controller.forward();
+        _controller.forward(); // Iniciar animación de aparición
       } else {
-        _controller.reverse();
+        _controller.reverse(); // Iniciar animación de desaparición
       }
     });
   }
 
   void _onPropertyTapped(Property property) {
-    // Lógica para manejar cuando se toca una propiedad
+    // Lógica para manejar cuando se toca una propiedad (vacío por ahora)
   }
 }

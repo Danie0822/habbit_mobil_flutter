@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/constants/const.dart';
 
+// StatefulWidget para la pantalla de perfil
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -10,10 +11,11 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+// Estado de ProfileScreen que maneja la lógica y la interfaz de usuario
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    // Get screen size
+    // Obtener tamaño de la pantalla
     final Size screenSize = MediaQuery.of(context).size;
     final double padding = screenSize.width * 0.04;
     final double avatarRadius = screenSize.width * 0.1;
@@ -26,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(height: screenSize.width * 0.12),
-            _buildProfileHeader(avatarRadius),
+            _buildProfileHeader(avatarRadius), // Encabezado de perfil
             SizedBox(height: screenSize.width * 0.02),
             Center(
               child: Text('Usuario:',
@@ -39,15 +41,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: screenSize.width * 0.02),
             Center(
-              child: _buildEditProfileButton(fontSize),
+              child: _buildEditProfileButton(fontSize), // Botón para editar perfil
             ),
-            _buildProfileList(fontSize),
+            _buildProfileList(fontSize), // Lista de opciones de perfil
           ],
         ),
       ),
     );
   }
 
+  // Método para construir el encabezado del perfil
   Widget _buildProfileHeader(double avatarRadius) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,6 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Método para construir el botón de editar perfil
   Widget _buildEditProfileButton(double fontSize) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -82,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       onPressed: () {
-        context.push('/registar');
+        context.push('/registar'); // Navegar a la página de registrar
       },
       child: Text(
         'Editar perfil',
@@ -94,30 +98,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Método para construir la lista de opciones de perfil
   Widget _buildProfileList(double fontSize) {
     return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true, // Permitir que ListView se ajuste a su contenido
+      physics: const NeverScrollableScrollPhysics(), // Desactivar el desplazamiento
       children: <Widget>[
         _buildProfileListItem(context,
             text: 'Ajustes',
             icon: Icons.settings,
             fontSize: fontSize,
-            ruta: 'darkMode'),
+            ruta: 'darkMode'), // Elemento de la lista: Ajustes
         _buildProfileListItem(context,
             text: 'Editar preferencias',
             icon: Icons.widgets,
             fontSize: fontSize,
-            ruta: '/editPreferences'),
+            ruta: '/editPreferences'), // Elemento de la lista: Editar preferencias
         _buildProfileListItem(context,
             text: 'Cerrar sesión',
             icon: Icons.logout,
             fontSize: fontSize,
-            ruta: '/login'),
+            ruta: '/login'), // Elemento de la lista: Cerrar sesión
       ],
     );
   }
 
+  // Método para construir un elemento de la lista de perfil
   Widget _buildProfileListItem(BuildContext context,
       {required String text,
       required IconData icon,
@@ -129,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: BorderRadius.circular(24.0),
         child: GestureDetector(
           onTap: () {
-            context.push(ruta);
+            context.push(ruta); // Navegar a la ruta especificada
           },
           child: ListTile(
             shape: RoundedRectangleBorder(
