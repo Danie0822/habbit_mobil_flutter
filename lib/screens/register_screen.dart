@@ -1,3 +1,4 @@
+//Importacion de paquetes a utilizar
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
+//Creaciónn y construcción de stateful widget llamado register screen 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -28,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   void initState() {
     super.initState();
     
-    // Animation for the text
+    // Creacion de animacion para el texto de la pantalla
     _textController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -40,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       CurvedAnimation(parent: _textController, curve: Curves.easeInOut),
     );
     
+    //Creacion de la animacion de los inputs 
     _inputsController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -65,6 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     super.dispose();
   }
 
+// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -98,11 +102,13 @@ class _RegisterScreenState extends State<RegisterScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: height * 0.08),
+                      //Widget del texto mostrado en pantalla
                       Text(
                         "Registrar",
                         style: AppStyles.headline5(context, colorTexto),
                       ),
                       SizedBox(height: height * 0.01),
+                      //Widget del texto mostrado en pantalla
                       Text(
                         "¡Regístrate y entérate de las ventajas de Habit mobile!",
                         style: AppStyles.subtitle1(context),
@@ -127,12 +133,14 @@ class _RegisterScreenState extends State<RegisterScreen>
                     vertical: height * 0.02,
                     horizontal: width * 0.05,
                   ),
+                  //Inicio del formulario para enviar informacion
                   child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: height * 0.02),
+                        //Widget del input de nombre
                         MyTextField(
                           context: context,
                           hint: "Nombre",
@@ -141,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           key: const Key('nombre'),
                         ),
                         SizedBox(height: height * 0.02),
+                        //Widget del input para email
                         MyTextField(
                           context: context,
                           hint: "Email",
@@ -149,6 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           key: const Key('email'),
                         ),
                         SizedBox(height: height * 0.02),
+                        //Widget del input para el telefono
                         MyTextField(
                           context: context,
                           hint: "Teléfono",
@@ -163,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         SizedBox(height: height * 0.02),
                         Stack(
                           children: [
+                            //Widget del input para la contraseña
                             MyTextField(
                               context: context,
                               hint: "Contraseña",
@@ -189,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         SizedBox(height: height * 0.02),
                         Align(
                           alignment: Alignment.center,
+                          //Widget del boton que redirige a las otras pantallas
                           child: CustomButton(
                             onPressed: () {
                               context.push('/ubi');

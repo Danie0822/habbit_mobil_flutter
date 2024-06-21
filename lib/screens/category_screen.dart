@@ -1,9 +1,12 @@
+//Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
+
+//Creación y construcción de stateful widget llamado category screen 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -15,6 +18,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
+//Creacion de la lista de strings para los items
   final List<String> _radioItems = ["Casas", "Departamentos", "Locales", "Ranchos", "Apartamentos"];
   String? _selectedRadioItem;
 
