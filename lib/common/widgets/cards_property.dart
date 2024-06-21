@@ -6,8 +6,9 @@ import 'package:habbit_mobil_flutter/data/data.dart';
 class PropertyCard extends StatefulWidget {
   final Property property;
   final int index;
+  final bool isFavorites;
 
-  const PropertyCard({Key? key, required this.property, required this.index}) : super(key: key);
+  const PropertyCard({Key? key, required this.property, required this.index, required this.isFavorites}) : super(key: key);
 
   @override
   _PropertyCardState createState() => _PropertyCardState();
@@ -15,12 +16,13 @@ class PropertyCard extends StatefulWidget {
 
 class _PropertyCardState extends State<PropertyCard> {
   late final Property property;
-  bool isFavorite = false;
+ late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
     property = widget.property;
+    isFavorite = widget.isFavorites;
   }
 
   void toggleFavorite() {

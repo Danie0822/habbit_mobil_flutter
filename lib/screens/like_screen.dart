@@ -149,7 +149,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
           itemBuilder: (context, index) {
             return Hero(
               tag: properties[index].frontImage,
-              child: PropertyCard(property: properties[index], index: index),
+              child: PropertyCard(property: properties[index], index: index, isFavorites: true,),
             );
           },
         ),

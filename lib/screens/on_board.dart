@@ -2,42 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/services/onboarding_items.dart'; // Importa los datos de los elementos de onboarding.
 import 'package:lottie/lottie.dart'; // Importa el paquete Lottie para mostrar animaciones.
-import 'package:smooth_page_indicator/smooth_page_indicator.dart'; 
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; 
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
 
   @override
-  State<OnboardingView> createState() => OnboardingViewState(); 
+  State<OnboardingView> createState() => OnboardingViewState();
 }
 
 class OnboardingViewState extends State<OnboardingView> {
-  final controller = OnboardingItems(); // Controlador para los elementos de onboarding.
-  final pageController = PageController(); // Controlador de página para el PageView.
+  final controller =
+      OnboardingItems(); // Controlador para los elementos de onboarding.
+  final pageController =
+      PageController(); // Controlador de página para el PageView.
 
-  bool isLastPage = false; // Variable para verificar si estamos en la última página.
+  bool isLastPage =
+      false; // Variable para verificar si estamos en la última página.
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context); // Obtiene las dimensiones de la pantalla.
+    final mediaQuery =
+        MediaQuery.of(context); // Obtiene las dimensiones de la pantalla.
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05, vertical: height * 0.01), 
+            horizontal: width * 0.05, vertical: height * 0.01),
         child: isLastPage
             ? getStartedButton() // Muestra el botón "Iniciemos" si estamos en la última página.
-            : buildBottomNavigationBar(width, height), // Muestra la barra de navegación inferior si no estamos en la última página.
+            : buildBottomNavigationBar(width,
+                height), // Muestra la barra de navegación inferior si no estamos en la última página.
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: width * 0.04), 
+        margin: EdgeInsets.symmetric(horizontal: width * 0.04),
         child: PageView.builder(
-          onPageChanged: (index) =>
-              setState(() => isLastPage = controller.items.length - 1 == index), // Actualiza isLastPage al cambiar de página.
-          itemCount: controller.items.length, // Define la cantidad de elementos en el PageView.
+          onPageChanged: (index) => setState(() => isLastPage =
+              controller.items.length - 1 ==
+                  index), // Actualiza isLastPage al cambiar de página.
+          itemCount: controller
+              .items.length, // Define la cantidad de elementos en el PageView.
           controller: pageController,
           itemBuilder: (context, index) {
             return Column(
@@ -46,22 +53,25 @@ class OnboardingViewState extends State<OnboardingView> {
                 SizedBox(
                   width: width * 0.9,
                   height: height * 0.4,
-                  child: Lottie.network(controller.items[index].lottieUrl), // Muestra la animación Lottie correspondiente al índice actual.
+                  child: Lottie.network(controller.items[index]
+                      .lottieUrl), // Muestra la animación Lottie correspondiente al índice actual.
                 ),
-                SizedBox(height: height * 0.02), 
+                SizedBox(height: height * 0.02),
                 Text(
-                  controller.items[index].title, // Muestra el título del elemento de onboarding.
+                  controller.items[index]
+                      .title, // Muestra el título del elemento de onboarding.
                   style: TextStyle(
                     fontSize: height * 0.04,
                     color: colorTextSecondaryLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: height * 0.02), 
+                SizedBox(height: height * 0.02),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: Text(
-                    controller.items[index].descripcion, // Muestra la descripción del elemento de onboarding.
+                    controller.items[index]
+                        .descripcion, // Muestra la descripción del elemento de onboarding.
                     style: TextStyle(
                       color: const Color.fromARGB(255, 112, 112, 112),
                       fontSize: height * 0.02,
@@ -69,7 +79,7 @@ class OnboardingViewState extends State<OnboardingView> {
                     textAlign: TextAlign.justify,
                   ),
                 ),
-                SizedBox(height: height * 0.02), 
+                SizedBox(height: height * 0.02),
               ],
             );
           },
@@ -85,9 +95,15 @@ class OnboardingViewState extends State<OnboardingView> {
         // Botón "Saltar"
         if (!isLastPage)
           TextButton(
-            onPressed: () =>
-                pageController.jumpToPage(controller.items.length - 1), // Salta a la última página al hacer clic.
-            child: const Text("Saltar", style: TextStyle(color: primaryColor)),
+            onPressed: () => pageController.nextPage(
+              duration: const Duration(milliseconds: 550),
+              curve: Curves.easeIn,
+            ),
+            style: TextButton.styleFrom(
+              splashFactory: NoSplash.splashFactory, // Desactiva el splash
+            ),
+            child:
+                const Text("Siguiente", style: TextStyle(color: primaryColor)),
           ),
         SmoothPageIndicator(
           controller: pageController,
@@ -106,12 +122,12 @@ class OnboardingViewState extends State<OnboardingView> {
         // Botón "Siguiente"
         if (!isLastPage)
           TextButton(
-            onPressed: () => pageController.nextPage(
-              duration: const Duration(milliseconds: 550),
-              curve: Curves.easeIn,
+            onPressed: () =>
+                pageController.jumpToPage(controller.items.length - 1),
+            style: TextButton.styleFrom(
+              splashFactory: NoSplash.splashFactory, // Desactiva el splash
             ),
-            child:
-                const Text("Siguiente", style: TextStyle(color: primaryColor)),
+            child: const Text("Saltar", style: TextStyle(color: primaryColor)),
           ),
       ],
     );
@@ -127,7 +143,7 @@ class OnboardingViewState extends State<OnboardingView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         gradient: const LinearGradient(
-          colors: [Color(0xff0d47a1), Color(0xff0d47a1)], 
+          colors: [Color(0xff0d47a1), Color(0xff0d47a1)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -145,8 +161,9 @@ class OnboardingViewState extends State<OnboardingView> {
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
-            context.push('/login'); // Navega a la pantalla de inicio de sesión al hacer clic en "Iniciemos".
+            context.push('/login');
           },
+          splashFactory: NoSplash.splashFactory,
           child: const Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
