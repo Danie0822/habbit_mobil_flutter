@@ -1,9 +1,11 @@
+//Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
+//Creación y construcción de stateful widget llamado Zona screen
 class ZoneScreen extends StatefulWidget {
   const ZoneScreen({super.key});
 
@@ -15,6 +17,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
+//Creacion de la lista de strings para los radio items
   final List<String> _radioItems = [
     "Norte",
     "Sur",
@@ -28,6 +31,8 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    //Creacion para animacion de la pantalla
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -44,6 +49,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -54,6 +60,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
+//Incio de la construccion de la pantalla
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -84,17 +91,20 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: height * 0.08),
+                          //Widget que muestra el texto
                           Text(
                             "Elige una Zona",
                             style: AppStyles.headline5(context, colorTexto),
                           ),
                           SizedBox(height: height * 0.01),
+                          //Widget que muestra el texto
                           Text(
                             "Selecciona una zona para mostrarte propiedades similares",
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
                           for (int i = 0; i < _radioItems.length; i++)
+                            //Muestra la lista de radio button
                             RadioListTile<String>(
                               value: _radioItems[i],
                               groupValue: _selectedRadioItem,
@@ -112,6 +122,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                             ),
                           SizedBox(height: height * 0.2),
                           Align(
+                            //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {

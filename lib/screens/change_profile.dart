@@ -1,3 +1,4 @@
+//Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
+//Creación y construcción de stateful widget llamado change profile screen
 class ChangeProfile extends StatefulWidget {
   //Tenemos el constructor
   const ChangeProfile({super.key});
@@ -24,6 +26,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
     super.initState();
   }
 
+// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     //final screenHeight = MediaQuery.of(context).size.height;
@@ -32,6 +35,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
         ? secondaryColor
         : lightTextColor;
 
+//Incio de la construccion de la pantalla
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(
@@ -44,11 +48,13 @@ class _ChangeProfileState extends State<ChangeProfile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 60),
+                    //Widget que muestra el texto
                     Text(
                       "Cambiar perfil",
                       style: AppStyles.headline5(context, colorTexto),
                     ),
                     const SizedBox(height: 10),
+                    //Widget que muestra el texto
                     Text(
                       "Actualizate la información de tu perfil",
                       style: AppStyles.subtitle1(context),
@@ -87,6 +93,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.center,
+                      //Widget del boton para seguir a la siguiente pantalla
                       child: CustomButton(
                         onPressed: () {
                           context.push('/ubi');

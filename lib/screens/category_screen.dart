@@ -5,8 +5,7 @@ import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-
-//Creación y construcción de stateful widget llamado category screen 
+//Creación y construcción de stateful widget llamado category screen
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -14,17 +13,26 @@ class CategoryScreen extends StatefulWidget {
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStateMixin {
+class _CategoryScreenState extends State<CategoryScreen>
+    with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-//Creacion de la lista de strings para los items
-  final List<String> _radioItems = ["Casas", "Departamentos", "Locales", "Ranchos", "Apartamentos"];
+//Creacion de la lista de strings para los radio items
+  final List<String> _radioItems = [
+    "Casas",
+    "Departamentos",
+    "Locales",
+    "Ranchos",
+    "Apartamentos"
+  ];
   String? _selectedRadioItem;
 
   @override
   void initState() {
     super.initState();
+
+    //Creacion para animacion de la pantalla
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -41,6 +49,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
     super.dispose();
   }
 
+// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -51,6 +60,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
+//Incio de la construccion de la pantalla
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -81,17 +91,20 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: height * 0.08),
+                          //Widget que muestra el texto
                           Text(
                             "Elige una categoría",
                             style: AppStyles.headline5(context, colorTexto),
                           ),
                           SizedBox(height: height * 0.01),
+                          //Widget que muestra el texto
                           Text(
                             "Selecciona una categoría para mostrarte propiedades similares",
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
                           for (int i = 0; i < _radioItems.length; i++)
+                            //Muestra la lista de radio button
                             RadioListTile<String>(
                               value: _radioItems[i],
                               groupValue: _selectedRadioItem,
@@ -109,6 +122,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                             ),
                           SizedBox(height: height * 0.2),
                           Align(
+                            //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
