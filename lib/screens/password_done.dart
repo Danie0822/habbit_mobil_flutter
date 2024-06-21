@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
 
 import '../common/widgets/button_2.dart';
+import '../utils/constants/colors.dart';
 
 class PasswordDone extends StatelessWidget {
   const PasswordDone({super.key});
@@ -11,9 +11,10 @@ class PasswordDone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final verticalPadding = screenWidth < 600 ? 16.0 : 32.0;
-    final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
-    final headingFontSize = screenWidth < 600 ? 30.0 : 40.0;
+    final isSmallScreen = screenWidth < 600;
+    final verticalPadding = isSmallScreen ? 16.0 : 32.0;
+    final textFontSize = isSmallScreen ? 16.0 : 20.0;
+    final headingFontSize = isSmallScreen ? 25.0 : 30.0;
 
     return Scaffold(
       body: Center(
@@ -24,17 +25,21 @@ class PasswordDone extends StatelessWidget {
             children: [
               Text(
                 'Restablecimiento exitoso',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
                   color: colorTextSecondaryLight,
                 ),
               ),
-             const SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Tu contraseña ha sido restablecida con éxito. Ahora puedes usar tu nueva contraseña para iniciar sesión.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: textFontSize, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: textFontSize,
+                  color: Colors.grey,
+                ),
               ),
               const SizedBox(height: 32),
               SizedBox(

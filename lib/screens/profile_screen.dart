@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             fontSize: fontSize,
             ruta: 'darkMode'),
         _buildProfileListItem(context,
-            text: 'Editar Preferencias',
+            text: 'Editar preferencias',
             icon: Icons.widgets,
             fontSize: fontSize,
             ruta: '/editPreferences'),

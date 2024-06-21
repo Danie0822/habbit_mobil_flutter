@@ -23,66 +23,75 @@ class _ForgotViewState extends State<ForgotView> {
 
   @override
   Widget build(BuildContext context) {
+    // Use MediaQuery to get the screen size
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Define different paddings for different screen sizes
+    final horizontalPadding = screenWidth < 600 ? 16.0 : 32.0;
+    final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
+    final headingFontSize = screenWidth < 600 ? 28.0 : 32.0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0, 
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-           context.pop();
+            context.pop();
           },
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 300, 
-                  height: 300, 
-                  child: Lottie.network(
-                    "https://lottie.host/1982cc47-0163-4195-ad13-f2e02e0a251d/GQl2vmuCqF.json",
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(width: 50),
+              SizedBox(
+                width: screenWidth * 0.8,
+                height: screenWidth * 0.8,
+                child: Lottie.network(
+                  "https://lottie.host/1982cc47-0163-4195-ad13-f2e02e0a251d/GQl2vmuCqF.json",
                 ),
-                const SizedBox(height: 30),
-                const Text(
-                  '¿Olvidaste tu contraseña?',
-                  style: TextStyle(
-                    color: colorTextSecondaryLight,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              const SizedBox(height: 30),
+              Text(
+                '¿Olvidaste tu contraseña?',
+                style: TextStyle(
+                  color: colorTextSecondaryLight,
+                  fontSize: headingFontSize,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  'No te preocupes ingresa tu correo asociado a la aplicación para poder modificar tu contraseña.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16.0,color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'No te preocupes ingresa tu correo asociado a la aplicación para poder modificar tu contraseña.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: textFontSize,
+                  color: Colors.grey,
                 ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: MyTextField(
-                    context: context,
-                    hint: "Email",
-                    isPassword: false,
-                    icon: Icons.email_outlined,
-                    key: const Key('email'),
-                  ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: MyTextField(
+                  context: context,
+                  hint: "Email",
+                  isPassword: false,
+                  icon: Icons.email_outlined,
+                  key: const Key('email'),
                 ),
-                const SizedBox(height: 40),
-                CustomButton(
-                  onPressed: () {
-                    context.push('/code');
-                  },
-                  text: "Enviar Código",
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 40),
+              CustomButton(
+                onPressed: () {
+                  context.push('/code');
+                },
+                text: "Enviar código",
+              ),
+            ],
           ),
         ),
       ),

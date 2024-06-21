@@ -9,73 +9,78 @@ class CodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use MediaQuery to get the screen size
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Define different paddings and sizes for different screen sizes
+    final horizontalPadding = screenWidth < 600 ? 16.0 : 32.0;
+    final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
+    final headingFontSize = screenWidth < 600 ? 30.0 : 36.0;
+    final inputFieldSize = screenWidth < 600 ? 60.0 : 80.0;
+
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0, 
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-           context.pop();
+            context.pop();
           },
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 250, 
-                height: 250, 
-                child: Lottie.network(
-                  "https://lottie.host/94694577-8cf3-4fd1-96a0-aca85b318bc9/lL7IY9NZCI.json",
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: Column(
+          children: [
+            SizedBox(
+              width: screenWidth * 0.6,
+              height: screenWidth * 0.6,
+              child: Lottie.network(
+                "https://lottie.host/94694577-8cf3-4fd1-96a0-aca85b318bc9/lL7IY9NZCI.json",
               ),
-              const SizedBox(height: 24),
-              const Text(
-                'Verifica tu correo',
-                style: TextStyle(
-                  color: colorTextSecondaryLight,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Verifica tu correo',
+              style: TextStyle(
+                color: colorTextSecondaryLight,
+                fontSize: headingFontSize,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 16),
-              const Text(
-                'Por favor, introduzca el código de 4 dígitos enviado a pixeltoonss@gmail.com',
-                textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Por favor, introduzca el código de 4 dígitos enviado a pixeltoonss@gmail.com',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: textFontSize,
+              ),
+            ),
+            const SizedBox(height: 32),
+            CodeInputFields(inputFieldSize: inputFieldSize),
+            const SizedBox(height: 24),
+            GestureDetector(
+              onTap: () {
+                // Handle resend code action
+              },
+              child: const Text(
+                'Reenviar código',
                 style: TextStyle(
-                  color: Colors.grey,
-                  
+                  color: accentColor,
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 32),
-              const CodeInputFields(),
-              const SizedBox(height: 24),
-              GestureDetector(
-                onTap: () {
-                  // Handle resend code action
-                },
-                child: const Text(
-                  'Reenviar código',
-                  style: TextStyle(
-                    color: accentColor,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              CustomButton(
-                onPressed: () {
-                  context.push('/pass');
-                },
-                text: "Verificar",
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 24),
+            CustomButton(
+              onPressed: () {
+                context.push('/pass');
+              },
+              text: "Verificar",
+            ),
+          ],
         ),
       ),
     );
@@ -83,38 +88,37 @@ class CodeView extends StatelessWidget {
 }
 
 class CodeInputFields extends StatelessWidget {
-  const CodeInputFields({super.key});
+  final double inputFieldSize;
+
+  const CodeInputFields({super.key, required this.inputFieldSize});
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        CodeInputField(),
-        CodeInputField(),
-        CodeInputField(),
-        CodeInputField(),
-      ],
+      children:
+          List.generate(4, (index) => CodeInputField(size: inputFieldSize)),
     );
   }
 }
 
 class CodeInputField extends StatelessWidget {
-  const CodeInputField({super.key});
+  final double size;
+
+  const CodeInputField({super.key, required this.size});
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      width: 60,
-      height: 60,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 24,
+        style: TextStyle(
+          fontSize: size * 0.4,
           letterSpacing: 2.0,
           fontWeight: FontWeight.bold,
         ),
@@ -126,8 +130,7 @@ class CodeInputField extends StatelessWidget {
           ),
           filled: true,
           counterText: '',
-          contentPadding: const EdgeInsets.all(0),
-          
+          contentPadding: EdgeInsets.all(0),
         ),
       ),
     );
