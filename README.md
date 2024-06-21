@@ -9,7 +9,7 @@ El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, d
 - **Alessandro Daniel Morales Sandoval** - *20190652*
 - **Fernando José Gómez Martínez** - *20190369*
 - **Josué Emiliano Valdés Jacobo** - *20190010*
-- **Adriana Elizabeth Orellana Aguilar** - *20220227*
+- **Adriana Elizabeth Orellana Aguilar** - *20220287*
 - **José Alejandro Sánchez Henríquez** - *20220141*
 
 ## Características Principales
