@@ -113,24 +113,24 @@ class CodeInputField extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15), // Borde redondeado
+        borderRadius: BorderRadius.circular(15), 
       ),
       child: TextField(
-        textAlign: TextAlign.center, // Alineación centrada del texto
+        textAlign: TextAlign.center, 
         style: TextStyle(
-          fontSize: size * 0.4, // Tamaño de fuente
-          letterSpacing: 2.0, // Espaciado entre caracteres
-          fontWeight: FontWeight.bold, // Negrita
+          fontSize: size * 0.4,
+          letterSpacing: 2.0, 
+          fontWeight: FontWeight.bold, 
         ),
-        keyboardType: TextInputType.number, // Teclado numérico
-        maxLength: 1, // Longitud máxima de un carácter
+        keyboardType: TextInputType.number, 
+        maxLength: 1, 
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15), // Borde redondeado del campo de entrada
+            borderRadius: BorderRadius.circular(15), 
           ),
-          filled: true, // Relleno activado
-          counterText: '', // Texto de contador vacío
-          contentPadding: EdgeInsets.all(0), // Padding del contenido del campo
+          filled: true, 
+          counterText: '', 
+          contentPadding: EdgeInsets.all(0), 
         ),
       ),
     );
