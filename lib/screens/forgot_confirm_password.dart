@@ -62,16 +62,16 @@ class ConfirmView extends StatelessWidget {
             MyTextField(// Input de texto.
               context: context,
               hint: "Contraseña nueva", // Placeholder del campo de texto.
-              isPassword: true, // Indica que es un campo de contraseña.
-              icon: Icons.lock, // Ícono del candado para el campo.
+              isPassword: true, 
+              icon: Icons.lock, 
               key: const Key('password'), // Key única para identificar este campo.
             ),
             const SizedBox(height: 20.0), 
             MyTextField(// Input de texto.
               context: context,
               hint: "Confirma la contraseña", // Placeholder del campo de texto.
-              isPassword: true, // Indica que es un campo de contraseña.
-              icon: Icons.lock, // Ícono del candado para el campo.
+              isPassword: true,
+              icon: Icons.lock, 
               key: const Key('confirm'), // Key única para identificar este campo.
             ),
             const SizedBox(height: 20.0),
