@@ -4,6 +4,7 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
 
+// Definición de la clase MessagesScreen como un StatefulWidget
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
 
@@ -11,7 +12,9 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
+// Estado asociado a MessagesScreen
 class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
+  // Lista de tarjetas de chat que se mostrarán
   final List<ChatCard> _chatCards = const [
     ChatCard(
       title: 'Villa San Salvador',
@@ -64,15 +67,16 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     ),
   ];
 
+  // Llave para manejar la lista animada
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  bool _isSearchVisible = false;
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
+  bool _isSearchVisible = false; // Variable para manejar la visibilidad del campo de búsqueda
+  late AnimationController _controller; // Controlador de animación
+  late Animation<Offset> _offsetAnimation; // Animación de desplazamiento
 
   @override
   void initState() {
     super.initState();
-    _addChatCards();
+    _addChatCards(); // Añadir tarjetas de chat a la lista
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -86,6 +90,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     ));
   }
 
+  // Método para añadir tarjetas de chat a la lista con un retraso
   void _addChatCards() async {
     for (int i = 0; i < _chatCards.length; i++) {
       await Future.delayed(const Duration(milliseconds: 200));
@@ -93,6 +98,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     }
   }
 
+  // Método para alternar la visibilidad del campo de búsqueda
   void _toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;
@@ -112,16 +118,17 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el color del contenedor principal basado en el tema
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
 
     return Scaffold(
-      backgroundColor: colorBackGroundMessage,
+      backgroundColor: colorBackGroundMessage, // Color de fondo de la pantalla
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(), // Construir la cabecera
             const SizedBox(height: 20.0),
             Expanded(
               child: Container(
@@ -155,6 +162,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     );
   }
 
+  // Método para construir la cabecera de la pantalla
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -194,13 +202,14 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
           if (_isSearchVisible)
             SlideTransition(
               position: _offsetAnimation,
-              child: const SearchInput(),
+              child: const SearchInput(), // Campo de entrada de búsqueda
             ),
         ],
       ),
     );
   }
 
+  // Método para construir un elemento animado en la lista
   Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
     final chatCard = _chatCards[index];
     return FadeTransition(

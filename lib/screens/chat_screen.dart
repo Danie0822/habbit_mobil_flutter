@@ -4,14 +4,15 @@ import 'package:habbit_mobil_flutter/common/widgets/message_widget.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-
+// Definición de la clase ChatScreen como un StatefulWidget
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
+// Estado asociado a ChatScreen
 class _ChatScreenState extends State<ChatScreen> {
-  // Lista de mensajes
+  // Lista de mensajes en el chat
   final List<Map<String, dynamic>> mensajes = [
     {"mensaje": "Hola, ¿cómo estás?", "isSentByMe": true},
     {"mensaje": "Bien, ¿y tú?", "isSentByMe": false},
@@ -67,26 +68,27 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   ];
 
+  // Controlador para manejar el desplazamiento de la lista de mensajes
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    // Después de que el marco se ha construido, desplaza la lista de mensajes hacia abajo
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
   }
 
+  // Método para desplazar la lista de mensajes hacia abajo
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       // Primero mueve sin animación al final
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-
       // Luego anima una pequeña cantidad para asegurarse de que esté al final
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration:
-            Duration(seconds: 1), // Ajusta la duración según sea necesario
+        duration: Duration(seconds: 1), // Ajusta la duración según sea necesario
         curve: Curves.easeOut,
       );
     }
@@ -96,12 +98,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Alessandro Morales', style: TextStyle(color: Colors.white),),
-        backgroundColor: colorBackGroundMessage, 
+        title: const Text('Alessandro Morales', style: TextStyle(color: Colors.white)),
+        backgroundColor: colorBackGroundMessage,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-           context.pop();
+            context.pop();
           },
         ),
       ),
@@ -109,6 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            // Expande el ListView para ocupar el espacio disponible
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
@@ -121,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
+            // Campo de texto para enviar mensajes
             MyTextField(
               hint: 'Escribe un mensaje...',
               isPassword: false,
