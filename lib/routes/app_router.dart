@@ -105,6 +105,11 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const EditPreferences(), state),
     ),
+    GoRoute(
+      path: '/change',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const ChangeProfile(), state),
+    ),
   ],
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),

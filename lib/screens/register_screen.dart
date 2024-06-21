@@ -80,6 +80,16 @@ class _RegisterScreenState extends State<RegisterScreen>
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -95,13 +105,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                    vertical: height * 0.02,
                     horizontal: width * 0.05,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: height * 0.08),
                       //Widget del texto mostrado en pantalla
                       Text(
                         "Registrar",

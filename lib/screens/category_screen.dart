@@ -62,6 +62,16 @@ class _CategoryScreenState extends State<CategoryScreen>
 
 //Incio de la construccion de la pantalla
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: height * 0,
@@ -84,13 +94,11 @@ class _CategoryScreenState extends State<CategoryScreen>
                     ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: height * 0.02,
                         horizontal: width * 0.05,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: height * 0.08),
                           //Widget que muestra el texto
                           Text(
                             "Elige una categoría",
@@ -120,7 +128,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                               ),
                               controlAffinity: ListTileControlAffinity.leading,
                             ),
-                          SizedBox(height: height * 0.2),
+                          SizedBox(height: height * 0.22),
                           Align(
                             //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,

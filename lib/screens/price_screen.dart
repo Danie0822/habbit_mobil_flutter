@@ -55,9 +55,18 @@ class _PriceScreenState extends State<PriceScreen>
 
 //Incio de la construccion de la pantalla
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: height * 0.02,
           horizontal: width * 0.05,
         ),
         child: Column(
@@ -83,7 +92,6 @@ class _PriceScreenState extends State<PriceScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: height * 0.08),
                           //Widget que muestra el texto
                           Text(
                             "Elige el precio máximo y mínimo",
@@ -128,7 +136,7 @@ class _PriceScreenState extends State<PriceScreen>
                               ),
                             ],
                           ),
-                          SizedBox(height: height * 0.3),
+                          SizedBox(height: height * 0.42), // Espacio añadido para igualar la distancia
                           Align(
                             alignment: Alignment.center,
                             //Boton para pasar a la siguiente pantalla

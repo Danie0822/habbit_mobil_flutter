@@ -74,15 +74,23 @@ class _UbiScreenState extends State<UbiScreen> {
 
 //Incio de la construccion de la pantalla
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: height * 0.02,
           horizontal: width * 0.05,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: height * 0.08),
             //Widget que muestra el texto
             Text(
               "Ubicación",
@@ -115,7 +123,7 @@ class _UbiScreenState extends State<UbiScreen> {
               _selectedLocationAddress ?? "No hay una ubicación seleccionada",
               style: AppStyles.subtitle1(context)?.copyWith(color: colorTexto),
             ),
-            SizedBox(height: height * 0.02),
+            SizedBox(height: height * 0.08),
             Align(
               //Widget del boton para seguir a la siguiente pantalla
               alignment: Alignment.center,

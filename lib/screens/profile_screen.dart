@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       onPressed: () {
-        context.push('/registar'); // Navegar a la página de registrar
+        context.push('/change'); // Navegar a la página de registrar
       },
       child: Text(
         'Editar perfil',

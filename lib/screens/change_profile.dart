@@ -37,6 +37,16 @@ class _ChangeProfileState extends State<ChangeProfile> {
 
 //Incio de la construccion de la pantalla
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
         body: SingleChildScrollView(
       child: Column(
         children: [
@@ -47,7 +57,6 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 60),
                     //Widget que muestra el texto
                     Text(
                       "Cambiar perfil",

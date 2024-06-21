@@ -22,16 +22,24 @@ class ThankScreen extends StatelessWidget {
 
 //Incio de la construccion de la pantalla
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            vertical: height * 0.02,
             horizontal: width * 0.05,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height * 0.1),
               //Widget que muestra el texto
               Text(
                 "¡Muchas gracias por contestar!",
@@ -50,11 +58,11 @@ class ThankScreen extends StatelessWidget {
               Image.asset(
                 'assets/images/thanks.png',
                 height: height * 0.3, // Ajusta la altura de la imagen
-                width: width * 0.6, // Ajusta el ancho de la imagen
+                width: width * 0.8, // Ajusta el ancho de la imagen
                 fit: BoxFit.contain,
               ),
               SizedBox(
-                  height: height * 0.1), // Espacio entre la imagen y el botón
+                  height: height * 0.2), // Espacio entre la imagen y el botón
               Align(
                 alignment: Alignment.center,
                 //Widget del boton para seguir a la siguiente pantalla
