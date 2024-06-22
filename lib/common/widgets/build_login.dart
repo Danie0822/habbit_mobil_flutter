@@ -94,7 +94,7 @@ class LoginWidgets {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  context.push('/register');
+                  context.push('/registar');
                 },
             ),
           ],

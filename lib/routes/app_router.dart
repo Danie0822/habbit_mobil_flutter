@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
-
+// Definición del enrutador utilizando GoRouter
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(
@@ -111,6 +111,7 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const ChangeProfile(), state),
     ),
   ],
+   // Constructor de página de error para manejar rutas no encontradas
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),
     body: Center(
@@ -118,7 +119,7 @@ final GoRouter router = GoRouter(
     ),
   ),
 );
-
+// Función para construir una página con transición de desvanecimiento
 Page<void> _buildPageWithFuturisticTransition(
     Widget child, GoRouterState state) {
   return CustomTransitionPage<void>(
