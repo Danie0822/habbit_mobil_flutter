@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Importa el paquete GoRouter para manejar la navegación.
-import 'package:habbit_mobil_flutter/common/widgets/button_2.dart'; 
+import 'package:go_router/go_router.dart'; 
+import 'package:habbit_mobil_flutter/common/widgets/button.dart'; 
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; 
-import 'package:lottie/lottie.dart'; // Importa el paquete Lottie para mostrar animaciones.
+import 'package:lottie/lottie.dart'; 
 
 class CodeView extends StatelessWidget {
   const CodeView({super.key});

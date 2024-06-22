@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
-import 'package:habbit_mobil_flutter/screens/build_login.dart';
+import 'package:habbit_mobil_flutter/common/widgets/build_login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
@@ -24,6 +24,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // Controlador para la animación de desvanecimiento
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
@@ -33,6 +34,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     );
     _fadeInController.forward();
 
+    // Controlador para la animación de escala del botón
     _buttonController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -51,6 +53,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  // Maneja la animación de presión del botón
   void _onTapDown(TapDownDetails details) {
     _buttonController.forward();
   }
@@ -59,6 +62,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     _buttonController.reverse();
   }
 
+  // Alterna la visibilidad de la contraseña
   void _togglePasswordVisibility() {
     setState(() {
       showPassword = !showPassword;
@@ -88,6 +92,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Construye el encabezado de la pantalla
   Widget _buildHeader(BuildContext context, double screenHeight, double screenWidth) {
     final theme = Theme.of(context);
     return Container(
@@ -111,6 +116,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     );
   }
 
+  // Construye el formulario de inicio de sesión
   Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto, double screenWidth) {
     return AnimatedBuilder(
       animation: _fadeInAnimation,
@@ -127,7 +133,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.1, // Ajuste de padding para hacerlo más responsivo
+                horizontal: screenWidth * 0.1, // Padding para hacerlo más responsivo
                 vertical: 20,
               ),
               child: Form(

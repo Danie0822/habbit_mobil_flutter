@@ -2,23 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/build_option_filter.dart';
 
 class Filter extends StatefulWidget {
-  const Filter({Key? key}) : super(key: key);
+  const Filter({super.key});
 
   @override
   _FilterState createState() => _FilterState();
 }
 
 class _FilterState extends State<Filter> {
-  var selectedRange = RangeValues(400, 1000);
+  // Rango de precios seleccionado inicialmente.
+  var selectedRange = const RangeValues(400, 1000);
+  // Categoría y zona seleccionadas inicialmente.
   String selectedCategory = "Casas";
   String selectedZone = "Playa";
 
+  // Actualiza la categoría seleccionada.
   void updateSelectedCategory(String category) {
     setState(() {
       selectedCategory = category;
     });
   }
 
+  // Actualiza la zona seleccionada.
   void updateSelectedZone(String zone) {
     setState(() {
       selectedZone = zone;
@@ -28,7 +32,7 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, 
+      width: double.infinity,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,18 +56,18 @@ class _FilterState extends State<Filter> {
             activeColor: Theme.of(context).primaryColor,
             inactiveColor: Colors.grey[300],
           ),
-          // Display the selected range
+          // Muestra el rango de precios seleccionado.
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "\$${selectedRange.start.round()}k", // Display start of range
+                "\$${selectedRange.start.round()}k", // Muestra el inicio del rango.
                 style: const TextStyle(
                   fontSize: 14,
                 ),
               ),
               Text(
-                "\$${selectedRange.end.round()}k", // Display end of range
+                "\$${selectedRange.end.round()}k", // Muestra el final del rango.
                 style: const TextStyle(
                   fontSize: 14,
                 ),

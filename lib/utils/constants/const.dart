@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const kSpacingUnit = 10;
 
+// Colores primarios y secundarios para temas claros y oscuros
 const kDarkPrimaryColor = Color(0xFF212121);
 const kDarkSecondaryColor = Color(0xFF373737);
 const kLightPrimaryColor = Color(0xFFFFFFFF);
 const kLightSecondaryColor = Color(0xFFF3F7FB);
 const kAccentColor = Color(0xFFFFC107);
 
+// Estilos de texto utilizando ScreenUtil para la adaptación de tamaño
 final kTitleTextStyle = TextStyle(
   fontSize: ScreenUtil().setSp(kSpacingUnit.w * 1.7),
   fontWeight: FontWeight.w600,
@@ -25,6 +27,7 @@ final kButtonTextStyle = TextStyle(
   color: kDarkPrimaryColor,
 );
 
+// Tema oscuro configurado
 final kDarkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: 'SFProText',
@@ -42,6 +45,7 @@ final kDarkTheme = ThemeData(
       ),
 );
 
+// Tema claro configurado
 final kLightTheme = ThemeData(
   brightness: Brightness.light,
   fontFamily: 'SFProText',

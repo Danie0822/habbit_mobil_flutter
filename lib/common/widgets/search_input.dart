@@ -7,13 +7,14 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Define los colores según el tema.
     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
         context, colorTextField, colorTextFieldDark);
     Color iconColor = ThemeUtils.getColorBasedOnBrightness(
         context, iconLightColor, iconDarkColor);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0), // Margen superior
+      padding: const EdgeInsets.only(top: 20.0), 
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Buscar...',

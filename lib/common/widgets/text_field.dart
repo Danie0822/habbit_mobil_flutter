@@ -13,7 +13,7 @@ class MyTextField extends StatelessWidget {
     this.controller,
     this.validator,
     this.suffixIcon,
-    this.inputFormatters, // Añadido para permitir inputFormatters personalizados
+    this.inputFormatters,
   }) : super(key: key);
 
   final String hint;
@@ -23,14 +23,18 @@ class MyTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
-  final List<TextInputFormatter>? inputFormatters; // Añadido para permitir inputFormatters personalizados
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el color del campo de acuerdo con el tema y la luminosidad
     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
         context, colorTextField, colorTextFieldDark);
+
+    // Obtener el color del icono de acuerdo con el tema y la luminosidad
     Color iconColor = ThemeUtils.getColorBasedOnBrightness(
         context, iconLightColor, iconDarkColor);
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -49,10 +53,9 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword,
         validator: validator,
-        inputFormatters: inputFormatters ?? [], // Si no se proporcionan inputFormatters, se usa una lista vacía
+        inputFormatters: inputFormatters ?? [],
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(
-              vertical: 16, horizontal: 20), // Adjusted padding
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -63,13 +66,11 @@ class MyTextField extends StatelessWidget {
             fontSize: 16,
           ),
           prefixIcon: Container(
-            // Added container for prefix icon
             padding: const EdgeInsets.all(12),
             child: Icon(icon, color: iconColor),
           ),
           suffixIcon: suffixIcon != null
               ? Container(
-                  // Added container for suffix icon
                   padding: const EdgeInsets.all(12),
                   child: suffixIcon,
                 )
@@ -77,7 +78,9 @@ class MyTextField extends StatelessWidget {
           filled: true,
           fillColor: fillColor,
         ),
-        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+        ),
       ),
     );
   }

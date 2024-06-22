@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Importa el paquete GoRouter para manejar la navegación.
-import 'package:lottie/lottie.dart'; // Importa el paquete Lottie para mostrar animaciones.
+import 'package:go_router/go_router.dart'; 
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:lottie/lottie.dart'; 
+import 'package:habbit_mobil_flutter/common/widgets/button.dart'; 
 
-import '../common/widgets/button_2.dart'; 
-import '../utils/constants/colors.dart'; 
 class PasswordDone extends StatelessWidget {
   const PasswordDone({super.key}); 
 

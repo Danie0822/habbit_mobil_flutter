@@ -15,37 +15,34 @@ class PropertyCard extends StatefulWidget {
 }
 
 class _PropertyCardState extends State<PropertyCard> {
-  late final Property property;
- late bool isFavorite;
+  late final Property property; // Inicialización de la propiedad
+  late bool isFavorite; // Estado de favorito
 
   @override
   void initState() {
     super.initState();
     property = widget.property;
-    isFavorite = widget.isFavorites;
+    isFavorite = widget.isFavorites; // Estado inicial del favorito
   }
 
   void toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite;
+      isFavorite = !isFavorite; // Alternar estado de favorito
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double containerHeight = MediaQuery.of(context).size.width * 0.6; // Ajustar según tus necesidades
-
+    double containerHeight = MediaQuery.of(context).size.width * 0.6;
     return GestureDetector(
       onTap: () {
-        context.push('/detalle', extra: property);
+        context.push('/detalle', extra: property); // Navegar a la pantalla de detalles
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
         clipBehavior: Clip.antiAlias,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(15)), 
         ),
         elevation: 5,
         child: Stack(
@@ -57,22 +54,20 @@ class _PropertyCardState extends State<PropertyCard> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(widget.property.frontImage),
-                  fit: BoxFit.cover, // Ajusta el fit para cubrir completamente el contenedor
+                  fit: BoxFit.cover, // Imagen ajustada para cubrir completamente
                 ),
               ),
             ),
             Container(
               height: containerHeight,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15),
-                ),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.7), // Gradiente para el efecto de sombra
                   ],
                 ),
               ),
@@ -83,9 +78,7 @@ class _PropertyCardState extends State<PropertyCard> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.yellow[700],
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(5),
-                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Text(
@@ -129,7 +122,7 @@ class _PropertyCardState extends State<PropertyCard> {
                       Row(
                         children: [
                           GestureDetector(
-                            onTap: toggleFavorite,
+                            onTap: toggleFavorite, // Alternar favorito al hacer clic
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               decoration: BoxDecoration(

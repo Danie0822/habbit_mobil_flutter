@@ -14,6 +14,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  // Lista de íconos para las pestañas
   final iconList = <IconData>[
     Icons.home,
     Icons.favorite,
@@ -21,6 +22,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Icons.person,
   ];
 
+  // Lista de etiquetas para las pestañas
   final labelList = <String>[
     'Inicio',
     'Favorito',
@@ -30,6 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    // Colores obtenidos según el tema y brillo actual
     Color backgroundColor = ThemeUtils.getColorBasedOnBrightness(
         context, lightBackgroundColor, darkBackgroundColor);
     Color shadowColor = ThemeUtils.getColorBasedOnBrightness(
@@ -40,19 +43,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
         context, lightInactiveColor, darkInactiveColor);
     Color splashColor = ThemeUtils.getColorBasedOnBrightness(
         context, lightSplashColor, darkSplashColor);
+
     return Container(
+      // Estilo de la barra de navegación inferior
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: backgroundColor, // Color de fondo de la barra
         boxShadow: [
           BoxShadow(
-            color: shadowColor,
+            color: shadowColor, 
             blurRadius: 20,
             offset: Offset(0, -4),
           ),
         ],
       ),
       child: AnimatedBottomNavigationBar.builder(
-        itemCount: iconList.length,
+        itemCount: iconList.length, // Cantidad de íconos en la barra
         tabBuilder: (int index, bool isActive) {
           final color = isActive ? activeColor : inactiveColor;
           return Column(
@@ -60,13 +65,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                iconList[index],
+                iconList[index], // Ícono según el índice
                 size: 28,
                 color: color,
               ),
-              if (isActive) 
+              if (isActive) // Mostrar etiqueta solo si la pestaña está activa
                 Text(
-                  labelList[index],
+                  labelList[index], // Etiqueta según el índice
                   style: TextStyle(
                     color: color,
                     fontSize: 12,
@@ -75,13 +80,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ],
           );
         },
-        activeIndex: widget.currentIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.verySmoothEdge,
-        onTap: widget.onTap,
-        backgroundColor: backgroundColor,
-        splashColor: splashColor,
-        height: 70,
+        activeIndex: widget.currentIndex, 
+        gapLocation: GapLocation.none, 
+        notchSmoothness: NotchSmoothness.verySmoothEdge, 
+        onTap: widget.onTap, 
+        backgroundColor: backgroundColor, 
+        splashColor: splashColor, 
+        height: 70, 
       ),
     );
   }

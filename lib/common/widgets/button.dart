@@ -12,7 +12,9 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el color de fondo del botón del tema actual
     final Color buttonColor = Theme.of(context).colorScheme.primary;
+    // Obtener el color del texto del botón del tema actual
     final Color textColor = Theme.of(context).colorScheme.onPrimary;
 
     return SizedBox(
@@ -21,19 +23,19 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
+          backgroundColor: buttonColor, // Establecer el color de fondo del botón
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(30), 
           ),
-          elevation: 5,
-          shadowColor: Colors.black.withOpacity(0.2),
-          splashFactory: NoSplash.splashFactory, 
+          elevation: 5, 
+          shadowColor: Colors.black.withOpacity(0.2), // Establecer el color de sombra
+          splashFactory: NoSplash.splashFactory, // Desactivar el efecto de splash
         ),
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: textColor,
+            color: textColor, // Establecer el color del texto del botón
             fontSize: 16,
           ),
         ),

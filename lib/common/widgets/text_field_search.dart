@@ -12,6 +12,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   @override
   Widget build(BuildContext context) {
+    // Define los colores según el tema.
     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
         context, colorTextField, colorTextFieldDark);
     Color iconColor = ThemeUtils.getColorBasedOnBrightness(

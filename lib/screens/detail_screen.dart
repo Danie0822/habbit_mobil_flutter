@@ -7,23 +7,24 @@ import 'package:habbit_mobil_flutter/data/data.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
-class PropertyDetailsScreen  extends StatefulWidget {
+class PropertyDetailsScreen extends StatefulWidget {
   final Property propiedad;
 
-  const PropertyDetailsScreen ({required this.propiedad});
+  const PropertyDetailsScreen({required this.propiedad});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
-  
 }
 
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
-   bool isFavorite = false;
-    void toggleFavorite() {
+  bool isFavorite = false;
+
+  void toggleFavorite() {
     setState(() {
       isFavorite = !isFavorite;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -35,6 +36,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Imagen de la propiedad con efecto Hero
           Hero(
             tag: widget.propiedad.frontImage,
             child: Container(
@@ -69,11 +71,13 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
               ),
             ),
           ),
+          // Contenido sobre la imagen
           SizedBox(
             height: size.height * 0.35,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Botón de retroceso y icono de navegación
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: horizontalPadding,
@@ -98,13 +102,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           size: 24,
                         ),
                         onPressed: () {
-                          // Add map button functionality here
+                          // Acción de navegación
                         },
                       ),
                     ],
                   ),
                 ),
                 Expanded(child: Container()),
+                // Etiqueta de la propiedad
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: horizontalPadding,
@@ -129,6 +134,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                     ),
                   ),
                 ),
+                // Nombre de la propiedad y botón de favorito
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Row(
@@ -145,25 +151,26 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                       GestureDetector(
-                            onTap: toggleFavorite,
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: isFavorite ? Colors.white : Colors.transparent,
-                              ),
-                              padding: const EdgeInsets.all(10),
-                              child: Icon(
-                                isFavorite ? Icons.favorite : Icons.favorite_border,
-                                color: isFavorite ? Colors.redAccent : Colors.white,
-                                size: 28,
-                              ),
-                            ),
+                      GestureDetector(
+                        onTap: toggleFavorite,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isFavorite ? Colors.white : Colors.transparent,
                           ),
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.redAccent : Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
+                // Ubicación de la propiedad
                 Padding(
                   padding: EdgeInsets.only(
                       left: horizontalPadding,
@@ -197,6 +204,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
               ],
             ),
           ),
+          // Contenido principal de la pantalla
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -213,6 +221,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Información del propietario
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -247,6 +256,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: verticalPadding * 1.5),
+                      // Características de la propiedad
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -258,6 +268,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: verticalPadding * 1.5),
+                      // Descripción de la propiedad
                       Text(
                         "Descripción",
                         style: AppStyles.headline6(context, colorTexto),
@@ -270,6 +281,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         ),
                       ),
                       SizedBox(height: verticalPadding * 1.5),
+                      // Fotos de la propiedad
                       Text(
                         "Fotos",
                         style: AppStyles.headline6(context, colorTexto),

@@ -4,8 +4,9 @@ import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginWidgets {
+  // Construye el campo de contraseña con opción para mostrar/ocultar la contraseña
   static Widget buildPasswordField(
-      BuildContext context, bool showPassword, togglePasswordVisibility) {
+      BuildContext context, bool showPassword, Function togglePasswordVisibility) {
     return Stack(
       children: [
         MyTextField(
@@ -26,13 +27,16 @@ class LoginWidgets {
                 key: ValueKey<bool>(showPassword),
               ),
             ),
-            onPressed: togglePasswordVisibility,
+            onPressed: () {
+              togglePasswordVisibility();
+            },
           ),
         ),
       ],
     );
   }
 
+  // Construye el botón "¿Olvidaste tu contraseña?"
   static Widget buildForgotPasswordButton(
       BuildContext context, Color colorTexto) {
     return Align(
@@ -52,8 +56,9 @@ class LoginWidgets {
     );
   }
 
+  // Construye el botón de inicio de sesión animado
   static Widget buildLoginButton(BuildContext context,
-      Animation<double> buttonScaleAnimation, onTapDown, onTapUp) {
+      Animation<double> buttonScaleAnimation, Function onTapDown, Function onTapUp) {
     return Align(
       alignment: Alignment.center,
       child: ScaleTransition(
@@ -68,6 +73,7 @@ class LoginWidgets {
     );
   }
 
+  // Construye el mensaje para registrarse con enlace para crear una nueva cuenta
   static Widget buildSignUpPrompt(BuildContext context, Color colorTexto) {
     return Align(
       alignment: Alignment.center,
@@ -88,7 +94,7 @@ class LoginWidgets {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  context.push('/registar');
+                  context.push('/register');
                 },
             ),
           ],
@@ -97,6 +103,7 @@ class LoginWidgets {
     );
   }
 
+  // Construye un campo animado con una animación de desvanecimiento
   static Widget buildAnimatedField(
       BuildContext context, Widget child, Animation<double> fadeInAnimation) {
     return AnimatedBuilder(

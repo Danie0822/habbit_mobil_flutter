@@ -3,6 +3,7 @@ import 'package:animations/animations.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
+// Pantalla principal con barra de navegación inferior y transiciones de página
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -12,6 +13,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   PageController _pageController = PageController();
 
+  // Lista de pantallas mostradas en el PageView
   final List<Widget> _screens = [
     HomeScreen(),
     LikeScreen(),
@@ -19,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
+  // Actualiza el índice seleccionado y salta a la página correspondiente
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -37,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
           Animation<double> primaryAnimation,
           Animation<double> secondaryAnimation,
         ) {
+          // Transición de ejes compartidos para cambiar de página
           return SharedAxisTransition(
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
