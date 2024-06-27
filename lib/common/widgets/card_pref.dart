@@ -34,8 +34,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
     // Inicializa el controlador de animación de opacidad
     _fadeController = AnimationController(
       vsync: this,
-      duration:
-        const  Duration(milliseconds: 500), // Duración de la animación de aparición
+      duration: const Duration(milliseconds: 500), // Duración de la animación de aparición
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
     _fadeController.forward(); // Inicia la animación cuando el widget se monta
@@ -55,14 +54,14 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light
-        ? secondaryColor
-        : lightTextColor;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double lottieHeight = screenHeight * 0.12; // Ajusta el tamaño del Lottie
 
     return AnimatedContainer(
-      duration: const  Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
-      margin: const EdgeInsets.all(9),
+      margin: EdgeInsets.all(screenWidth * 0.03), // Ajusta el margen
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: primaryColors, // Color de fondo animado
@@ -80,7 +79,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
           context.push(widget.destinationRoute);
         },
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(screenWidth * 0.05), // Ajusta el padding
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,12 +88,10 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
                 opacity: _fadeAnimation,
                 child: Lottie.network(
                   widget.lottieUrl,
-                  height: 90,
+                  height: lottieHeight, // Ajusta la altura del Lottie
                   controller: _lottieController,
                   onLoaded: (composition) {
-                    final double endFrame = composition
-                            .duration.inMilliseconds /
-                        2; // Aquí defines el punto de parada (en este caso, la mitad)
+                    final double endFrame = composition.duration.inMilliseconds / 2; // Aquí defines el punto de parada (en este caso, la mitad)
 
                     _lottieController
                       ..duration = composition.duration
@@ -103,9 +100,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
                           _lottieController.stop();
                         }
                       })
-                      ..animateTo(endFrame /
-                          composition.duration
-                              .inMilliseconds); // Anima hasta el frame final definido
+                      ..animateTo(endFrame / composition.duration.inMilliseconds); // Anima hasta el frame final definido
                   },
                 ),
               ),
@@ -114,7 +109,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
                 opacity: _fadeAnimation, // Opacidad animada para el contenido
                 child: Text(
                   widget.text,
-                  style: AppStyles.headline6(context, colorTexto),
+                  style: AppStyles.headline6(context, Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),
