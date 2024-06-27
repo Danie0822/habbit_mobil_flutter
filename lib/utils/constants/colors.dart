@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Define your custom light mode colors
 const Color primaryColor = Color(0xff0d47a1);
+const Color primaryColors = Color.fromRGBO(10, 78, 181, 1);
 const Color accentColor = Color(0xff1976d2);
 const Color whiteColor = Color(0xffffffff);
 const Color textColor = Color(0xff212121);

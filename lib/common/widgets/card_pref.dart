@@ -11,12 +11,12 @@ class PrefWidget extends StatefulWidget {
   final int index; // Índice de la tarjeta
 
   const PrefWidget({
-    Key? key,
+    super.key,
     required this.text,
     required this.lottieUrl,
     required this.destinationRoute,
     required this.index, // Índice de la tarjeta
-  }) : super(key: key);
+  });
 
   @override
   _PrefWidgetState createState() => _PrefWidgetState();
@@ -35,7 +35,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
     _fadeController = AnimationController(
       vsync: this,
       duration:
-          Duration(milliseconds: 500), // Duración de la animación de aparición
+        const  Duration(milliseconds: 500), // Duración de la animación de aparición
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
     _fadeController.forward(); // Inicia la animación cuando el widget se monta
@@ -59,29 +59,19 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
         ? secondaryColor
         : lightTextColor;
 
-    // Define los colores para modo claro y oscuro
-    const Color lightModeColor = contenedorWidgetLight;
-    const Color darkModeColor = contenedorWidgetDark;
-
-    // Determina el color de fondo basado en el modo de tema
-    final Color backgroundColor =
-        Theme.of(context).brightness == Brightness.light
-            ? lightModeColor
-            : darkModeColor;
-
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+      duration: const  Duration(milliseconds: 500),
       curve: Curves.easeInOut,
-      margin: EdgeInsets.all(9),
+      margin: const EdgeInsets.all(9),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: backgroundColor, // Color de fondo animado
+        color: primaryColors, // Color de fondo animado
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 227, 226, 226).withOpacity(0.2),
+            color: const Color.fromARGB(255, 227, 226, 226).withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 2,
-            offset: Offset(0, 2), // Cambio animado de la sombra
+            offset: const Offset(0, 2), // Cambio animado de la sombra
           ),
         ],
       ),
