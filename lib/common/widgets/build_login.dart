@@ -1,3 +1,4 @@
+// Librería de widgets para la pantalla de inicio de sesión
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
@@ -6,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class LoginWidgets {
   // Construye el campo de contraseña con opción para mostrar/ocultar la contraseña
   static Widget buildPasswordField(
-      BuildContext context, bool showPassword, Function togglePasswordVisibility) {
+      BuildContext context, bool showPassword, Function togglePasswordVisibility, TextEditingController controllerCallback) {
     return Stack(
       children: [
         MyTextField(
@@ -14,6 +15,7 @@ class LoginWidgets {
           hint: "Password",
           isPassword: !showPassword,
           icon: Icons.lock_outline,
+          controller: controllerCallback,
           key: const Key('password'),
         ),
         Positioned(
@@ -58,15 +60,13 @@ class LoginWidgets {
 
   // Construye el botón de inicio de sesión animado
   static Widget buildLoginButton(BuildContext context,
-      Animation<double> buttonScaleAnimation, Function onTapDown, Function onTapUp) {
+      Animation<double> buttonScaleAnimation, Function onTapDown, Function onTapUp, VoidCallback onTap) {
     return Align(
       alignment: Alignment.center,
       child: ScaleTransition(
         scale: buttonScaleAnimation,
         child: CustomButton(
-          onPressed: () {
-            context.push('/main');
-          },
+          onPressed: onTap,
           text: "Inicia sesión",
         ),
       ),
@@ -82,7 +82,7 @@ class LoginWidgets {
           text: "No tienes cuenta? ",
           style: TextStyle(
             color:
-                Theme.of(context).textTheme.bodyText2?.color?.withOpacity(0.6),
+                Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.6),
             fontSize: 16,
           ),
           children: [

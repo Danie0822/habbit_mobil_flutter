@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:habbit_mobil_flutter/common/widgets/build_login.dart';
+import 'package:habbit_mobil_flutter/data/controlers/login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,12 +17,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
-
+  final AuthService _authService = AuthService();
   late AnimationController _fadeInController;
   late AnimationController _buttonController;
   late Animation<double> _fadeInAnimation;
   late Animation<double> _buttonScaleAnimation;
 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -50,6 +54,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   void dispose() {
     _fadeInController.dispose();
     _buttonController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -67,6 +73,21 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     setState(() {
       showPassword = !showPassword;
     });
+  }
+
+// Maneja el inicio de sesión
+  void _handleLogin() async {
+    // Validar el formulario
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    // Petición de inicio de sesión
+    final success = await _authService.login(email, password);
+    if (success) {
+      context.push('/main');
+      print('Inicio de sesión exitoso');
+    } else {
+      print('Inicio de sesión fallido');
+    }
   }
 
   @override
@@ -93,7 +114,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   }
 
   // Construye el encabezado de la pantalla
-  Widget _buildHeader(BuildContext context, double screenHeight, double screenWidth) {
+  Widget _buildHeader(
+      BuildContext context, double screenHeight, double screenWidth) {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
@@ -117,7 +139,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   }
 
   // Construye el formulario de inicio de sesión
-  Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto, double screenWidth) {
+  Widget _buildForm(BuildContext context, ThemeData theme, Color colorTexto,
+      double screenWidth) {
     return AnimatedBuilder(
       animation: _fadeInAnimation,
       builder: (context, child) {
@@ -133,7 +156,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.1, // Padding para hacerlo más responsivo
+                horizontal:
+                    screenWidth * 0.1, // Padding para hacerlo más responsivo
                 vertical: 20,
               ),
               child: Form(
@@ -159,6 +183,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
                         isPassword: false,
                         icon: Icons.email_outlined,
                         key: const Key('email'),
+                        controller: _emailController,
                       ),
                       _fadeInAnimation,
                     ),
@@ -168,6 +193,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
                         context,
                         showPassword,
                         _togglePasswordVisibility,
+                        _passwordController,
                       ),
                       _fadeInAnimation,
                     ),
@@ -179,6 +205,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
                       _buttonScaleAnimation,
                       _onTapDown,
                       _onTapUp,
+                      _handleLogin,
                     ),
                     const SizedBox(height: 20),
                     LoginWidgets.buildSignUpPrompt(context, colorTexto),
