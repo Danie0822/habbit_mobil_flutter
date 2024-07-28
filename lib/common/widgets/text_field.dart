@@ -57,7 +57,7 @@ class MyTextField extends StatelessWidget {
         validator: validator,
         inputFormatters: inputFormatters ?? [],
         keyboardType: keyboardType,
-        maxLines: isPassword ? 1 : null, // Si es una contraseña, solo una línea, de lo contrario, líneas múltiples
+        maxLines: 1, // Limitar a una sola línea
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(
@@ -81,6 +81,7 @@ class MyTextField extends StatelessWidget {
               : null,
           filled: true,
           fillColor: fillColor,
+          errorMaxLines: 3, // Permite hasta 3 líneas para el mensaje de error
         ),
         style: TextStyle(
           color: Theme.of(context).textTheme.bodyMedium?.color,
