@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 
 class LoginWidgets {
   // Construye el campo de contraseña con opción para mostrar/ocultar la contraseña
@@ -17,6 +18,7 @@ class LoginWidgets {
           icon: Icons.lock_outline,
           controller: controllerCallback,
           key: const Key('password'),
+          validator: CustomValidator.validatePassword,
         ),
         Positioned(
           right: 0,

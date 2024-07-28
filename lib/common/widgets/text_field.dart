@@ -14,6 +14,7 @@ class MyTextField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.inputFormatters,
+    this.keyboardType,
   }) : super(key: key);
 
   final String hint;
@@ -24,6 +25,7 @@ class MyTextField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,8 @@ class MyTextField extends StatelessWidget {
         obscureText: isPassword,
         validator: validator,
         inputFormatters: inputFormatters ?? [],
+        keyboardType: keyboardType,
+        maxLines: isPassword ? 1 : null, // Si es una contraseña, solo una línea, de lo contrario, líneas múltiples
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(

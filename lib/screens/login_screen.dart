@@ -6,6 +6,7 @@ import 'package:habbit_mobil_flutter/data/controlers/login.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -75,21 +76,24 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
     });
   }
 
-// Maneja el inicio de sesión
+  // Maneja el inicio de sesión
   void _handleLogin() async {
     // Validar el formulario
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    // Petición de inicio de sesión
-    final success = await _authService.login(email, password);
-    if (success) {
-      context.push('/main');
-      print('Inicio de sesión exitoso');
-    } else {
-      print('Inicio de sesión fallido');
+    if (_formKey.currentState?.validate() ?? false) {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      // Petición de inicio de sesión
+      final success = await _authService.login(email, password);
+      if (success) {
+        context.push('/main');
+        print('Inicio de sesión exitoso');
+      } else {
+        print('Inicio de sesión fallido');
+      }
     }
   }
 
+// Diseño de la pantalla de inicio de sesión
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -184,6 +188,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
                         icon: Icons.email_outlined,
                         key: const Key('email'),
                         controller: _emailController,
+                        validator: CustomValidator.validateEmail,
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       _fadeInAnimation,
                     ),

@@ -19,21 +19,14 @@ class AuthService {
         loginPayload,
       );
       // Convertir la respuesta en el modelo LoginResponse
-      final loginResponse = await LoginResponse.fromJson(response);
-    
+      final loginResponse = LoginResponse.fromJson(response);
       if (loginResponse.success) {
-        
-        if (loginResponse.token != null &&
-            loginResponse.clientId != null &&
-            loginResponse.clientName != null) {
-
           // Guardar token, ID del cliente y nombre del cliente
           await StorageService.saveCredentials(
             loginResponse.token!,
             loginResponse.clientId!.toString(),
             loginResponse.clientName!,
           );
-        }
         return true;
       } else {
         return false;
