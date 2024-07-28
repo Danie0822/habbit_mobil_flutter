@@ -5,7 +5,8 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart'; 
 
 class CodeView extends StatelessWidget {
-  const CodeView({super.key});
+  final int idUsuario;
+  const CodeView({super.key, required this.idUsuario});
 
   @override
   Widget build(BuildContext context) {

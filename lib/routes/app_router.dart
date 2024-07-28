@@ -27,8 +27,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/code',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const CodeView(), state),
+      pageBuilder: (context, state) {
+         final int id = state.extra as int;
+        return _buildPageWithFuturisticTransition(CodeView(idUsuario: id), state);
+      },
     ),
     GoRoute(
       path: '/pass',
