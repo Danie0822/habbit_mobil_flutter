@@ -32,6 +32,8 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   http: ^1.2.2
   crypto: ^3.0.3
+  provider: ^6.1.2
+  animated_toggle_switch: ^0.8.2
 
 
 # Dependencias de desarrollo
