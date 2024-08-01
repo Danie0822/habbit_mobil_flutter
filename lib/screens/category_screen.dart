@@ -1,11 +1,11 @@
-//Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/controlers/preferences.dart';
+import 'package:habbit_mobil_flutter/data/models/category.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-//Creación y construcción de stateful widget llamado category screen
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -18,21 +18,13 @@ class _CategoryScreenState extends State<CategoryScreen>
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-//Creacion de la lista de strings para los radio items
-  final List<String> _radioItems = [
-    "Casas",
-    "Departamentos",
-    "Locales",
-    "Ranchos",
-    "Apartamentos"
-  ];
-  String? _selectedRadioItem;
+  List<Category> _categories = [];
+  Category? _selectedRadioItem;
 
   @override
   void initState() {
     super.initState();
 
-    //Creacion para animacion de la pantalla
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -41,6 +33,19 @@ class _CategoryScreenState extends State<CategoryScreen>
       CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
     );
     _fadeInController.forward();
+
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final categories = await DataPreferences().fetchCategories();
+      setState(() {
+        _categories = categories;
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -49,7 +54,6 @@ class _CategoryScreenState extends State<CategoryScreen>
     super.dispose();
   }
 
-// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -60,7 +64,6 @@ class _CategoryScreenState extends State<CategoryScreen>
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Incio de la construccion de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -99,29 +102,26 @@ class _CategoryScreenState extends State<CategoryScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //Widget que muestra el texto
                           Text(
                             "Elige una categoría",
                             style: AppStyles.headline5(context, colorTexto),
                           ),
                           SizedBox(height: height * 0.01),
-                          //Widget que muestra el texto
                           Text(
                             "Selecciona una categoría para mostrarte propiedades similares",
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
-                          for (int i = 0; i < _radioItems.length; i++)
-                            //Muestra la lista de radio button
-                            RadioListTile<String>(
-                              value: _radioItems[i],
+                          for (int i = 0; i < _categories.length; i++)
+                            RadioListTile<Category>(
+                              value: _categories[i],
                               groupValue: _selectedRadioItem,
-                              onChanged: (value) {
+                              onChanged: (Category? value) {
                                 setState(() {
-                                  _selectedRadioItem = value!;
+                                  _selectedRadioItem = value;
                                 });
                               },
-                              title: Text(_radioItems[i]),
+                              title: Text(_categories[i].name),
                               activeColor: colorTextYellow,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -130,7 +130,6 @@ class _CategoryScreenState extends State<CategoryScreen>
                             ),
                           SizedBox(height: height * 0.22),
                           Align(
-                            //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {

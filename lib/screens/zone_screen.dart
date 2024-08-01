@@ -1,6 +1,8 @@
 //Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/controlers/preferences.dart';
+import 'package:habbit_mobil_flutter/data/models/zone.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
@@ -10,7 +12,7 @@ class ZoneScreen extends StatefulWidget {
   const ZoneScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ZoneScreenState();
+  State<ZoneScreen> createState() => _ZoneScreenState();
 }
 
 class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
@@ -18,15 +20,8 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   late Animation<double> _fadeInAnimation;
 
 //Creacion de la lista de strings para los radio items
-  final List<String> _radioItems = [
-    "Norte",
-    "Sur",
-    "Este",
-    "Oeste",
-    "Playa",
-    "Montaña"
-  ];
-  String? _selectedRadioItem;
+  List<Zone> _zoneItems = [];
+  Zone? _selectedRadioItem;
 
   @override
   void initState() {
@@ -41,6 +36,21 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
       CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
     );
     _fadeInController.forward();
+
+     _fetchZone();
+  }
+
+//Funcion asincrona para manejar la respuesta del servido. Un tipo de dato que contiene objetos.
+  Future<void> _fetchZone() async{
+    try {
+      //Obtenemos las zonas del controlador
+      final zones = await DataPreferences().fetchZones();
+      setState(() {
+        _zoneItems = zones;
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -111,17 +121,17 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
-                          for (int i = 0; i < _radioItems.length; i++)
+                          for (int i = 0; i < _zoneItems.length; i++)
                             //Muestra la lista de radio button
-                            RadioListTile<String>(
-                              value: _radioItems[i],
+                            RadioListTile<Zone>(
+                              value: _zoneItems[i],
                               groupValue: _selectedRadioItem,
-                              onChanged: (value) {
+                              onChanged: (Zone? value) {
                                 setState(() {
-                                  _selectedRadioItem = value!;
+                                  _selectedRadioItem = value;
                                 });
                               },
-                              title: Text(_radioItems[i]),
+                              title: Text(_zoneItems[i].name),
                               activeColor: colorTextYellow,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
