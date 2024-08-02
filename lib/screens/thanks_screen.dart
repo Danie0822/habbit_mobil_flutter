@@ -22,6 +22,7 @@ class ThankScreen extends StatelessWidget {
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
+//Creamos una instancia de la clase del controlador 
     final EstadisticasController estadisticasController = Get.find();
 
 //Incio de la construccion de la pantalla
@@ -73,18 +74,14 @@ class ThankScreen extends StatelessWidget {
                 child: CustomButton(
                   onPressed: () async {
                     try {
+                      //Se hace envian los datos a la api y pasamos al login
                       await estadisticasController.enviarEstadisticas();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('Estadísticas enviadas correctamente')),
-                      );
                       context.push('/login');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(
-                                'Error al enviar las estadísticas jj: $error')),
+                                'Error al enviar las estadísticas: $error')),
                       );
                     }
                   },

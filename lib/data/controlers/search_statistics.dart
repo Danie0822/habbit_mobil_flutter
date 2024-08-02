@@ -5,7 +5,9 @@ import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 class EstadisticasController {
   late EstadisticasBusquedas estadisticasBusquedas;
 
-  EstadisticasController();
+  EstadisticasController(){
+    _initialize();
+  }
 
   Future<void> _initialize() async {
     final clientId = await StorageService.getClientId();

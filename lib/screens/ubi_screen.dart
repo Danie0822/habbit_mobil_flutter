@@ -24,36 +24,48 @@ class _UbiScreenState extends State<UbiScreen> {
     zoom: 9.0,
   );
 
+  final LatLngBounds _bounds = LatLngBounds(
+    southwest: LatLng(12.967816, -90.231934), // Coordenada SW de El Salvador
+    northeast: LatLng(14.433046, -87.649403), // Coordenada NE de El Salvador
+  );
+
   Marker? _selectedLocationMarker;
   String? _selectedLocationAddress;
 
   final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
 
   void _onMapTapped(LatLng location) async {
-    setState(() {
-      _selectedLocationMarker = Marker(
-        markerId: const MarkerId('selected-location'),
-        position: location,
-      );
-      _selectedLocationAddress = "Cargando dirección...";
-    });
+    if (_bounds.contains(location)) {
+      setState(() {
+        _selectedLocationMarker = Marker(
+          markerId: const MarkerId('selected-location'),
+          position: location,
+        );
+        _selectedLocationAddress = "Cargando dirección...";
+      });
 
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks.first;
+          setState(() {
+            _selectedLocationAddress = "${place.street}, ${place.locality}, ${place.country}";
+          });
+        } else {
+          setState(() {
+            _selectedLocationAddress = "Dirección no encontrada";
+          });
+        }
+      } catch (e) {
         setState(() {
-          _selectedLocationAddress = "${place.street}, ${place.locality}, ${place.country}";
-        });
-      } else {
-        setState(() {
-          _selectedLocationAddress = "Dirección no encontrada";
+          _selectedLocationAddress = "Error al obtener la dirección";
         });
       }
-    } catch (e) {
-      setState(() {
-        _selectedLocationAddress = "Error al obtener la dirección";
-      });
+    } else {
+      // Mostrar mensaje de error si la ubicación está fuera de los límites
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('La ubicación seleccionada está fuera del área permitida')),
+      );
     }
   }
 
@@ -95,6 +107,8 @@ class _UbiScreenState extends State<UbiScreen> {
                 },
                 markers: _selectedLocationMarker != null ? {_selectedLocationMarker!} : {},
                 onTap: _onMapTapped,
+                // Limita la vista del mapa a los límites definidos
+                cameraTargetBounds: CameraTargetBounds(_bounds),
               ),
             ),
             SizedBox(height: height * 0.01),
