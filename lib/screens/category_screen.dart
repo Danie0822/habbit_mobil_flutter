@@ -5,6 +5,9 @@ import 'package:habbit_mobil_flutter/data/models/category.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:get/get.dart'; // Importa Get para usar el controlador
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
+
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -20,6 +23,8 @@ class _CategoryScreenState extends State<CategoryScreen>
 
   List<Category> _categories = [];
   Category? _selectedRadioItem;
+
+  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
 
   @override
   void initState() {
@@ -133,6 +138,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
+                                _estadisticasController.actualizarCat(idCat: _selectedRadioItem!.id);
                                 context.push('/zone');
                               },
                               text: "Siguiente",

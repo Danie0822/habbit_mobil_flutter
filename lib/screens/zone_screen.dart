@@ -6,6 +6,9 @@ import 'package:habbit_mobil_flutter/data/models/zone.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:get/get.dart'; // Importa Get para usar el controlador
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
+
 
 //Creación y construcción de stateful widget llamado Zona screen
 class ZoneScreen extends StatefulWidget {
@@ -22,6 +25,9 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
 //Creacion de la lista de strings para los radio items
   List<Zone> _zoneItems = [];
   Zone? _selectedRadioItem;
+
+  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
+
 
   @override
   void initState() {
@@ -144,6 +150,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
+                                _estadisticasController.actualizarZone(idZona: _selectedRadioItem!.id);
                                 context.push('/thanks');
                               },
                               text: "Terminar",

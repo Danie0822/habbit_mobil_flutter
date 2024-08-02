@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:get/get.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
 
 //Creación y construcción de stateful widget llamado price screen
 class PriceScreen extends StatefulWidget {
@@ -20,6 +22,9 @@ class _PriceScreenState extends State<PriceScreen>
 
   //Definimos los valores para el rango
   var selectedRange = RangeValues(500, 1000);
+
+  final EstadisticasController _estadisticasController =
+      Get.put(EstadisticasController());
 
   @override
   void initState() {
@@ -136,13 +141,27 @@ class _PriceScreenState extends State<PriceScreen>
                               ),
                             ],
                           ),
-                          SizedBox(height: height * 0.42), // Espacio añadido para igualar la distancia
+                          SizedBox(
+                              height: height *
+                                  0.42), // Espacio añadido para igualar la distancia
                           Align(
                             alignment: Alignment.center,
                             //Boton para pasar a la siguiente pantalla
                             child: CustomButton(
                               onPressed: () {
-                                context.push('/category');
+                                if (selectedRange.start.round() < 0 &&
+                                    selectedRange.end.round() < 0) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Por favor, selecciona un valor válido')),
+                                  );
+                                } else {
+                                  _estadisticasController.actualizarPrecio(
+                                      min: selectedRange.start.round().toDouble(),
+                                      max: selectedRange.end.round().toDouble());
+                                  context.push('/category');
+                                }
                               },
                               text: "Siguiente",
                             ),

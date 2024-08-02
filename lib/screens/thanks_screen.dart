@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:get/get.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 
 //Creación y construcción de stateful widget llamado thanks screen
 class ThankScreen extends StatelessWidget {
@@ -19,6 +21,8 @@ class ThankScreen extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
+
+    final EstadisticasController estadisticasController = Get.find();
 
 //Incio de la construccion de la pantalla
     return Scaffold(
@@ -67,8 +71,22 @@ class ThankScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 //Widget del boton para seguir a la siguiente pantalla
                 child: CustomButton(
-                  onPressed: () {
-                    context.push('/login');
+                  onPressed: () async {
+                    try {
+                      await estadisticasController.enviarEstadisticas();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text('Estadísticas enviadas correctamente')),
+                      );
+                      context.push('/login');
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                'Error al enviar las estadísticas jj: $error')),
+                      );
+                    }
                   },
                   text: "Finalizar",
                 ),

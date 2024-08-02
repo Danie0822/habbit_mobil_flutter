@@ -1,4 +1,3 @@
-//Importacion de paquetes a utilizar
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,8 +6,9 @@ import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart'; // Importa Get para usar el controlador
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
 
-//Creación y construcción de stateful widget llamado ubicacion screen
 class UbiScreen extends StatefulWidget {
   const UbiScreen({super.key});
 
@@ -17,11 +17,8 @@ class UbiScreen extends StatefulWidget {
 }
 
 class _UbiScreenState extends State<UbiScreen> {
-  //Widget para usar la api de google maps
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
 
-//Posicion inicial de la camara
   static const CameraPosition _kElSalvador = CameraPosition(
     target: LatLng(13.794185, -88.896530),
     zoom: 9.0,
@@ -30,7 +27,8 @@ class _UbiScreenState extends State<UbiScreen> {
   Marker? _selectedLocationMarker;
   String? _selectedLocationAddress;
 
-//Metodo para activar el marcador en el mapa
+  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
+
   void _onMapTapped(LatLng location) async {
     setState(() {
       _selectedLocationMarker = Marker(
@@ -41,13 +39,11 @@ class _UbiScreenState extends State<UbiScreen> {
     });
 
     try {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(location.latitude, location.longitude);
+      List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         setState(() {
-          _selectedLocationAddress =
-              "${place.street}, ${place.locality}, ${place.country}";
+          _selectedLocationAddress = "${place.street}, ${place.locality}, ${place.country}";
         });
       } else {
         setState(() {
@@ -61,18 +57,14 @@ class _UbiScreenState extends State<UbiScreen> {
     }
   }
 
-// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light
-        ? secondaryColor
-        : lightTextColor;
+    final Color colorTexto = Theme.of(context).brightness == Brightness.light ? secondaryColor : lightTextColor;
 
     final mediaQuery = MediaQuery.of(context);
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Incio de la construccion de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -85,36 +77,23 @@ class _UbiScreenState extends State<UbiScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: width * 0.05,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //Widget que muestra el texto
-            Text(
-              "Ubicación",
-              style: AppStyles.headline5(context, colorTexto),
-            ),
+            Text("Ubicación", style: AppStyles.headline5(context, colorTexto)),
             SizedBox(height: height * 0.01),
-            //Widget que muestra el texto
-            Text(
-              "Selecciona tu ubicación preferida",
-              style: AppStyles.subtitle1(context),
-            ),
+            Text("Selecciona tu ubicación preferida", style: AppStyles.subtitle1(context)),
             SizedBox(height: height * 0.01),
             SizedBox(
               height: height * 0.5,
-              //Widget que permite la visualizacion del mapa de El Salvador
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _kElSalvador,
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
                 },
-                markers: _selectedLocationMarker != null
-                    ? {_selectedLocationMarker!}
-                    : {},
+                markers: _selectedLocationMarker != null ? {_selectedLocationMarker!} : {},
                 onTap: _onMapTapped,
               ),
             ),
@@ -125,11 +104,22 @@ class _UbiScreenState extends State<UbiScreen> {
             ),
             SizedBox(height: height * 0.08),
             Align(
-              //Widget del boton para seguir a la siguiente pantalla
               alignment: Alignment.center,
               child: CustomButton(
                 onPressed: () {
-                  context.push('/price');
+                  if (_selectedLocationMarker != null && _selectedLocationAddress != null) {
+                    _estadisticasController.actualizarUbicacion(
+                      ubicacion: _selectedLocationAddress!,
+                      latitud: _selectedLocationMarker!.position.latitude,
+                      longitud: _selectedLocationMarker!.position.longitude,
+                    );
+                    context.push('/price');
+                  } else {
+                    // Mostrar mensaje de error si no se ha seleccionado una ubicación
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Por favor, selecciona una ubicación')),
+                    );
+                  }
                 },
                 text: "Siguiente",
               ),

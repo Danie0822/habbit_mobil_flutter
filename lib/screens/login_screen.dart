@@ -85,7 +85,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       // Petición de inicio de sesión
       final success = await _authService.login(email, password);
       if (success) {
-        context.push('/category');
+        context.push('/ubi');
         print('Inicio de sesión exitoso');
       } else {
         print('Inicio de sesión fallido');
