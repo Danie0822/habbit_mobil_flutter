@@ -8,7 +8,6 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:get/get.dart'; // Importa Get para usar el controlador
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
 
-
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -24,7 +23,8 @@ class _CategoryScreenState extends State<CategoryScreen>
   List<Category> _categories = [];
   Category? _selectedRadioItem;
 
-  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
+  final EstadisticasController _estadisticasController =
+      Get.put(EstadisticasController());
 
   @override
   void initState() {
@@ -57,6 +57,28 @@ class _CategoryScreenState extends State<CategoryScreen>
   void dispose() {
     _fadeInController.dispose();
     super.dispose();
+  }
+
+//Alerta para mostrar en validaciones
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Categoría no seleccionada'),
+          content: const Text(
+              'Por favor selecciona una categoría antes de continuar.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -117,29 +139,44 @@ class _CategoryScreenState extends State<CategoryScreen>
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
-                          for (int i = 0; i < _categories.length; i++)
-                            RadioListTile<Category>(
-                              value: _categories[i],
-                              groupValue: _selectedRadioItem,
-                              onChanged: (Category? value) {
-                                setState(() {
-                                  _selectedRadioItem = value;
-                                });
-                              },
-                              title: Text(_categories[i].name),
-                              activeColor: colorTextYellow,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                          SizedBox(
+                            height: height * 0.5,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  for (int i = 0; i < _categories.length; i++)
+                                    RadioListTile<Category>(
+                                      value: _categories[i],
+                                      groupValue: _selectedRadioItem,
+                                      onChanged: (Category? value) {
+                                        setState(() {
+                                          _selectedRadioItem = value;
+                                        });
+                                      },
+                                      title: Text(_categories[i].name),
+                                      activeColor: colorTextYellow,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                    ),
+                                ],
                               ),
-                              controlAffinity: ListTileControlAffinity.leading,
                             ),
-                          SizedBox(height: height * 0.22),
+                          ),
+                          SizedBox(height: height * 0.1),
                           Align(
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
-                                _estadisticasController.actualizarCat(idCat: _selectedRadioItem!.id);
-                                context.push('/zone');
+                                if (_selectedRadioItem == null) {
+                                  _showAlertDialog(context);
+                                } else {
+                                  _estadisticasController.actualizarCat(
+                                      idCat: _selectedRadioItem!.id);
+                                  context.push('/zone');
+                                }
                               },
                               text: "Siguiente",
                             ),

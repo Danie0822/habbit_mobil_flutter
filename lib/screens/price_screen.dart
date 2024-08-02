@@ -47,6 +47,27 @@ class _PriceScreenState extends State<PriceScreen>
     super.dispose();
   }
 
+  //Alerta para mostrar en validaciones
+  void _showAlertDialog(BuildContext context, String text1, String text2) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(text1),
+          content: Text(text2),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 // Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
@@ -151,15 +172,21 @@ class _PriceScreenState extends State<PriceScreen>
                               onPressed: () {
                                 if (selectedRange.start.round() < 0 &&
                                     selectedRange.end.round() < 0) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Por favor, selecciona un valor válido')),
-                                  );
+                                  _showAlertDialog(context, 'Advertencia',
+                                      'Por favor selecciona una valor válido.');
+                                } else if (selectedRange.start == null &&
+                                    selectedRange.end == null) {
+                                  _showAlertDialog(
+                                      context,
+                                      'Valor no seleccionado',
+                                      'Por favor selecciona un valor de precio min y máx antes de continuar.');
                                 } else {
                                   _estadisticasController.actualizarPrecio(
-                                      min: selectedRange.start.round().toDouble(),
-                                      max: selectedRange.end.round().toDouble());
+                                      min: selectedRange.start
+                                          .round()
+                                          .toDouble(),
+                                      max:
+                                          selectedRange.end.round().toDouble());
                                   context.push('/category');
                                 }
                               },

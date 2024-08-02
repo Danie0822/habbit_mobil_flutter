@@ -9,7 +9,6 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:get/get.dart'; // Importa Get para usar el controlador
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
 
-
 //Creación y construcción de stateful widget llamado Zona screen
 class ZoneScreen extends StatefulWidget {
   const ZoneScreen({super.key});
@@ -26,8 +25,8 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   List<Zone> _zoneItems = [];
   Zone? _selectedRadioItem;
 
-  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
-
+  final EstadisticasController _estadisticasController =
+      Get.put(EstadisticasController());
 
   @override
   void initState() {
@@ -43,11 +42,11 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
     );
     _fadeInController.forward();
 
-     _fetchZone();
+    _fetchZone();
   }
 
 //Funcion asincrona para manejar la respuesta del servido. Un tipo de dato que contiene objetos.
-  Future<void> _fetchZone() async{
+  Future<void> _fetchZone() async {
     try {
       //Obtenemos las zonas del controlador
       final zones = await DataPreferences().fetchZones();
@@ -63,6 +62,28 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   void dispose() {
     _fadeInController.dispose();
     super.dispose();
+  }
+
+//Alerta para mostrar en validaciones
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Zona no seleccionada'),
+          content: const Text(
+              'Por favor selecciona una zona antes de continuar.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
 // Método build que define la interfaz de usuario del widget
@@ -127,31 +148,46 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
-                          for (int i = 0; i < _zoneItems.length; i++)
-                            //Muestra la lista de radio button
-                            RadioListTile<Zone>(
-                              value: _zoneItems[i],
-                              groupValue: _selectedRadioItem,
-                              onChanged: (Zone? value) {
-                                setState(() {
-                                  _selectedRadioItem = value;
-                                });
-                              },
-                              title: Text(_zoneItems[i].name),
-                              activeColor: colorTextYellow,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                          SizedBox(
+                            height: height * 0.5,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  for (int i = 0; i < _zoneItems.length; i++)
+                                    //Muestra la lista de radio button
+                                    RadioListTile<Zone>(
+                                      value: _zoneItems[i],
+                                      groupValue: _selectedRadioItem,
+                                      onChanged: (Zone? value) {
+                                        setState(() {
+                                          _selectedRadioItem = value;
+                                        });
+                                      },
+                                      title: Text(_zoneItems[i].name),
+                                      activeColor: colorTextYellow,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                    ),
+                                ],
                               ),
-                              controlAffinity: ListTileControlAffinity.leading,
                             ),
-                          SizedBox(height: height * 0.14),
+                          ),
+                          SizedBox(height: height * 0.1),
                           Align(
                             //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
-                                _estadisticasController.actualizarZone(idZona: _selectedRadioItem!.id);
+                                if(_selectedRadioItem == null){
+                                  _showAlertDialog(context);
+                                }else{
+                                  _estadisticasController.actualizarZone(
+                                    idZona: _selectedRadioItem!.id);
                                 context.push('/thanks');
+                                }
                               },
                               text: "Terminar",
                             ),
