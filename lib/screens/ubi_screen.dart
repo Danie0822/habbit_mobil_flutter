@@ -17,7 +17,8 @@ class UbiScreen extends StatefulWidget {
 }
 
 class _UbiScreenState extends State<UbiScreen> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   static const CameraPosition _kElSalvador = CameraPosition(
     target: LatLng(13.794185, -88.896530),
@@ -32,7 +33,29 @@ class _UbiScreenState extends State<UbiScreen> {
   Marker? _selectedLocationMarker;
   String? _selectedLocationAddress;
 
-  final EstadisticasController _estadisticasController = Get.put(EstadisticasController());
+  final EstadisticasController _estadisticasController =
+      Get.put(EstadisticasController());
+
+  //Alerta para mostrar en validaciones
+  void _showAlertDialog(BuildContext context, String text1, String text2) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(text1),
+          content: Text(text2),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _onMapTapped(LatLng location) async {
     if (_bounds.contains(location)) {
@@ -45,11 +68,13 @@ class _UbiScreenState extends State<UbiScreen> {
       });
 
       try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            location.latitude, location.longitude);
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks.first;
           setState(() {
-            _selectedLocationAddress = "${place.street}, ${place.locality}, ${place.country}";
+            _selectedLocationAddress =
+                "${place.street}, ${place.locality}, ${place.country}";
           });
         } else {
           setState(() {
@@ -62,16 +87,16 @@ class _UbiScreenState extends State<UbiScreen> {
         });
       }
     } else {
-      // Mostrar mensaje de error si la ubicación está fuera de los límites
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('La ubicación seleccionada está fuera del área permitida')),
-      );
+      _showAlertDialog(context, 'Advertencia',
+          'La ubicación seleccionada está fuera del área permitida.');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color colorTexto = Theme.of(context).brightness == Brightness.light ? secondaryColor : lightTextColor;
+    final Color colorTexto = Theme.of(context).brightness == Brightness.light
+        ? secondaryColor
+        : lightTextColor;
 
     final mediaQuery = MediaQuery.of(context);
     final height = mediaQuery.size.height;
@@ -95,7 +120,8 @@ class _UbiScreenState extends State<UbiScreen> {
           children: [
             Text("Ubicación", style: AppStyles.headline5(context, colorTexto)),
             SizedBox(height: height * 0.01),
-            Text("Selecciona tu ubicación preferida", style: AppStyles.subtitle1(context)),
+            Text("Selecciona tu ubicación preferida",
+                style: AppStyles.subtitle1(context)),
             SizedBox(height: height * 0.01),
             SizedBox(
               height: height * 0.5,
@@ -105,7 +131,9 @@ class _UbiScreenState extends State<UbiScreen> {
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
                 },
-                markers: _selectedLocationMarker != null ? {_selectedLocationMarker!} : {},
+                markers: _selectedLocationMarker != null
+                    ? {_selectedLocationMarker!}
+                    : {},
                 onTap: _onMapTapped,
                 // Limita la vista del mapa a los límites definidos
                 cameraTargetBounds: CameraTargetBounds(_bounds),
@@ -121,7 +149,8 @@ class _UbiScreenState extends State<UbiScreen> {
               alignment: Alignment.center,
               child: CustomButton(
                 onPressed: () {
-                  if (_selectedLocationMarker != null && _selectedLocationAddress != null) {
+                  if (_selectedLocationMarker != null &&
+                      _selectedLocationAddress != null) {
                     _estadisticasController.actualizarUbicacion(
                       ubicacion: _selectedLocationAddress!,
                       latitud: _selectedLocationMarker!.position.latitude,
@@ -129,10 +158,8 @@ class _UbiScreenState extends State<UbiScreen> {
                     );
                     context.push('/price');
                   } else {
-                    // Mostrar mensaje de error si no se ha seleccionado una ubicación
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Por favor, selecciona una ubicación')),
-                    );
+                    _showAlertDialog(context, 'Ubicación no seleccionada',
+                        'Por favor selecciona una ubicación antes de continuar.');
                   }
                 },
                 text: "Siguiente",
