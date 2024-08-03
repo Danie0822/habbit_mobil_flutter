@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/common/widgets/CustomAlertDialog.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
 import 'package:habbit_mobil_flutter/data/controlers/forgot_password.dart';
@@ -35,7 +37,7 @@ class _ForgotViewState extends State<ForgotView> {
       int success = await _forgotPassword.validateEmail(email);
       if (success > 0) {
         context.push(
-            '/code'); // Navega a la pantalla '/code' al hacer clic en el botón
+            '/code', extra: success); // Navega a la pantalla '/code' al hacer clic en el botón
       } else {
         _showAlertDialog(
             'Error', 'El correo ingresado no está registrado en la aplicación');

@@ -9,8 +9,8 @@ class CustomAlertDialog extends StatelessWidget {
     required this.title,
     required this.message,
     required this.type,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
