@@ -1,8 +1,11 @@
-
 class Config {
   // Constantes de configuración
-  static const String url = "http://192.168.68.113:4000";
+  // URL base de la API
+  static const String url = "http://192.168.58.101:4000";
+  // URL base de la API
   static const String baseURL = "$url/api";
+  // URL base de las imágenes
   static const String imagen = "$url/";
+  // Clave de la API
   static const String apiKey = "7gFtu8Lz2BqAnW3PmDhAeSxGz";
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/common/widgets/widgets.dart';
 import 'package:habbit_mobil_flutter/common/widgets/build_login.dart';
 import 'package:habbit_mobil_flutter/data/controlers/login.dart';
@@ -86,9 +87,8 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       final success = await _authService.login(email, password);
       if (success) {
         context.push('/main');
-        print('Inicio de sesión exitoso');
       } else {
-        print('Inicio de sesión fallido');
+        showAlertDialog('Error', 'Credenciales inválidas', context);
       }
     }
   }

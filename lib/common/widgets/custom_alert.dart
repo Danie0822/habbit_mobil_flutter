@@ -28,3 +28,16 @@ class CustomAlertDialog extends StatelessWidget {
     );
   }
 }
+
+  void showAlertDialog(String title, String message, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          title: title,
+          message: message,
+          type: 0,
+        );
+      },
+    );
+  }

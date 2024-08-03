@@ -34,29 +34,17 @@ class _ForgotViewState extends State<ForgotView> {
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text;
       // Validar el correo electrónico
-      int success = await _forgotPassword.validateEmail(email);
-      if (success > 0) {
+      int id = await _forgotPassword.validateEmail(email);
+      if (id > 0) {
         context.push(
-            '/code', extra: success); // Navega a la pantalla '/code' al hacer clic en el botón
+            '/code', extra: id); // Navega a la pantalla '/code' al hacer clic en el botón
       } else {
-        _showAlertDialog(
-            'Error', 'El correo ingresado no está registrado en la aplicación');
+        showAlertDialog(
+            'Error', 'El correo ingresado no está registrado en la aplicación', context);
       }
     }
   }
 
-  void _showAlertDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomAlertDialog(
-          title: title,
-          message: message,
-          type: 0,
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

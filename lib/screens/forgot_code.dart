@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; 
-import 'package:habbit_mobil_flutter/common/widgets/button.dart'; 
+import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
+import 'package:habbit_mobil_flutter/data/controlers/send_mail.dart'; 
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; 
 import 'package:lottie/lottie.dart'; 
 
-class CodeView extends StatelessWidget {
+class CodeView extends StatefulWidget {
   final int idUsuario;
+
   const CodeView({super.key, required this.idUsuario});
+
+  @override
+  _CodeViewState createState() => _CodeViewState();
+}
+
+class _CodeViewState extends State<CodeView> {
+  final RecoveryController _recoveryController = RecoveryController();
+  int _idUsuario = 0;
+  @override
+  void initState() {
+    super.initState();
+    _idUsuario = widget.idUsuario;
+    _sendEmail();
+  }
+
+  void _sendEmail() async {
+    final result = await _recoveryController.sendEmail(_idUsuario);
+    if (result == 1) {
+       showAlertDialog('Correo enviado', 'Se ha enviado un correo con el código de verificación', context);
+    } else {
+      showAlertDialog('Error', 'No se pudo enviar el correo', context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +69,7 @@ class CodeView extends StatelessWidget {
             ),
             const SizedBox(height: 24), 
             Text(
-              'Verifica tu correo', // Título principal
+              'Verifica tu correo ', // Título principal
               style: TextStyle(
                 color: colorTextSecondaryLight, 
                 fontSize: headingFontSize,
@@ -64,7 +90,7 @@ class CodeView extends StatelessWidget {
             const SizedBox(height: 24), 
             GestureDetector(// Input de texto
               onTap: () {
-                
+                _sendEmail(); // Reenviar el correo
               },
               child: const Text(
                 'Reenviar código', 
@@ -131,7 +157,7 @@ class CodeInputField extends StatelessWidget {
           ),
           filled: true, 
           counterText: '', 
-          contentPadding: EdgeInsets.all(0), 
+          contentPadding: const EdgeInsets.all(0), 
         ),
       ),
     );

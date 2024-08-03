@@ -5,7 +5,7 @@ class ForgotPasswordController {
   // Método para manejar el login
   Future<int> validateEmail(String email) async {
     try {
-      final loginPayload = {
+      final data = {
         'correo': email,
         'es_admin': 0,
       };
@@ -13,7 +13,7 @@ class ForgotPasswordController {
       final response = await ApiService.sendDataApiKey(
         '/recuperaciones/correo',
         'POST',
-        loginPayload,
+        data,
       );
       // Convertir la respuesta en el modelo LoginResponse
       final loginResponse = ForgotPasswordResponse.fromJson(response);
