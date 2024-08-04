@@ -31,7 +31,7 @@ class EstadisticasController {
     estadisticasBusquedas.ubicacionPreferida = ubicacion;
     estadisticasBusquedas.latitudPreferida = latitud;
     estadisticasBusquedas.longitudPreferida = longitud;
-    print('Ubicación actualizada: $ubicacion, Latitud: $latitud, Longitud: $longitud');
+    //print('Ubicación actualizada: $ubicacion, Latitud: $latitud, Longitud: $longitud');
   }
 
   void actualizarPrecio({
@@ -40,32 +40,27 @@ class EstadisticasController {
   }) {
     estadisticasBusquedas.precioMin = min;
     estadisticasBusquedas.precioMax = max;
-    print('precio min: $min, precio max: $max');
+    //print('precio min: $min, precio max: $max');
   }
 
   void actualizarCat({
     required int idCat,
   }) {
     estadisticasBusquedas.idCategoria = idCat;
-    print(idCat);
+    //print(idCat);
   }
 
   void actualizarZone({
     required int idZona,
   }) {
     estadisticasBusquedas.idZona = idZona;
-    print(idZona);
+    //print(idZona);
   }
 
   Future<void> enviarEstadisticas() async {
   try {
-    // Asegúrate de que la inicialización esté completa
-    if (estadisticasBusquedas == null) {
-      await _initialize();
-    }
-
     final json = estadisticasBusquedas.toJson();
-    print('Datos enviados: $json'); // Verifica que los datos sean correctos
+    //print('Datos enviados: $json'); 
 
     final response = await ApiService.sendData('/preferencias/save/', 'POST', json);
 

@@ -5,9 +5,10 @@ import 'package:habbit_mobil_flutter/data/controlers/preferences.dart';
 import 'package:habbit_mobil_flutter/data/models/zone.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-import 'package:get/get.dart'; // Importa Get para usar el controlador
-import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
+import 'package:get/get.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 
 //Creación y construcción de stateful widget llamado Zona screen
 class ZoneScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
     _fetchZone();
   }
 
-//Funcion asincrona para manejar la respuesta del servido. Un tipo de dato que contiene objetos.
+//Funcion asincrona para manejar la respuesta del servidor.
   Future<void> _fetchZone() async {
     try {
       //Obtenemos las zonas del controlador
@@ -58,32 +59,21 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
     }
   }
 
+  //Funcion para manejar los datos de las zonas
+  void _handleZone() async {
+    if (_selectedRadioItem == null) {
+      showAlertDialog(
+          'Zona no seleccionada', 'Selecciona un valor para la zona antes de continuar.', context);
+    } else {
+      _estadisticasController.actualizarZone(idZona: _selectedRadioItem!.id);
+      context.push('/thanks');
+    }
+  }
+
   @override
   void dispose() {
     _fadeInController.dispose();
     super.dispose();
-  }
-
-//Alerta para mostrar en validaciones
-  void _showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Zona no seleccionada'),
-          content: const Text(
-              'Por favor selecciona una zona antes de continuar.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
 // Método build que define la interfaz de usuario del widget
@@ -181,13 +171,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
-                                if(_selectedRadioItem == null){
-                                  _showAlertDialog(context);
-                                }else{
-                                  _estadisticasController.actualizarZone(
-                                    idZona: _selectedRadioItem!.id);
-                                context.push('/thanks');
-                                }
+                                _handleZone();
                               },
                               text: "Terminar",
                             ),

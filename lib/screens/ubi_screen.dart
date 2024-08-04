@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:get/get.dart'; // Importa Get para usar el controlador
-import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
+import 'package:get/get.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 
 class UbiScreen extends StatefulWidget {
   const UbiScreen({super.key});
@@ -25,9 +26,12 @@ class _UbiScreenState extends State<UbiScreen> {
     zoom: 9.0,
   );
 
+//Definimos los limites para El Salvador
   final LatLngBounds _bounds = LatLngBounds(
-    southwest: LatLng(12.967816, -90.231934), // Coordenada SW de El Salvador
-    northeast: LatLng(14.433046, -87.649403), // Coordenada NE de El Salvador
+    southwest:
+        LatLng(12.967816, -90.231934), // Coordenada Sur y Oeste de El Salvador
+    northeast:
+        LatLng(14.433046, -87.649403), // Coordenada Nor Este de El Salvador
   );
 
   Marker? _selectedLocationMarker;
@@ -36,27 +40,7 @@ class _UbiScreenState extends State<UbiScreen> {
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
-  //Alerta para mostrar en validaciones
-  void _showAlertDialog(BuildContext context, String text1, String text2) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(text1),
-          content: Text(text2),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
+//Para manejar ubicacion al mover el marcador
   void _onMapTapped(LatLng location) async {
     if (_bounds.contains(location)) {
       setState(() {
@@ -85,10 +69,26 @@ class _UbiScreenState extends State<UbiScreen> {
         setState(() {
           _selectedLocationAddress = "Error al obtener la dirección";
         });
+        print(e);
       }
     } else {
-      _showAlertDialog(context, 'Advertencia',
-          'La ubicación seleccionada está fuera del área permitida.');
+      showAlertDialog('Advertencia',
+          'La ubicación seleccionada está fuera del área permitida.', context);
+    }
+  }
+
+//Manejemos la ubicacion
+  void _handleUbi() async {
+    if (_selectedLocationMarker != null && _selectedLocationAddress != null) {
+      _estadisticasController.actualizarUbicacion(
+        ubicacion: _selectedLocationAddress!,
+        latitud: _selectedLocationMarker!.position.latitude,
+        longitud: _selectedLocationMarker!.position.longitude,
+      );
+      context.push('/price');
+    } else {
+      showAlertDialog('Ubicación no seleccionada',
+          'Por favor selecciona una ubicación antes de continuar.', context);
     }
   }
 
@@ -149,18 +149,7 @@ class _UbiScreenState extends State<UbiScreen> {
               alignment: Alignment.center,
               child: CustomButton(
                 onPressed: () {
-                  if (_selectedLocationMarker != null &&
-                      _selectedLocationAddress != null) {
-                    _estadisticasController.actualizarUbicacion(
-                      ubicacion: _selectedLocationAddress!,
-                      latitud: _selectedLocationMarker!.position.latitude,
-                      longitud: _selectedLocationMarker!.position.longitude,
-                    );
-                    context.push('/price');
-                  } else {
-                    _showAlertDialog(context, 'Ubicación no seleccionada',
-                        'Por favor selecciona una ubicación antes de continuar.');
-                  }
+                  _handleUbi();
                 },
                 text: "Siguiente",
               ),

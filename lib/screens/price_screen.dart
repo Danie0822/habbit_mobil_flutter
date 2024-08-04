@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:get/get.dart';
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
 
@@ -41,31 +43,28 @@ class _PriceScreenState extends State<PriceScreen>
     _fadeInController.forward();
   }
 
+//Funcion para enviar datos al controlador
+  void _handlePrecio() async {
+    String? validationError = CustomValidator.validatePriceRange(
+      selectedRange.start.toDouble(),
+      selectedRange.end.toDouble(),
+    );
+
+    if (validationError != null) {
+      showAlertDialog('Advertencia', validationError, context);
+    } else {
+      _estadisticasController.actualizarPrecio(
+        min: selectedRange.start.round().toDouble(),
+        max: selectedRange.end.round().toDouble(),
+      );
+      context.push('/category');
+    }
+  }
+
   @override
   void dispose() {
     _fadeInController.dispose();
     super.dispose();
-  }
-
-  //Alerta para mostrar en validaciones
-  void _showAlertDialog(BuildContext context, String text1, String text2) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(text1),
-          content: Text(text2),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
 // Método build que define la interfaz de usuario del widget
@@ -170,25 +169,7 @@ class _PriceScreenState extends State<PriceScreen>
                             //Boton para pasar a la siguiente pantalla
                             child: CustomButton(
                               onPressed: () {
-                                if (selectedRange.start.round() < 0 &&
-                                    selectedRange.end.round() < 0) {
-                                  _showAlertDialog(context, 'Advertencia',
-                                      'Por favor selecciona una valor válido.');
-                                } else if (selectedRange.start == null &&
-                                    selectedRange.end == null) {
-                                  _showAlertDialog(
-                                      context,
-                                      'Valor no seleccionado',
-                                      'Por favor selecciona un valor de precio min y máx antes de continuar.');
-                                } else {
-                                  _estadisticasController.actualizarPrecio(
-                                      min: selectedRange.start
-                                          .round()
-                                          .toDouble(),
-                                      max:
-                                          selectedRange.end.round().toDouble());
-                                  context.push('/category');
-                                }
+                                _handlePrecio();
                               },
                               text: "Siguiente",
                             ),

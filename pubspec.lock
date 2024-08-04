@@ -15,7 +15,7 @@ packages:
       name: animated_splash_screen
       sha256: f45634db6ec4e8cf034c53e03f3bd83898a16fe3c9286bf5510b6831dfcf2124
       url: "https://pub.dev"
-    source: hosteds
+    source: hosted
     version: "1.3.0"
   animated_toggle_switch:
     dependency: "direct main"

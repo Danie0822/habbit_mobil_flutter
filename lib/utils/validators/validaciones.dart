@@ -68,4 +68,18 @@ class CustomValidator {
   }
   return null;
 }
+
+//Validacion para los precios 
+static String? validatePriceRange(double? start, double? end) {
+    if (start == null || end == null) {
+      return 'El valor de precio min y máx no puede ser null';
+    } else if (start < 0 || end < 0) {
+      return 'El valor de precio no puede ser negativo';
+    } else if (start > end) {
+      return 'El valor de precio min no puede ser mayor que el valor de precio máx';
+    }
+    return null;
+  }
 }
+
+
