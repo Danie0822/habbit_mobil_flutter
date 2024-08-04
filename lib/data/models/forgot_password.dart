@@ -1,4 +1,4 @@
-// login model 
+// Forgot password model 
 class ForgotPasswordResponse {
   final bool success;
   final int? status;

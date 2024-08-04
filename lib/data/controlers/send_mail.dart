@@ -35,9 +35,7 @@ class RecoveryController {
       );
       // Verificar si fue exitoso
       bool success = response['success'];
-      print(response);
       final RecoveryResponse recovery = RecoveryResponse.fromJson(response);
-     
       if (success) {
         return recovery.existe!;
       } else {
