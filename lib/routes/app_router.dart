@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/data.dart';
+import 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 // Definición del enrutador utilizando GoRouter
 final GoRouter router = GoRouter(
@@ -34,8 +35,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/pass',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const ConfirmView(), state),
+      pageBuilder: (context, state){
+        final ConfirmViewArguments args = state.extra as ConfirmViewArguments;
+        return _buildPageWithFuturisticTransition(ConfirmView(arguments: args), state);
+      },
     ),
     GoRoute(
       path: '/done',

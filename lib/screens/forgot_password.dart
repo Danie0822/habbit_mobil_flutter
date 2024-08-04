@@ -36,15 +36,14 @@ class _ForgotViewState extends State<ForgotView> {
       // Validar el correo electrónico
       int id = await _forgotPassword.validateEmail(email);
       if (id > 0) {
-        context.push(
-            '/code', extra: id); // Navega a la pantalla '/code' al hacer clic en el botón
-      } else {
-        showAlertDialog(
-            'Error', 'El correo ingresado no está registrado en la aplicación', context);
+        context.push('/code', extra: id); // Navega a la siguiente pantalla
+      }
+      else {
+        showAlertDialog('Error',
+            'El correo ingresado no está registrado en la aplicación', context);
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

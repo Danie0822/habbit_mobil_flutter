@@ -1,4 +1,4 @@
-// login model 
+// Recovery model 
 class RecoveryResponse {
   final bool success;
   final int? status;
