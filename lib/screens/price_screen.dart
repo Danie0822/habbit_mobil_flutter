@@ -51,7 +51,7 @@ class _PriceScreenState extends State<PriceScreen>
     );
 
     if (validationError != null) {
-      showAlertDialog('Advertencia', validationError, context);
+      showAlertDialog('Advertencia', validationError, 1, context);
     } else {
       _estadisticasController.actualizarPrecio(
         min: selectedRange.start.round().toDouble(),

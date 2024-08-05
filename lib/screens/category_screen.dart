@@ -6,8 +6,8 @@ import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-import 'package:get/get.dart'; 
-import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; 
+import 'package:get/get.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -58,7 +58,11 @@ class _CategoryScreenState extends State<CategoryScreen>
   //Funcion para manejar los datos de la categoria
   void _handleCategory() async {
     if (_selectedRadioItem == null) {
-      showAlertDialog('Categoría no seleccionada', 'Selecciona un valor para la categoría  antes de continuar.', context);
+      showAlertDialog(
+          'Categoría no seleccionada',
+          'Selecciona un valor para la categoría  antes de continuar.',
+          1,
+          context);
     } else {
       _estadisticasController.actualizarCat(idCat: _selectedRadioItem!.id);
       context.push('/zone');

@@ -62,8 +62,8 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
   //Funcion para manejar los datos de las zonas
   void _handleZone() async {
     if (_selectedRadioItem == null) {
-      showAlertDialog(
-          'Zona no seleccionada', 'Selecciona un valor para la zona antes de continuar.', context);
+      showAlertDialog('Zona no seleccionada',
+          'Selecciona un valor para la zona antes de continuar.', 1, context);
     } else {
       _estadisticasController.actualizarZone(idZona: _selectedRadioItem!.id);
       context.push('/thanks');

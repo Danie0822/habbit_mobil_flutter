@@ -5,7 +5,7 @@ import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/message.dart';
 import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
-import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart'; 
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -14,7 +14,8 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
+class _MessagesScreenState extends State<MessagesScreen>
+    with TickerProviderStateMixin {
   final List<ChatCard> _chatCards = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool _isSearchVisible = false;
@@ -51,7 +52,9 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
             name: message.adminName ?? 'Sin nombre',
             message: message.lastMessage ?? 'Sin mensaje',
             time: message.time ?? '15:00',
-            imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
+            imageUrl: message.imageUrl != null
+                ? '${Config.imagen}${message.imageUrl}'
+                : '',
             isRead: message.readMessage ?? false,
             isAdmin: message.senderType == 'Administrador',
           );
@@ -70,6 +73,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     showAlertDialog(
       'Sin conversaciones',
       'No has iniciado ninguna conversación todavía.',
+      1,
       context,
     );
   }
@@ -156,9 +160,13 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                 onPressed: _toggleSearch,
                 icon: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
                     return RotationTransition(
-                      turns: child.key == ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
+                      turns: child.key == ValueKey('search')
+                          ? animation
+                          : Tween<double>(begin: 1, end: 0.75)
+                              .animate(animation),
                       child: FadeTransition(opacity: animation, child: child),
                     );
                   },
@@ -182,7 +190,8 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     );
   }
 
-  Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
+  Widget _buildAnimatedItem(
+      BuildContext context, int index, Animation<double> animation) {
     final chatCard = _chatCards[index];
     return FadeTransition(
       opacity: animation,

@@ -1,29 +1,4 @@
-import 'package:flutter/material.dart'
-    show
-        AppBar,
-        BuildContext,
-        Colors,
-        Column,
-        EdgeInsets,
-        FontWeight,
-        Form,
-        FormState,
-        GlobalKey,
-        Icon,
-        IconButton,
-        Icons,
-        Key,
-        MediaQuery,
-        Scaffold,
-        SingleChildScrollView,
-        SizedBox,
-        State,
-        StatefulWidget,
-        Text,
-        TextAlign,
-        TextEditingController,
-        TextStyle,
-        Widget;
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
@@ -37,7 +12,7 @@ import 'package:lottie/lottie.dart';
 
 class ConfirmView extends StatefulWidget {
   final ConfirmViewArguments arguments;
-  ConfirmView({Key? key, required this.arguments}) : super(key: key);
+  const ConfirmView({Key? key, required this.arguments}) : super(key: key);
 
   @override
   State<ConfirmView> createState() => _ConfirmViewState();
@@ -65,14 +40,15 @@ class _ConfirmViewState extends State<ConfirmView> {
         final result = await _recoveryController.sendRequest(
             arguments.idUsuario, arguments.codigo, hashedPassword, 'clave');
         if (result == 1) {
-          showAlertDialog(
-              'Éxito', 'Contraseña cambiada correctamente', context);
-          context.push('/login');
+          showAlertDialogScreen('Éxito', 'Contraseña cambiada correctamente', 3,
+              context, '/login');
         } else {
-          showAlertDialog('Error', 'No se pudo cambiar la contraseña', context);
+          showAlertDialog(
+              'Advertencia', 'No se pudo cambiar la contraseña', 1, context);
         }
       } else {
-        showAlertDialog('Error', 'Las contraseñas no coinciden', context);
+        showAlertDialog(
+            'Advertencia', 'Las contraseñas no coinciden', 1, context);
       }
     }
   }

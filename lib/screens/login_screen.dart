@@ -88,7 +88,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       if (success) {
         context.push('/main');
       } else {
-        showAlertDialog('Error', 'Credenciales inválidas', context);
+        showAlertDialog('Error', 'Credenciales inválidas', 1, context);
       }
     }
   }

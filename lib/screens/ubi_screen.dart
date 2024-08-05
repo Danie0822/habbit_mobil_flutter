@@ -72,8 +72,11 @@ class _UbiScreenState extends State<UbiScreen> {
         print(e);
       }
     } else {
-      showAlertDialog('Advertencia',
-          'La ubicación seleccionada está fuera del área permitida.', context);
+      showAlertDialog(
+          'Advertencia',
+          'La ubicación seleccionada está fuera del área permitida.',
+          1,
+          context);
     }
   }
 
@@ -88,7 +91,7 @@ class _UbiScreenState extends State<UbiScreen> {
       context.push('/price');
     } else {
       showAlertDialog('Ubicación no seleccionada',
-          'Por favor selecciona una ubicación antes de continuar.', context);
+          'Por favor selecciona una ubicación antes de continuar.', 1, context);
     }
   }
 

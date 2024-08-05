@@ -37,10 +37,12 @@ class _ForgotViewState extends State<ForgotView> {
       int id = await _forgotPassword.validateEmail(email);
       if (id > 0) {
         context.push('/code', extra: id); // Navega a la siguiente pantalla
-      }
-      else {
-        showAlertDialog('Error',
-            'El correo ingresado no está registrado en la aplicación', context);
+      } else {
+        showAlertDialog(
+            'Error',
+            'El correo ingresado no está registrado en la aplicación',
+            1,
+            context);
       }
     }
   }

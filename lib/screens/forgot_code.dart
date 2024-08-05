@@ -34,9 +34,9 @@ class _CodeViewState extends State<CodeView> {
     final result = await _recoveryController.sendEmail(_idUsuario);
     if (result == 1) {
       showAlertDialog('Correo enviado',
-          'Se ha enviado un correo con el código de verificación', context);
+          'Se ha enviado un correo con el código de verificación', 3, context);
     } else {
-      showAlertDialog('Error', 'No se pudo enviar el correo', context);
+      showAlertDialog('Error', 'No se pudo enviar el correo', 2, context);
     }
   }
 
@@ -51,10 +51,11 @@ class _CodeViewState extends State<CodeView> {
       if (result == 1) {
         context.push('/pass', extra: arguments);
       } else {
-        showAlertDialog('Error', 'Código incorrecto', context);
+        showAlertDialog('Error', 'Código incorrecto', 1, context);
       }
     } else {
-      showAlertDialog('Error', 'Por favor, complete todos los campos', context);
+      showAlertDialog(
+          'Advertencia', 'Por favor, complete todos los campos', 1, context);
     }
   }
 
