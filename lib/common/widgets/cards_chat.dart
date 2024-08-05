@@ -34,14 +34,20 @@ class ChatCard extends StatelessWidget {
     try {
       if (time.isNotEmpty) {
         DateTime parsedDate = DateTime.parse(time);
-        formattedDate = '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
+        formattedDate =
+            '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
       }
     } catch (e) {
       print('Error parsing date: $e');
     }
 
-    String truncatedTitle = title.length > 15 ? '${title.substring(0, 15)}...' : title;
-    String truncatedMessage = message.length > 30 ? '${message.substring(0, 30)}...' : message;
+    String truncatedTitle =
+        title.length > 18 ? '${title.substring(0, 18)}...' : title;
+    String truncatedMessage =
+        message.length > 30 ? '${message.substring(0, 30)}...' : message;
+
+    String truncatedMessageName =
+    '$name: $truncatedMessage'.length > 30 ? '${'$name: $truncatedMessage'.substring(0, 30)}...' : '$name: $truncatedMessage';
 
     return GestureDetector(
       onTap: () {
@@ -110,27 +116,43 @@ class ChatCard extends StatelessWidget {
                       style: TextStyle(
                         color: textName,
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight:
+                            isRead ? FontWeight.normal : FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            truncatedMessage,
-                            style: TextStyle(
-                              color: textName,
-                              fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+                        if (isAdmin)
+                          Expanded(
+                            child: Text(
+                              truncatedMessageName,
+                              style: TextStyle(
+                                color: textName,
+                                fontWeight: isRead
+                                    ? FontWeight.normal
+                                    : FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        else
+                          Expanded(
+                            child: Text(
+                              truncatedMessage,
+                              style: TextStyle(
+                                color: textName,
+                                fontWeight: isRead
+                                    ? FontWeight.normal
+                                    : FontWeight.bold,
+                              ),
                             ),
                           ),
+                        const SizedBox(width: 5),
+                        Icon(
+                          Icons.check,
+                          color: isRead ? Colors.blue : Colors.grey,
+                          size: 16,
                         ),
-                        if (isAdmin)
-                          const Icon(
-                            Icons.verified,
-                            color: Colors.blue,
-                            size: 16,
-                          ),
                       ],
                     ),
                   ],

@@ -5,6 +5,7 @@ import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/message.dart';
 import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart'; 
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -40,24 +41,37 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   Future<void> _loadMessages() async {
     try {
       final messages = await MessageService().cargarChats();
-      for (var message in messages) {
-        final chatCard = ChatCard(
-          title: message.propertyTitle ?? 'Sin título',
-          name: message.adminName ?? 'Sin nombre',
-          message: message.lastMessage ?? 'Sin mensaje',
-          time: message.time ?? '15:00',
-          imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
-          isRead: message.readMessage ?? false,
-          isAdmin: message.senderType == 'admin',
-        );
-        setState(() {
-          _chatCards.add(chatCard);
-          _listKey.currentState?.insertItem(_chatCards.length - 1);
-        });
+      if (messages.isEmpty) {
+        _showNoConversationsAlert();
+      } else {
+        for (var message in messages) {
+          print(message.senderType);
+          final chatCard = ChatCard(
+            title: message.propertyTitle ?? 'Sin título',
+            name: message.adminName ?? 'Sin nombre',
+            message: message.lastMessage ?? 'Sin mensaje',
+            time: message.time ?? '15:00',
+            imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
+            isRead: message.readMessage ?? false,
+            isAdmin: message.senderType == 'Administrador',
+          );
+          setState(() {
+            _chatCards.add(chatCard);
+            _listKey.currentState?.insertItem(_chatCards.length - 1);
+          });
+        }
       }
     } catch (e) {
       print('Error cargando chats: $e');
     }
+  }
+
+  void _showNoConversationsAlert() {
+    showAlertDialog(
+      'Sin conversaciones',
+      'No has iniciado ninguna conversación todavía.',
+      context,
+    );
   }
 
   void _toggleSearch() {
