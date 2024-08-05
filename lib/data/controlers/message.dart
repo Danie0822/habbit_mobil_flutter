@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
-
 import 'package:habbit_mobil_flutter/data/models/message.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
@@ -7,21 +5,25 @@ import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 class MessageService {
   Future<List<MessageResponse>> cargarChats() async {
     try {
-      final idCliente = await StorageService.getClientId(); // Asegúrate de que esto sea un Future.
-      final response = await ApiService.fetchData('/mensaje/' + idCliente.toString());
+      final idCliente = await StorageService.getClientId();
+      final response =
+          await ApiService.fetchData('/mensaje/cliente/$idCliente');
 
-      // Convertir la respuesta en el modelo MessageResponse
-      final mensajeResponse = MessageResponse.fromJson(response);
-
-      if (mensajeResponse.success) {
-        return [mensajeResponse]; // Devuelve una lista con el mensajeResponse
-      } else {
-        return []; // Devuelve una lista vacía si no hay éxito
+      final innerData = response['data'];
+      if (innerData is Map<String, dynamic>) {
+        final data = innerData['data'];
+        if (data is List<dynamic>) {
+          return MessageResponse.fromJsonList(data);
+        }
+        else{
+          throw Exception('Respuesta inesperada de la API');
+        }
+      }
+      else{
+        throw Exception('Respuesta inesperada de la API');
       }
     } catch (error) {
-      // ignore: avoid_print
-      print('Error cargando chats: $error'); // Manejo de errores
-      return []; // Devuelve una lista vacía en caso de error
+      throw Exception('$error');
     }
   }
 }

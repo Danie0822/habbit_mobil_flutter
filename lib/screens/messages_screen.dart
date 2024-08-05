@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+import 'package:habbit_mobil_flutter/data/controlers/message.dart';
 import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
 
-// Definición de la clase MessagesScreen como un StatefulWidget
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
 
@@ -12,71 +13,17 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-// Estado asociado a MessagesScreen
 class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
-  // Lista de tarjetas de chat que se mostrarán
-  final List<ChatCard> _chatCards = const [
-    ChatCard(
-      title: 'Villa San Salvador',
-      name: 'Alessandro Morales',
-      message: 'Hola, esta propiedad esta en oferta',
-      time: '12:00',
-      imageUrl: 'assets/images/house_01.jpg',
-    ),
-    ChatCard(
-      title: 'Casa Santa Tecla',
-      name: 'Fernando Gomez',
-      message: 'Hola, la casa esta ubicada en Cabañas',
-      time: 'Lunes',
-      imageUrl: 'assets/images/house_04.jpg',
-    ),
-    ChatCard(
-      title: 'Casa Libertad',
-      name: 'Adriana Oreo',
-      message: 'Hola, esa casa esta alquilada, no ves',
-      time: '15/06/2024',
-      imageUrl: 'assets/images/house_02.jpg',
-    ),
-    ChatCard(
-      title: 'Casa San Miguel',
-      name: 'Jose Sanchez',
-      message: 'Hola, Este casa esta en venta',
-      time: '15:00',
-      imageUrl: 'assets/images/house_03.jpg',
-    ),
-    ChatCard(
-      title: 'Casa Aventura',
-      name: 'Emiliano Jacobo',
-      message: 'Hola, te gustaria hacer una cita',
-      time: '15:00',
-      imageUrl: 'assets/images/house_05.jpg',
-    ),
-    ChatCard(
-      title: 'Casa Norte',
-      name: 'Oscar Gomez',
-      message: 'Hola, si ese dia se puede',
-      time: '15:00',
-      imageUrl: 'assets/images/house_06.jpg',
-    ),
-    ChatCard(
-      title: 'Residencia Rasmus',
-      name: 'Daniel Gomez',
-      message: 'Hola, el martes se puede',
-      time: '15:00',
-      imageUrl: 'assets/images/house_07.jpg',
-    ),
-  ];
-
-  // Llave para manejar la lista animada
+  final List<ChatCard> _chatCards = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  bool _isSearchVisible = false; // Variable para manejar la visibilidad del campo de búsqueda
-  late AnimationController _controller; // Controlador de animación
-  late Animation<Offset> _offsetAnimation; // Animación de desplazamiento
+  bool _isSearchVisible = false;
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
     super.initState();
-    _addChatCards(); // Añadir tarjetas de chat a la lista
+    _loadMessages();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -90,15 +37,29 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     ));
   }
 
-  // Método para añadir tarjetas de chat a la lista con un retraso
-  void _addChatCards() async {
-    for (int i = 0; i < _chatCards.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 200));
-      _listKey.currentState?.insertItem(i);
+  Future<void> _loadMessages() async {
+    try {
+      final messages = await MessageService().cargarChats();
+      for (var message in messages) {
+        final chatCard = ChatCard(
+          title: message.propertyTitle ?? 'Sin título',
+          name: message.adminName ?? 'Sin nombre',
+          message: message.lastMessage ?? 'Sin mensaje',
+          time: message.time ?? '15:00',
+          imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
+          isRead: message.readMessage ?? false,
+          isAdmin: message.senderType == 'admin',
+        );
+        setState(() {
+          _chatCards.add(chatCard);
+          _listKey.currentState?.insertItem(_chatCards.length - 1);
+        });
+      }
+    } catch (e) {
+      print('Error cargando chats: $e');
     }
   }
 
-  // Método para alternar la visibilidad del campo de búsqueda
   void _toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;
@@ -118,17 +79,16 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    // Obtener el color del contenedor principal basado en el tema
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
 
     return Scaffold(
-      backgroundColor: colorBackGroundMessage, // Color de fondo de la pantalla
+      backgroundColor: colorBackGroundMessage,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(), // Construir la cabecera
+            _buildHeader(),
             const SizedBox(height: 20.0),
             Expanded(
               child: Container(
@@ -148,7 +108,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                   child: AnimatedList(
                     key: _listKey,
                     padding: const EdgeInsets.only(top: 35.0),
-                    initialItemCount: 0,
+                    initialItemCount: _chatCards.length,
                     itemBuilder: (context, index, animation) {
                       return _buildAnimatedItem(context, index, animation);
                     },
@@ -162,7 +122,6 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     );
   }
 
-  // Método para construir la cabecera de la pantalla
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -202,14 +161,13 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
           if (_isSearchVisible)
             SlideTransition(
               position: _offsetAnimation,
-              child: const SearchInput(), // Campo de entrada de búsqueda
+              child: const SearchInput(),
             ),
         ],
       ),
     );
   }
 
-  // Método para construir un elemento animado en la lista
   Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
     final chatCard = _chatCards[index];
     return FadeTransition(

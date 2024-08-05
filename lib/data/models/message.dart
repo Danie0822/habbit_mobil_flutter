@@ -1,4 +1,3 @@
-// Mensaje model 
 class MessageResponse {
   final bool success;
   final int? status;
@@ -9,6 +8,7 @@ class MessageResponse {
   final String? imageUrl;
   final String? adminName;
   final String? senderType;
+  final String? time;
 
   MessageResponse({
     required this.success,
@@ -20,22 +20,25 @@ class MessageResponse {
     this.imageUrl,
     this.adminName,
     this.senderType,
+    this.time,
   });
-  // convierte en json en un array normal 
-  factory MessageResponse.fromJson(Map<String, dynamic> json) {
-    final data = json['data'] as Map<String, dynamic>? ?? {}; 
-    final innerData = data['data'] as Map<String, dynamic>? ?? {};
 
+  factory MessageResponse.fromJson(Map<String, dynamic> json) {
     return MessageResponse(
       success: json['success'] ?? false,
-      status: data['status'] as int?,
-      conversacionId: innerData['id_conversacion'] as int?,
-      lastMessage: innerData['ultimo_mensaje'] as String?,
-      readMessage: innerData['leido_mensaje'] as bool?,
-      propertyTitle: innerData['titulo_propiedad'] as String?,
-      imageUrl: innerData['imagen_url'] as String?,
-      adminName: innerData['nombre_administrador'] as String?,
-      senderType: innerData['tipo_remitente'] as String?,
+      status: json['status'] as int?,
+      conversacionId: json['id_conversacion'] as int?,
+      lastMessage: json['ultimo_mensaje'] as String?,
+      readMessage: json['leido_mensaje'] == 1,
+      propertyTitle: json['titulo_propiedad'] as String?,
+      imageUrl: json['imagen_url'] as String?,
+      adminName: json['nombre_administrador'] as String?,
+      senderType: json['tipo_remitente'] as String?,
+      time: json['fecha_envio'] as String?,
     );
+  }
+
+  static List<MessageResponse> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => MessageResponse.fromJson(json as Map<String, dynamic>)).toList();
   }
 }
