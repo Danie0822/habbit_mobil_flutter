@@ -122,6 +122,11 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const ChangeProfile(), state),
     ),
+    GoRoute(
+      path: '/settings',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const SettingsScreen(), state),
+    ),
   ],
    // Constructor de página de error para manejar rutas no encontradas
   errorBuilder: (context, state) => Scaffold(
