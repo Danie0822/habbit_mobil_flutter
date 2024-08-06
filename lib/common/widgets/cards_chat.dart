@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
@@ -26,15 +28,19 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //cambio de color de fondo de acuerdo al tema
     final Color containerMessage = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
 
+    //cambio de color de texto de acuerdo al tema
     final Color textName = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
 
+    // Formatea la fecha del mensaje
     String formattedDate = 'Fecha inválida';
     try {
       if (time.isNotEmpty) {
+        // Parsea la fecha y la formatea
         DateTime parsedDate = DateTime.parse(time);
         formattedDate =
             '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
@@ -43,6 +49,7 @@ class ChatCard extends StatelessWidget {
       print('Error parsing date: $e');
     }
 
+    // Trunca el título y el mensaje si son muy largos
     String truncatedTitle =
         title.length > 18 ? '${title.substring(0, 18)}...' : title;
     String truncatedMessage =
@@ -51,6 +58,7 @@ class ChatCard extends StatelessWidget {
     String truncatedMessageName =
         '$name: $truncatedMessage'.length > 30 ? '${'$name: $truncatedMessage'.substring(0, 30)}...' : '$name: $truncatedMessage';
 
+    // Retorna un contenedor con la información del mensaje
     return GestureDetector(
       onTap: () {
         context.push('/chat', extra: {

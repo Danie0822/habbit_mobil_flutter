@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart'; 
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
@@ -17,13 +19,17 @@ class MessageWidget extends StatelessWidget {
     required this.time,
   }) : super(key: key);
 
+  // Formatea la fecha y la hora del mensaje
   String _formatDateTime(String dateTimeStr) {
+    // Parsea la fecha y la hora
     DateTime dateTime = DateTime.parse(dateTimeStr);
     DateTime now = DateTime.now();
 
+    // Si el mensaje es del mismo día, mostrar solo la hora
     if (dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day) {
       return DateFormat('HH:mm').format(dateTime); // Mostrar solo la hora
     } else {
+      // Si el mensaje no es del mismo día, mostrar día, mes y año
       return DateFormat('dd/MM/yyyy').format(dateTime); // Mostrar día, mes y año
     }
   }
@@ -72,13 +78,13 @@ class MessageWidget extends StatelessWidget {
                 fontSize: 16.0,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   _formatDateTime(time),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12.0,
                   ),
