@@ -1,18 +1,12 @@
 class ReadChatResponse {
-  final bool success;
-  final int? status;
-  final int? messageId;
-  final int? conversacionId;
+  final int id;
   final String? mensajeAdmin;
   final String? mensajeCliente;
-  final bool? readMessage;
+  bool? readMessage;
   final String? time;
 
   ReadChatResponse({
-    required this.success,
-    this.status,
-    this.messageId,
-    this.conversacionId,
+    required this.id,
     this.mensajeAdmin,
     this.mensajeCliente,
     this.readMessage,
@@ -21,18 +15,19 @@ class ReadChatResponse {
 
   factory ReadChatResponse.fromJson(Map<String, dynamic> json) {
     return ReadChatResponse(
-      success: json['success'] ?? false,
-      status: json['status'] as int?,
-      messageId: json['id_mensaje'] as int?,
-      conversacionId: json['id_conversacion'] as int?,
-      mensajeAdmin: json['mensaje_admin'] as String?,
-      mensajeCliente: json['mensaje_cliente'] as String?,
-      readMessage: json['leido_mensaje'] == 1,
-      time: json['fecha_envio'] as String?,
+      id: json['id_mensaje'] ?? 0,  // Valor predeterminado si es nulo
+      mensajeAdmin: json['mensaje_admin'],
+      mensajeCliente: json['mensaje_cliente'],
+      readMessage: json['leido_mensaje'] == 1 ? true : false,  // Conversión a booleano
+      time: json['fecha_envio'],
     );
   }
 
   static List<ReadChatResponse> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((json) => ReadChatResponse.fromJson(json as Map<String, dynamic>)).toList();
+    return jsonList.map((json) => ReadChatResponse.fromJson(json)).toList();
+  }
+
+  void updateReadStatus(bool readStatus) {
+    readMessage = readStatus;
   }
 }

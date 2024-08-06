@@ -2,95 +2,96 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/message_widget.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field_chat.dart';
+import 'package:habbit_mobil_flutter/data/controlers/chat.dart';
+import 'package:habbit_mobil_flutter/data/models/read_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
-// Definición de la clase ChatScreen como un StatefulWidget
 class ChatScreen extends StatefulWidget {
+  final int idConversacion;
+  final String nameUser;
+
+  ChatScreen({required this.idConversacion, required this.nameUser});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-// Estado asociado a ChatScreen
 class _ChatScreenState extends State<ChatScreen> {
-  // Lista de mensajes en el chat
-  final List<Map<String, dynamic>> mensajes = [
-    {"mensaje": "Hola, ¿cómo estás?", "isSentByMe": true},
-    {"mensaje": "Bien, ¿y tú?", "isSentByMe": false},
-    {
-      "mensaje":
-          "Muy bien, gracias por preguntar. Estoy interesado en comprar una casa y quisiera hacer una cita para verla.",
-      "isSentByMe": true
-    },
-    {
-      "mensaje":
-          "¡Claro! Estaré encantado de ayudarte. ¿Tienes alguna casa en particular que te interese?",
-      "isSentByMe": false
-    },
-    {
-      "mensaje":
-          "Sí, me interesa la casa que vi en su sitio web en la Calle Elm. ¿Está disponible para una visita?",
-      "isSentByMe": true
-    },
-    {
-      "mensaje":
-          "Sí, la casa en la Calle Elm está disponible para visitas. ¿Cuál sería un buen momento para ti?",
-      "isSentByMe": false
-    },
-    {
-      "mensaje":
-          "Podría el viernes por la tarde, alrededor de las 3 PM. ¿Ese horario les conviene?",
-      "isSentByMe": true
-    },
-    {
-      "mensaje":
-          "Perfecto, podemos programar la visita para el viernes a las 3 PM. ¿Te gustaría que te enviemos más detalles sobre la propiedad antes de la cita?",
-      "isSentByMe": false
-    },
-    {
-      "mensaje":
-          "Sí, por favor, me gustaría recibir más información sobre la casa, especialmente sobre el vecindario y las escuelas cercanas.",
-      "isSentByMe": true
-    },
-    {
-      "mensaje":
-          "Con mucho gusto, te enviaré toda la información por correo electrónico. ¿Hay algo más que te gustaría saber antes de la visita?",
-      "isSentByMe": false
-    },
-    {
-      "mensaje":
-          "No, eso sería todo por ahora. Gracias por la ayuda y nos vemos el viernes.",
-      "isSentByMe": true
-    },
-    {
-      "mensaje":
-          "De nada, ¡nos vemos el viernes! Si necesitas algo más, no dudes en contactarnos.",
-      "isSentByMe": false
-    }
-  ];
-
-  // Controlador para manejar el desplazamiento de la lista de mensajes
+  List<ReadChatResponse> _mensajes = [];
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Después de que el marco se ha construido, desplaza la lista de mensajes hacia abajo
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToBottom();
-    });
+    _loadMessages();
   }
 
-  // Método para desplazar la lista de mensajes hacia abajo
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadMessages();
+  }
+
+  Future<void> _loadMessages() async {
+    try {
+      print('Cargando mensajes para la conversación ID: ${widget.idConversacion}');
+      List<ReadChatResponse> mensajes = await ChatService().getClientMessages(widget.idConversacion);
+      print('Mensajes cargados: ${mensajes.length}');
+      setState(() {
+        _mensajes = mensajes;
+      });
+      _updateReadStatus();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    } catch (e) {
+      print('Error cargando mensajes: $e');
+    }
+  }
+
+  Future<void> _updateReadStatus() async {
+    if (_mensajes.isNotEmpty) {
+      final ultimoMensaje = _mensajes.last;
+      bool isSentByAdmin = ultimoMensaje.mensajeAdmin != null;
+      bool isRead = ultimoMensaje.readMessage ?? false;
+
+      if (isSentByAdmin && !isRead) {
+        bool success = await ChatService().updateMessageReadStatus(widget.idConversacion);
+        if (success) {
+          print('Estado de leído actualizado exitosamente.');
+          setState(() {
+            ultimoMensaje.updateReadStatus(true);
+          });
+        } else {
+          print('Error al actualizar el estado de leído.');
+        }
+      }
+    }
+  }
+
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
-      // Primero mueve sin animación al final
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      // Luego anima una pequeña cantidad para asegurarse de que esté al final
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(seconds: 1), // Ajusta la duración según sea necesario
+        duration: Duration(seconds: 1),
         curve: Curves.easeOut,
       );
+    }
+  }
+
+  Future<void> _sendMessage() async {
+    String messageText = _messageController.text.trim();
+    if (messageText.isEmpty) return;
+
+    bool success = await ChatService().sendMessage(widget.idConversacion, messageText);
+    if (success) {
+      setState(() {
+        _loadMessages();
+      });
+      _messageController.clear();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    } else {
+      print('Error al enviar el mensaje');
     }
   }
 
@@ -98,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Alessandro Morales', style: TextStyle(color: Colors.white)),
+        title: Text(widget.nameUser, style: TextStyle(color: Colors.white)),
         backgroundColor: colorBackGroundMessage,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -111,29 +112,37 @@ class _ChatScreenState extends State<ChatScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Expande el ListView para ocupar el espacio disponible
             Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: mensajes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return MessageWidget(
-                    message: mensajes[index]['mensaje'],
-                    isSentByMe: mensajes[index]['isSentByMe'],
-                  );
-                },
+              child: RefreshIndicator(
+                onRefresh: _loadMessages,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _mensajes.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final mensaje = _mensajes[index];
+                    bool isSentByAdmin = mensaje.mensajeAdmin != null;
+                    String displayedMessage = isSentByAdmin
+                        ? mensaje.mensajeAdmin!
+                        : mensaje.mensajeCliente ?? "Mensaje no disponible";
+
+                    return MessageWidget(
+                      message: displayedMessage,
+                      isSentByMe: !isSentByAdmin,
+                      readMessage: mensaje.readMessage ?? false,
+                      time: mensaje.time ?? '',
+                    );
+                  },
+                ),
               ),
             ),
-            // Campo de texto para enviar mensajes
             MyTextField(
+              controller: _messageController,
               hint: 'Escribe un mensaje...',
               isPassword: false,
               icon: Icons.message,
               suffixIcon: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () {
-                  // Aquí manejas el envío del mensaje
-                },
+                onPressed: _sendMessage,
               ),
             ),
           ],

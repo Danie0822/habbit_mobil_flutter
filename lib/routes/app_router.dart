@@ -67,8 +67,15 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/chat',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(ChatScreen(), state),
+      pageBuilder: (context, state) {
+        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+        final int idConversacion = extra['idConversacion'];
+        final String nameUser = extra['nameUser'];
+        return _buildPageWithFuturisticTransition(
+          ChatScreen(idConversacion: idConversacion, nameUser: nameUser),
+          state,
+        );
+      },
     ),
     GoRoute(
       path: '/main',

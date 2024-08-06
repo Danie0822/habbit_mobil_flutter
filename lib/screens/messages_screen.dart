@@ -14,8 +14,7 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen>
-    with TickerProviderStateMixin {
+class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
   final List<ChatCard> _chatCards = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool _isSearchVisible = false;
@@ -45,19 +44,23 @@ class _MessagesScreenState extends State<MessagesScreen>
       if (messages.isEmpty) {
         _showNoConversationsAlert();
       } else {
+        setState(() {
+          _chatCards.clear(); // Clear existing cards
+        });
+
         for (var message in messages) {
           print(message.senderType);
           final chatCard = ChatCard(
+            idConversacion: message.conversacionId ?? 0,
             title: message.propertyTitle ?? 'Sin título',
             name: message.adminName ?? 'Sin nombre',
             message: message.lastMessage ?? 'Sin mensaje',
             time: message.time ?? '15:00',
-            imageUrl: message.imageUrl != null
-                ? '${Config.imagen}${message.imageUrl}'
-                : '',
+            imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
             isRead: message.readMessage ?? false,
             isAdmin: message.senderType == 'Administrador',
           );
+
           setState(() {
             _chatCards.add(chatCard);
             _listKey.currentState?.insertItem(_chatCards.length - 1);
@@ -95,6 +98,18 @@ class _MessagesScreenState extends State<MessagesScreen>
     super.dispose();
   }
 
+  Future<void> _refreshMessages() async {
+    // Remove all items with animation
+    for (int i = _chatCards.length - 1; i >= 0; i--) {
+      _listKey.currentState?.removeItem(
+        i,
+        (context, animation) => _buildAnimatedItem(context, i, animation),
+        duration: const Duration(milliseconds: 300),
+      );
+    }
+    await _loadMessages(); // Call the message loading function
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
@@ -123,13 +138,16 @@ class _MessagesScreenState extends State<MessagesScreen>
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
-                  child: AnimatedList(
-                    key: _listKey,
-                    padding: const EdgeInsets.only(top: 35.0),
-                    initialItemCount: _chatCards.length,
-                    itemBuilder: (context, index, animation) {
-                      return _buildAnimatedItem(context, index, animation);
-                    },
+                  child: RefreshIndicator(
+                    onRefresh: _refreshMessages, // Attach the refresh function
+                    child: AnimatedList(
+                      key: _listKey,
+                      padding: const EdgeInsets.only(top: 35.0),
+                      initialItemCount: _chatCards.length,
+                      itemBuilder: (context, index, animation) {
+                        return _buildAnimatedItem(context, index, animation);
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -160,13 +178,9 @@ class _MessagesScreenState extends State<MessagesScreen>
                 onPressed: _toggleSearch,
                 icon: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
+                  transitionBuilder: (Widget child, Animation<double> animation) {
                     return RotationTransition(
-                      turns: child.key == ValueKey('search')
-                          ? animation
-                          : Tween<double>(begin: 1, end: 0.75)
-                              .animate(animation),
+                      turns: child.key == ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
                       child: FadeTransition(opacity: animation, child: child),
                     );
                   },
@@ -190,8 +204,7 @@ class _MessagesScreenState extends State<MessagesScreen>
     );
   }
 
-  Widget _buildAnimatedItem(
-      BuildContext context, int index, Animation<double> animation) {
+  Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
     final chatCard = _chatCards[index];
     return FadeTransition(
       opacity: animation,

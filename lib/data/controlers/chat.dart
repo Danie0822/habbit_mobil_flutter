@@ -2,31 +2,32 @@ import 'package:habbit_mobil_flutter/data/models/update_chat.dart';
 import 'package:habbit_mobil_flutter/data/models/send_chat.dart';
 import 'package:habbit_mobil_flutter/data/models/read_chat.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
-import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 
 class ChatService {
-  // Método para obtener los mensajes de un cliente
-  Future<List<ReadChatResponse>> getClientMessages() async {
+  Future<List<ReadChatResponse>> getClientMessages(int idConversacion) async {
     try {
-      final idCliente = await StorageService.getClientId();
-      final response = await ApiService.fetchData('/cliente/$idCliente');
-      final List<dynamic> data = response['data'] as List<dynamic>;
+      final response = await ApiService.fetchData('/mensaje/conversation/cliente/$idConversacion');
+      print('idConversacion: $idConversacion');
+      print(response);
+
+      final List<dynamic> data = response['data']['data'] as List<dynamic>;
+
       return ReadChatResponse.fromJsonList(data);
     } catch (error) {
+      print('Error en getClientMessages: $error');
       return [];
     }
   }
 
-  // Método para enviar un mensaje
-  Future<bool> sendMessage(int conversationId, String adminMessage) async {
+  Future<bool> sendMessage(int conversationId, String clientMessage) async {
     try {
       final messagePayload = {
         'id_conversacion': conversationId,
-        'mensaje_admin': adminMessage,
+        'mensaje_cliente': clientMessage,
         'leido_mensaje': false,
       };
       final response = await ApiService.sendData(
-        '/chat/cliente',
+        '/mensaje/chat/cliente',
         'POST',
         messagePayload,
       );
@@ -37,7 +38,6 @@ class ChatService {
     }
   }
 
-  // Método para actualizar el estado de lectura de un mensaje
   Future<bool> updateMessageReadStatus(int conversationId) async {
     try {
       final updatePayload = {
@@ -45,7 +45,7 @@ class ChatService {
         'tipo_mensaje': 'admin',
       };
       final response = await ApiService.sendData(
-        '/actualizar/cliente',
+        '/mensaje/actualizar/cliente',
         'POST',
         updatePayload,
       );
