@@ -8,15 +8,15 @@ class PrefWidget extends StatefulWidget {
   final String text;
   final String lottieUrl;
   final String destinationRoute;
-  final int index; // Índice de la tarjeta
+  final int index;
 
   const PrefWidget({
-    super.key,
+    Key? key,
     required this.text,
     required this.lottieUrl,
     required this.destinationRoute,
-    required this.index, // Índice de la tarjeta
-  });
+    required this.index,
+  }) : super(key: key);
 
   @override
   _PrefWidgetState createState() => _PrefWidgetState();
@@ -31,15 +31,13 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    // Inicializa el controlador de animación de opacidad
     _fadeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500), // Duración de la animación de aparición
+      duration: const Duration(milliseconds: 500),
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
-    _fadeController.forward(); // Inicia la animación cuando el widget se monta
+    _fadeController.forward();
 
-    // Inicializa el controlador de animación de Lottie
     _lottieController = AnimationController(
       vsync: this,
     );
@@ -54,23 +52,21 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double lottieHeight = screenHeight * 0.12; // Ajusta el tamaño del Lottie
+    final double lottieHeight = MediaQuery.of(context).size.height * 0.12;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
-      margin: EdgeInsets.all(screenWidth * 0.03), // Ajusta el margen
+      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: primaryColors, // Color de fondo animado
+        color: primaryColors,
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(255, 227, 226, 226).withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 2,
-            offset: const Offset(0, 2), // Cambio animado de la sombra
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -79,7 +75,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
           context.push(widget.destinationRoute);
         },
         child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.05), // Ajusta el padding
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,10 +84,10 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
                 opacity: _fadeAnimation,
                 child: Lottie.network(
                   widget.lottieUrl,
-                  height: lottieHeight, // Ajusta la altura del Lottie
+                  height: lottieHeight,
                   controller: _lottieController,
                   onLoaded: (composition) {
-                    final double endFrame = composition.duration.inMilliseconds / 2; // Aquí defines el punto de parada (en este caso, la mitad)
+                    final double endFrame = composition.duration.inMilliseconds / 2;
 
                     _lottieController
                       ..duration = composition.duration
@@ -100,13 +96,13 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
                           _lottieController.stop();
                         }
                       })
-                      ..animateTo(endFrame / composition.duration.inMilliseconds); // Anima hasta el frame final definido
+                      ..animateTo(endFrame / composition.duration.inMilliseconds);
                   },
                 ),
               ),
               const SizedBox(height: 5),
               FadeTransition(
-                opacity: _fadeAnimation, // Opacidad animada para el contenido
+                opacity: _fadeAnimation,
                 child: Text(
                   widget.text,
                   style: AppStyles.headline6(context, Colors.white),
