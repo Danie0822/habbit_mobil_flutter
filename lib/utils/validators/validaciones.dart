@@ -60,17 +60,18 @@ class CustomValidator {
     }
     return null;
   }
-  static String? validatePassword(String? value) {
-  if (value == null || value.isEmpty) {
-    return 'El campo no puede estar vacío';
-  } else if (value.length < 8) {
-    return 'La contraseña debe tener al menos 8 caracteres';
-  }
-  return null;
-}
 
-//Validacion para los precios 
-static String? validatePriceRange(double? start, double? end) {
+  static String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'El campo no puede estar vacío';
+    } else if (value.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres';
+    }
+    return null;
+  }
+
+//Validacion para los precios
+  static String? validatePriceRange(double? start, double? end) {
     if (start == null || end == null) {
       return 'El valor de precio min y máx no puede ser null';
     } else if (start < 0 || end < 0) {
@@ -80,10 +81,11 @@ static String? validatePriceRange(double? start, double? end) {
     }
     return null;
   }
-  // Validación de nombre 
+
+  // Validación de nombre
   static String? validateName(String? value) {
     final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$');
-    
+
     if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (value.length < 3) {
@@ -95,18 +97,19 @@ static String? validatePriceRange(double? start, double? end) {
     }
     return null;
   }
-    // Validación de teléfono 
+
+// Validación de teléfono
   static String? validatePhoneNumber(String? value) {
-    final regExp = RegExp(r'^[762]\d{3}-\d{4}$');
-    
+    final regExp = RegExp(r'^\d{4}-\d{4}$');
+    final validStart = RegExp(r'^[762]');
+
     if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
     } else if (!regExp.hasMatch(value)) {
-      return 'Ingrese un número de teléfono válido (0000-0000) comenzando con 7, 6 o 2';
+      return 'Ingrese un número de teléfono válido en el formato 0000-0000';
+    } else if (!validStart.hasMatch(value)) {
+      return 'El número debe comenzar con 7, 6 o 2';
     }
     return null;
   }
 }
-
-
-

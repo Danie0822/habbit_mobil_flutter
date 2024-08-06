@@ -214,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         ),
                         SizedBox(height: height * 0.02),
                         Stack(
-                          children: [
+                          children: [ 
                             //Widget del input para la contraseña
                             MyTextField(
                               context: context,
