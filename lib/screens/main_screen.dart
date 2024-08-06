@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:animations/animations.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 // Pantalla principal con barra de navegación inferior y transiciones de página
 class MainScreen extends StatefulWidget {
+  final int initialIndex;
+  const MainScreen({Key? key, required this.initialIndex}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  PageController _pageController = PageController();
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: widget.initialIndex);
+    _selectedIndex = widget.initialIndex;
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   // Lista de pantallas mostradas en el PageView
   final List<Widget> _screens = [
@@ -32,28 +47,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageTransitionSwitcher(
-        duration: const Duration(milliseconds: 300),
-        reverse: true,
-        transitionBuilder: (
-          Widget child,
-          Animation<double> primaryAnimation,
-          Animation<double> secondaryAnimation,
-        ) {
-          // Transición de ejes compartidos para cambiar de página
-          return SharedAxisTransition(
-            animation: primaryAnimation,
-            secondaryAnimation: secondaryAnimation,
-            transitionType: SharedAxisTransitionType.horizontal,
-            child: child,
-          );
-        },
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: _onItemTapped,
-          physics: const AlwaysScrollableScrollPhysics(), 
-          children: _screens,
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onItemTapped,
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: _screens,
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,

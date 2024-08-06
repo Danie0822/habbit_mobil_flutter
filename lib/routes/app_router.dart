@@ -79,8 +79,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/main',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(MainScreen(), state),
+      pageBuilder: (context, state) {
+        final int initialIndex = state.extra as int;
+        return _buildPageWithFuturisticTransition(MainScreen(initialIndex: initialIndex), state);
+      },
     ),
     GoRoute(
       path: '/registar',
