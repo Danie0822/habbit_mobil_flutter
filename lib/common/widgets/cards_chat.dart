@@ -4,6 +4,7 @@ import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class ChatCard extends StatelessWidget {
+  final int idConversacion;
   final String title;
   final String name;
   final String message;
@@ -13,6 +14,7 @@ class ChatCard extends StatelessWidget {
   final bool isAdmin;
 
   const ChatCard({
+    required this.idConversacion,
     required this.title,
     required this.name,
     required this.message,
@@ -51,7 +53,10 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/chat');
+        context.push('/chat', extra: {
+          'idConversacion': idConversacion,
+          'nameUser': name,
+        });
       },
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -149,7 +154,7 @@ class ChatCard extends StatelessWidget {
                           ),
                         const SizedBox(width: 5),
                         Icon(
-                          Icons.check,
+                          isRead ? Icons.done_all : Icons.check,
                           color: isRead ? Colors.blue : Colors.grey,
                           size: 16,
                         ),
