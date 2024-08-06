@@ -5,10 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field.dart';
+import 'package:habbit_mobil_flutter/data/controlers/register.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 
-//Creaciónn y construcción de stateful widget llamado register screen 
+//Creaciónn y construcción de stateful widget llamado register screen
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -20,16 +23,22 @@ class _RegisterScreenState extends State<RegisterScreen>
     with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
+  final AuthService _authService = AuthService();
 
   late AnimationController _textController;
   late Animation<Offset> _textAnimation;
   late AnimationController _inputsController;
   late Animation<Offset> _inputsAnimation;
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    
+
     // Creacion de animacion para el texto de la pantalla
     _textController = AnimationController(
       vsync: this,
@@ -41,8 +50,8 @@ class _RegisterScreenState extends State<RegisterScreen>
     ).animate(
       CurvedAnimation(parent: _textController, curve: Curves.easeInOut),
     );
-    
-    //Creacion de la animacion de los inputs 
+
+    //Creacion de la animacion de los inputs
     _inputsController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -53,12 +62,32 @@ class _RegisterScreenState extends State<RegisterScreen>
     ).animate(
       CurvedAnimation(parent: _inputsController, curve: Curves.easeInOut),
     );
-    
+
     _textController.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         _inputsController.forward();
       });
     });
+  }
+
+  // Maneja el inicio de sesión
+  void _handleRegister() async {
+    // Validar el formulario
+    if (_formKey.currentState?.validate() ?? false) {
+      final name = _nameController.text;
+      final email = _emailController.text;
+      final phone = _phoneController.text;
+      final password = _passwordController.text;
+      // Petición de inicio de sesión
+      final success = await _authService.register(name, email, phone, password);
+      if (success) {
+        showAlertDialogScreen('Éxito', 'El usuario se ha registrado correctamente', 3,
+        context, '/ubi');
+        
+      } else {
+        showAlertDialog('Error', 'Credenciales inválidas', 1, context);
+      }
+    }
   }
 
   @override
@@ -155,6 +184,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.drive_file_rename_outline,
                           key: const Key('nombre'),
+                          validator: CustomValidator.validateName,
+                          controller: _nameController,
                         ),
                         SizedBox(height: height * 0.02),
                         //Widget del input para email
@@ -164,6 +195,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.email_outlined,
                           key: const Key('email'),
+                          validator: CustomValidator.validateEmail,
+                          controller: _emailController,
                         ),
                         SizedBox(height: height * 0.02),
                         //Widget del input para el telefono
@@ -173,9 +206,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.smartphone,
                           key: const Key('telefono'),
+                          validator: CustomValidator.validatePhoneNumber,
+                          controller: _phoneController,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(8),
+                            LengthLimitingTextInputFormatter(9),
                           ],
                         ),
                         SizedBox(height: height * 0.02),
@@ -188,6 +222,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                               isPassword: !showPassword,
                               icon: Icons.lock_outline,
                               key: const Key('contraseña'),
+                              validator: CustomValidator.validatePassword,
+                              controller: _passwordController,
                             ),
                             Positioned(
                               right: 0,
@@ -211,7 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           //Widget del boton que redirige a las otras pantallas
                           child: CustomButton(
                             onPressed: () {
-                              context.push('/ubi');
+                              _handleRegister();
                             },
                             text: "Crear cuenta",
                           ),

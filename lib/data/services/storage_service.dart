@@ -50,4 +50,12 @@ class StorageService {
       _storage.write(key: 'client_name', value: clientName),
     ]);
   }
+    // Método para guardar ID del cliente 
+  static Future<void> saveCredentialsRegister(
+    String clientId) async {
+    await Future.wait([
+      _storage.write(key: 'client_id', value: clientId),
+    ]);
+    
+  }
 }

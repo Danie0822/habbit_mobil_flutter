@@ -80,6 +80,33 @@ static String? validatePriceRange(double? start, double? end) {
     }
     return null;
   }
+  // Validación de nombre 
+  static String? validateName(String? value) {
+    final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$');
+    
+    if (value == null || value.isEmpty) {
+      return 'El campo no puede estar vacío';
+    } else if (value.length < 3) {
+      return 'La longitud mínima es 3 caracteres';
+    } else if (value.length > 100) {
+      return 'La longitud máxima es 100 caracteres';
+    } else if (!regExp.hasMatch(value)) {
+      return 'El nombre solo puede contener letras';
+    }
+    return null;
+  }
+    // Validación de teléfono 
+  static String? validatePhoneNumber(String? value) {
+    final regExp = RegExp(r'^[762]\d{3}-\d{4}$');
+    
+    if (value == null || value.isEmpty) {
+      return 'El campo no puede estar vacío';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Ingrese un número de teléfono válido (0000-0000) comenzando con 7, 6 o 2';
+    }
+    return null;
+  }
 }
+
 
 
