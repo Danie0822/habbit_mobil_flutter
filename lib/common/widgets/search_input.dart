@@ -3,7 +3,10 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class SearchInput extends StatelessWidget {
-  const SearchInput({super.key});
+  final ValueChanged<String>? onChanged;
+  final String? hintText;
+
+  const SearchInput({super.key, this.onChanged, this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +17,11 @@ class SearchInput extends StatelessWidget {
         context, iconLightColor, iconDarkColor);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0), 
+      padding: const EdgeInsets.only(top: 20.0),
       child: TextField(
+        onChanged: onChanged,
         decoration: InputDecoration(
-          hintText: 'Buscar...',
+          hintText: hintText,
           hintStyle: TextStyle(color: iconColor),
           filled: true,
           fillColor: fillColor,

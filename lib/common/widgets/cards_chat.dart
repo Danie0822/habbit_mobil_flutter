@@ -49,7 +49,7 @@ class ChatCard extends StatelessWidget {
         message.length > 30 ? '${message.substring(0, 30)}...' : message;
 
     String truncatedMessageName =
-    '$name: $truncatedMessage'.length > 30 ? '${'$name: $truncatedMessage'.substring(0, 30)}...' : '$name: $truncatedMessage';
+        '$name: $truncatedMessage'.length > 30 ? '${'$name: $truncatedMessage'.substring(0, 30)}...' : '$name: $truncatedMessage';
 
     return GestureDetector(
       onTap: () {
@@ -121,37 +121,25 @@ class ChatCard extends StatelessWidget {
                       style: TextStyle(
                         color: textName,
                         fontSize: 14,
-                        fontWeight:
-                            isRead ? FontWeight.normal : FontWeight.bold,
+                        fontWeight: !isRead && isAdmin
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                       ),
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        if (isAdmin)
-                          Expanded(
-                            child: Text(
-                              truncatedMessageName,
-                              style: TextStyle(
-                                color: textName,
-                                fontWeight: isRead
-                                    ? FontWeight.normal
-                                    : FontWeight.bold,
-                              ),
-                            ),
-                          )
-                        else
-                          Expanded(
-                            child: Text(
-                              truncatedMessage,
-                              style: TextStyle(
-                                color: textName,
-                                fontWeight: isRead
-                                    ? FontWeight.normal
-                                    : FontWeight.bold,
-                              ),
+                        Expanded(
+                          child: Text(
+                            isAdmin ? truncatedMessageName : truncatedMessage,
+                            style: TextStyle(
+                              color: textName,
+                              fontWeight: !isRead && isAdmin
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
+                        ),
                         const SizedBox(width: 5),
                         Icon(
                           isRead ? Icons.done_all : Icons.check,

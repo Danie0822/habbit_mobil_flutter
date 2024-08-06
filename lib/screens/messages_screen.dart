@@ -20,11 +20,11 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   bool _isSearchVisible = false;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _loadMessages();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -36,6 +36,19 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+    _loadMessages();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadMessages();
+  }
+
+  @override
+  void didUpdateWidget(covariant MessagesScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _loadMessages();
   }
 
   Future<void> _loadMessages() async {
@@ -45,11 +58,10 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
         _showNoConversationsAlert();
       } else {
         setState(() {
-          _chatCards.clear(); // Clear existing cards
+          _chatCards.clear();
         });
 
         for (var message in messages) {
-          print(message.senderType);
           final chatCard = ChatCard(
             idConversacion: message.conversacionId ?? 0,
             title: message.propertyTitle ?? 'Sin título',
@@ -88,7 +100,15 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
         _controller.forward();
       } else {
         _controller.reverse();
+        _searchQuery = '';
+        _refreshMessages();
       }
+    });
+  }
+
+  void _filterMessages(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
     });
   }
 
@@ -99,7 +119,6 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   }
 
   Future<void> _refreshMessages() async {
-    // Remove all items with animation
     for (int i = _chatCards.length - 1; i >= 0; i--) {
       _listKey.currentState?.removeItem(
         i,
@@ -107,7 +126,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
         duration: const Duration(milliseconds: 300),
       );
     }
-    await _loadMessages(); // Call the message loading function
+    await _loadMessages();
   }
 
   @override
@@ -115,44 +134,50 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
 
-    return Scaffold(
-      backgroundColor: colorBackGroundMessage,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 20.0),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: containerMain,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+    return WillPopScope(
+      onWillPop: () async {
+        await _loadMessages(); // Recargar mensajes al regresar
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: colorBackGroundMessage,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 20.0),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: containerMain,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  child: RefreshIndicator(
-                    onRefresh: _refreshMessages, // Attach the refresh function
-                    child: AnimatedList(
-                      key: _listKey,
-                      padding: const EdgeInsets.only(top: 35.0),
-                      initialItemCount: _chatCards.length,
-                      itemBuilder: (context, index, animation) {
-                        return _buildAnimatedItem(context, index, animation);
-                      },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    child: RefreshIndicator(
+                      onRefresh: _refreshMessages,
+                      child: AnimatedList(
+                        key: _listKey,
+                        padding: const EdgeInsets.only(top: 35.0),
+                        initialItemCount: _chatCards.length,
+                        itemBuilder: (context, index, animation) {
+                          return _buildFilteredItem(context, index, animation);
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -197,7 +222,10 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
           if (_isSearchVisible)
             SlideTransition(
               position: _offsetAnimation,
-              child: const SearchInput(),
+              child: SearchInput(
+                onChanged: _filterMessages,
+                hintText: 'Buscar por título...',
+              ),
             ),
         ],
       ),
@@ -216,5 +244,17 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
         child: chatCard,
       ),
     );
+  }
+
+  Widget _buildFilteredItem(BuildContext context, int index, Animation<double> animation) {
+    if (_searchQuery.isEmpty) {
+      return _buildAnimatedItem(context, index, animation);
+    }
+    final chatCard = _chatCards[index];
+    if (chatCard.title.toLowerCase().contains(_searchQuery)) {
+      return _buildAnimatedItem(context, index, animation);
+    } else {
+      return Container(); // Oculta el elemento si no coincide con la búsqueda
+    }
   }
 }
