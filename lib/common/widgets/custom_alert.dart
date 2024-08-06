@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   final String title;
@@ -43,6 +46,8 @@ class CustomAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = ThemeUtils.getColorBasedOnBrightness(
+        context, lightBackgroundColor, darkBackgroundColor);
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -52,9 +57,8 @@ class CustomAlertDialog extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.6,
         ),
-        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(15.0),
           boxShadow: const [
             BoxShadow(
@@ -69,45 +73,78 @@ class CustomAlertDialog extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: _getColor().withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                _getIcon(),
-                color: _getColor(),
-                size: 30,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: _getColor(),
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _getColor(),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+              decoration: const BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
-              onPressed: onPressed,
-              child: const Text(
-                "Aceptar",
-                style: TextStyle(color: Colors.white),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: _getColor().withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      _getIcon(),
+                      color: _getColor(),
+                      size: 30,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/images/logoLight.png', // Ruta fija al logo de la aplicación
+                    height: 40,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    message,
+                    textAlign: TextAlign.left, // Alineación izquierda
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _getColor(),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                        ),
+                        onPressed: onPressed,
+                        child: const Text(
+                          "Aceptar",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -117,7 +154,8 @@ class CustomAlertDialog extends StatelessWidget {
   }
 }
 
-void showAlertDialog(String title, String message, int type, BuildContext context) {
+void showAlertDialog(
+    String title, String message, int type, BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -133,7 +171,8 @@ void showAlertDialog(String title, String message, int type, BuildContext contex
   );
 }
 
-void showAlertDialogScreen(String title, String message, int type, BuildContext context, String router) {
+void showAlertDialogScreen(String title, String message, int type,
+    BuildContext context, String router) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
