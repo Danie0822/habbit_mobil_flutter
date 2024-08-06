@@ -51,7 +51,7 @@ class _CodeViewState extends State<CodeView> {
       if (result == 1) {
         context.push('/pass', extra: arguments);
       } else {
-        showAlertDialog('Error', 'Código incorrecto', 1, context);
+        showAlertDialog('Error', 'El código ingresado es incorrecto. Por favor, verifica el código e inténtalo nuevamente.', 1, context);
       }
     } else {
       showAlertDialog(
