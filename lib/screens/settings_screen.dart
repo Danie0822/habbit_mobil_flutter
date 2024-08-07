@@ -120,50 +120,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Ajusta a tu preferencia el texto de la aplicación',
-            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 28),
-            textAlign: TextAlign.center,
+          Visibility(
+            visible: _currentPage == 1,
+            child: const Text(
+              'Ajusta a tu preferencia el texto de la aplicación',
+              style: TextStyle(fontWeight: FontWeight.w100, fontSize: 28),
+              textAlign: TextAlign.center,
+            ),
           ),
           const Spacer(flex: 1),
-          Row(
-            children: [
-              const Text(
-                'A',
-                style: TextStyle(fontSize: 15),
-              ),
-              Expanded(
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: Colors.black,
-                    inactiveTrackColor: Colors.black,
-                    trackHeight: 2.0,
-                    thumbColor: Colors.black,
-                    overlayColor: Colors.black.withOpacity(0.2),
-                    thumbShape:
-                        const RoundSliderThumbShape(enabledThumbRadius: 10.0),
-                    overlayShape:
-                        const RoundSliderOverlayShape(overlayRadius: 20.0),
-                  ),
-                  child: Slider(
-                    value: _textSize,
-                    min: 10,
-                    max: 30,
-                    divisions: 4,
-                    label: _textSize.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        _textSize = value;
-                      });
-                    },
+          Visibility(
+            visible: _currentPage == 1,
+            child: Row(
+              children: [
+                const Text(
+                  'A',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Expanded(
+                  child: SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor: Colors.black,
+                      inactiveTrackColor: Colors.black,
+                      trackHeight: 2.0,
+                      thumbColor: Colors.black,
+                      overlayColor: Colors.black.withOpacity(0.2),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+                      overlayShape:
+                          const RoundSliderOverlayShape(overlayRadius: 20.0),
+                    ),
+                    child: Slider(
+                      value: _textSize,
+                      min: 10,
+                      max: 30,
+                      divisions: 4,
+                      label: _textSize.round().toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _textSize = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
-              ),
-              const Text(
-                'A',
-                style: TextStyle(fontSize: 25),
-              ),
-            ],
+                const Text(
+                  'A',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ],
+            ),
           ),
           const Spacer(flex: 2),
         ],
