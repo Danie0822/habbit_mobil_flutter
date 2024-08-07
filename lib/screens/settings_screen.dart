@@ -115,9 +115,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 1),
-          const Text(
-            'Tamaño del texto',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+          Visibility(
+            visible: _currentPage == 1,
+            child: const Text(
+              'Tamaño del texto',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+            ),
           ),
           const SizedBox(height: 20),
           Visibility(
