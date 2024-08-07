@@ -106,18 +106,9 @@ class _UbiScreenState extends State<UbiScreen> {
     final width = mediaQuery.size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            context.pop();
-          },
-        ),
-      ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05,
+        vertical: height * 0.1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
