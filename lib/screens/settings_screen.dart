@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
-
+    // Inicio de la construcción de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -32,116 +32,101 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: CarouselSlider(
-              carouselController: _carouselController,
-              options: CarouselOptions(
-                height: MediaQuery.of(context).size.height * 0.7,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double maxHeight = constraints.maxHeight;
+          // Inicio de la construcción de la pantalla
+          return Column(
+            children: [
+              Expanded(
+                child: CarouselSlider(
+                  carouselController: _carouselController,
+                  options: CarouselOptions(
+                    height: maxHeight * 0.99,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                  ),
+                  // Lista de páginas de configuración
+                  items: [
+                    _buildThemeSettingsPage(themeProvider, isDarkMode),
+                    _buildTextSizeSettingsPage(),
+                  ],
+                ),
               ),
-              items: [
-                Container(
-                  width: double.infinity,
-                  key: const ValueKey<int>(0),
-                  child: _buildThemeSettingsPage(themeProvider, isDarkMode),
-                ),
-                Container(
-                  width: double.infinity,
-                  key: const ValueKey<int>(1),
-                  child: _buildTextSizeSettingsPage(),
-                ),
-              ],
+              _buildBottomSlider(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // Método para construir la página de configuración de temas
+  Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(flex: 1),
+          AnimatedSwitcher(
+            duration: const Duration(seconds: 1),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: SizedBox(
+              key: ValueKey<bool>(isDarkMode),
+              height: 200.0,
+              width: 250.0,
+              child: Image.asset(
+                isDarkMode ? 'assets/images/Luna.png' : 'assets/images/Sol.png',
+              ),
             ),
           ),
-          _buildBottomSlider(),
+          const Spacer(flex: 1),
+          const Text(
+            'Escoge un aspecto',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Escoge el estilo que más te guste.',
+            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
+          _buildToggleButtons(themeProvider),
+          const Spacer(flex: 2),
         ],
       ),
     );
   }
 
-  Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
-    return Column(
-      key: const ValueKey<int>(0),
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(height: 50),
-        AnimatedSwitcher(
-          duration: const Duration(seconds: 1),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child: SizedBox(
-            key: ValueKey<bool>(isDarkMode),
-            height: 200.0,
-            width: 250.0,
-            child: Image.asset(
-              isDarkMode ? 'assets/images/Luna.png' : 'assets/images/Sol.png',
-            ),
-          ),
-        ),
-        const SizedBox(height: 50),
-        Visibility(
-          visible: _currentPage == 0,
-          child: const Text(
-            'Escoge un aspecto',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Visibility(
-          visible: _currentPage == 0,
-          child: const Text(
-            'Escoge el estilo que más te guste.',
-            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 25),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 30),
-        _buildToggleButtons(themeProvider),
-      ],
-    );
-  }
-
+  // Método para construir la página de configuración de tamaño de texto
   Widget _buildTextSizeSettingsPage() {
-    return Column(
-      key: const ValueKey<int>(1),
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: _currentPage == 1,
-          child: const SizedBox(height: 50),
-        ),
-        Visibility(
-          visible: _currentPage == 1,
-          child: const Text(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(flex: 1),
+          const Text(
             'Tamaño del texto',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
           ),
-        ),
-        Visibility(
-          visible: _currentPage == 1,
-          child: const SizedBox(height: 40),
-        ),
-        Visibility(
-          visible: _currentPage == 1,
-          child: const Text(
+          const SizedBox(height: 20),
+          const Text(
             'Ajusta a tu preferencia el texto de la aplicación',
             style: TextStyle(fontWeight: FontWeight.w100, fontSize: 28),
             textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 250),
-        Visibility(
-          visible: _currentPage == 1,
-          child: Row(
+          const Spacer(flex: 1),
+          Row(
             children: [
               const Text(
                 'A',
@@ -180,11 +165,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
           ),
-        ),
-      ],
+          const Spacer(flex: 2),
+        ],
+      ),
     );
   }
 
+  // Método para construir los botones de cambio de tema
   Widget _buildToggleButtons(ThemeProvider themeProvider) {
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
 
@@ -201,47 +188,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
       selectedColor: const Color.fromARGB(255, 85, 85, 85),
       borderRadius: BorderRadius.circular(30),
       children: [
-        Visibility(
-          visible: _currentPage == 0,
-          child: Container(
-            width: 150,
-            height: 100,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
+        Container(
+          width: 130,
+          height: 65,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: !isDarkMode
+                ? const Color.fromARGB(255, 240, 240, 240)
+                : const Color.fromARGB(188, 0, 0, 0),
+          ),
+          child: Text(
+            'CLARO',
+            style: TextStyle(
+              fontSize: 20,
               color: !isDarkMode
-                  ? const Color.fromARGB(255, 240, 240, 240)
-                  : const Color.fromARGB(188, 0, 0, 0),
-            ),
-            child: Text(
-              'CLARO',
-              style: TextStyle(
-                fontSize: 20,
-                color: !isDarkMode
-                    ? const Color.fromARGB(255, 7, 7, 7)
-                    : const Color.fromARGB(255, 219, 219, 219),
-              ),
+                  ? const Color.fromARGB(255, 7, 7, 7)
+                  : const Color.fromARGB(255, 219, 219, 219),
             ),
           ),
         ),
-        Visibility(
-          visible: _currentPage == 0,
-          child: Container(
-            width: 150,
-            height: 100,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
+        Container(
+          width: 130,
+          height: 65,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isDarkMode
+                ? const Color.fromARGB(255, 240, 240, 240)
+                : const Color.fromARGB(188, 0, 0, 0),
+          ),
+          child: Text(
+            'OSCURO',
+            style: TextStyle(
+              fontSize: 20,
               color: isDarkMode
-                  ? const Color.fromARGB(255, 240, 240, 240)
-                  : const Color.fromARGB(188, 0, 0, 0),
-            ),
-            child: Text(
-              'OSCURO',
-              style: TextStyle(
-                fontSize: 20,
-                color: isDarkMode
-                    ? const Color.fromARGB(255, 7, 7, 7)
-                    : const Color.fromARGB(255, 219, 219, 219),
-              ),
+                  ? const Color.fromARGB(255, 7, 7, 7)
+                  : const Color.fromARGB(255, 219, 219, 219),
             ),
           ),
         ),
@@ -249,6 +230,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // Método para construir el control deslizante inferior
   Widget _buildBottomSlider() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
