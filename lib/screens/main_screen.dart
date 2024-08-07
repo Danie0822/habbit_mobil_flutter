@@ -36,22 +36,51 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
-  // Actualiza el índice seleccionado y salta a la página correspondiente
+  // Actualiza el índice seleccionado y anima a la página correspondiente
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _pageController.jumpToPage(index);
+      _pageController.animateToPage(
+        index,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
+      body: PageView.builder(
+        itemCount: _screens.length,
         controller: _pageController,
-        onPageChanged: _onItemTapped,
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: _screens,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        itemBuilder: (context, index) {
+          return AnimatedBuilder(
+            animation: _pageController,
+            builder: (context, child) {
+              double value = 1.0;
+              if (_pageController.position.haveDimensions) {
+                value = _pageController.page! - index;
+                value = (1 - (value.abs() * .3)).clamp(0.0, 1.0);
+              }
+              return Opacity(
+                opacity: value,
+                child: Transform(
+                  transform: Matrix4.identity()
+                    ..scale(value, value),
+                  alignment: Alignment.center,
+                  child: _screens[index],
+                ),
+              );
+            },
+            child: _screens[index],
+          );
+        },
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,
