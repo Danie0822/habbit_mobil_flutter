@@ -28,11 +28,11 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //cambio de color de fondo de acuerdo al tema
+    // Cambio de color de fondo de acuerdo al tema
     final Color containerMessage = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
 
-    //cambio de color de texto de acuerdo al tema
+    // Cambio de color de texto de acuerdo al tema
     final Color textName = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
 
@@ -58,7 +58,6 @@ class ChatCard extends StatelessWidget {
     String truncatedMessageName =
         '$name: $truncatedMessage'.length > 30 ? '${'$name: $truncatedMessage'.substring(0, 30)}...' : '$name: $truncatedMessage';
 
-    // Retorna un contenedor con la información del mensaje
     return GestureDetector(
       onTap: () {
         context.push('/chat', extra: {
@@ -88,18 +87,7 @@ class ChatCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        width: 75,
-                        height: 75,
-                        fit: BoxFit.cover,
-                      )
-                    : Icon(
-                        Icons.account_circle,
-                        size: 75,
-                        color: textName,
-                      ),
+                child: _buildImage(),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -130,8 +118,8 @@ class ChatCard extends StatelessWidget {
                         color: textName,
                         fontSize: 14,
                         fontWeight: !isRead && isAdmin
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                     const SizedBox(height: 5),
@@ -163,6 +151,34 @@ class ChatCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildImage() {
+    try {
+      if (imageUrl.isNotEmpty) {
+        return Image.network(
+          imageUrl,
+          width: 75,
+          height: 75,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error loading image: $error');
+            return _defaultIcon();
+          },
+        );
+      }
+    } catch (e) {
+      print('Exception loading image: $e');
+    }
+    return _defaultIcon();
+  }
+
+  Widget _defaultIcon() {
+    return const Icon(
+      Icons.account_circle,
+      size: 75,
+      color: Colors.grey,
     );
   }
 }

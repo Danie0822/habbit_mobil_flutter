@@ -68,171 +68,215 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   }
 
   void _showNoConversationsAlert() {
-    showAlertDialog(
-      'Sin conversaciones',
-      'No has iniciado ninguna conversación todavía.',
-      1,
-      context,
-    ); // Muestra alerta si no hay conversaciones
+    try {
+      showAlertDialog(
+        'Sin conversaciones',
+        'No has iniciado ninguna conversación todavía.',
+        1,
+        context,
+      ); // Muestra alerta si no hay conversaciones
+    } catch (e) {
+      print('Error mostrando alerta: $e'); // Manejo de errores al mostrar alerta
+    }
   }
 
   void _toggleSearch() {
-    setState(() {
-      _isSearchVisible = !_isSearchVisible; // Alterna la visibilidad del campo de búsqueda
-      if (_isSearchVisible) {
-        _controller.forward(); // Muestra el campo de búsqueda con animación
-      } else {
-        _controller.reverse(); // Oculta el campo de búsqueda con animación
-        _searchQuery = '';
-        _refreshMessages(); // Refresca los mensajes al ocultar el campo de búsqueda
-      }
-    });
+    try {
+      setState(() {
+        _isSearchVisible = !_isSearchVisible; // Alterna la visibilidad del campo de búsqueda
+        if (_isSearchVisible) {
+          _controller.forward(); // Muestra el campo de búsqueda con animación
+        } else {
+          _controller.reverse(); // Oculta el campo de búsqueda con animación
+          _searchQuery = '';
+          _refreshMessages(); // Refresca los mensajes al ocultar el campo de búsqueda
+        }
+      });
+    } catch (e) {
+      print('Error alternando búsqueda: $e'); // Manejo de errores al alternar búsqueda
+    }
   }
 
   void _filterMessages(String query) {
-    setState(() {
-      _searchQuery = query.toLowerCase(); // Actualiza la consulta de búsqueda
-    });
+    try {
+      setState(() {
+        _searchQuery = query.toLowerCase(); // Actualiza la consulta de búsqueda
+      });
+    } catch (e) {
+      print('Error filtrando mensajes: $e'); // Manejo de errores al filtrar mensajes
+    }
   }
 
   Future<void> _refreshMessages() async {
-    for (int i = _chatCards.length - 1; i >= 0; i--) {
-      _listKey.currentState?.removeItem(
-        i,
-        (context, animation) => _buildAnimatedItem(context, i, animation),
-        duration: const Duration(milliseconds: 300),
-      ); // Elimina elementos de la lista animada
+    try {
+      for (int i = _chatCards.length - 1; i >= 0; i--) {
+        _listKey.currentState?.removeItem(
+          i,
+          (context, animation) => _buildAnimatedItem(context, i, animation),
+          duration: const Duration(milliseconds: 300),
+        ); // Elimina elementos de la lista animada
+      }
+      await _loadMessages(); // Recarga los mensajes
+    } catch (e) {
+      print('Error refrescando mensajes: $e'); // Manejo de errores al refrescar mensajes
     }
-    await _loadMessages(); // Recarga los mensajes
   }
 
   @override
   void dispose() {
-    _controller.dispose(); // Libera el controlador de animación
-    super.dispose();
+    try {
+      _controller.dispose(); // Libera el controlador de animación
+      super.dispose();
+    } catch (e) {
+      print('Error liberando recursos: $e'); // Manejo de errores al liberar recursos
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
-        context, colorBackGroundMessageContainerLight, almostBlackColor); // Obtiene el color basado en el tema
+    try {
+      final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
+          context, colorBackGroundMessageContainerLight, almostBlackColor); // Obtiene el color basado en el tema
 
-    return WillPopScope(
-      onWillPop: () async {
-        await _loadMessages(); // Recarga mensajes al regresar
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: colorBackGroundMessage,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(), // Construye la cabecera de la pantalla
-              const SizedBox(height: 20.0),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: containerMain,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+      return WillPopScope(
+        onWillPop: () async {
+          try {
+            await _loadMessages(); // Recarga mensajes al regresar
+          } catch (e) {
+            print('Error al regresar: $e'); // Manejo de errores al regresar
+          }
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: colorBackGroundMessage,
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(), // Construye la cabecera de la pantalla
+                const SizedBox(height: 20.0),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: containerMain,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    child: RefreshIndicator(
-                      onRefresh: _refreshMessages, // Actualiza los mensajes al hacer pull-to-refresh
-                      child: AnimatedList(
-                        key: _listKey,
-                        padding: const EdgeInsets.only(top: 35.0),
-                        initialItemCount: _chatCards.length,
-                        itemBuilder: (context, index, animation) {
-                          return _buildFilteredItem(context, index, animation); // Construye los elementos de la lista filtrados
-                        },
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                      child: RefreshIndicator(
+                        onRefresh: _refreshMessages, // Actualiza los mensajes al hacer pull-to-refresh
+                        child: AnimatedList(
+                          key: _listKey,
+                          padding: const EdgeInsets.only(top: 35.0),
+                          initialItemCount: _chatCards.length,
+                          itemBuilder: (context, index, animation) {
+                            return _buildFilteredItem(context, index, animation); // Construye los elementos de la lista filtrados
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      print('Error construyendo la pantalla: $e'); // Manejo de errores al construir la pantalla
+      return Container(); // Devuelve un contenedor vacío en caso de error
+    }
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Mensajes',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: whiteColor,
-                ),
-              ),
-              IconButton(
-                onPressed: _toggleSearch, // Alterna la visibilidad del campo de búsqueda
-                icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return RotationTransition(
-                      turns: child.key == const ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
-                      child: FadeTransition(opacity: animation, child: child),
-                    ); // Transición animada para el ícono de búsqueda
-                  },
-                  child: Icon(
-                    _isSearchVisible ? Icons.close : Icons.search,
-                    key: ValueKey(_isSearchVisible ? 'close' : 'search'),
+    try {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Mensajes',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
                     color: whiteColor,
-                    size: 25.0,
                   ),
                 ),
-              ),
-            ],
-          ),
-          if (_isSearchVisible)
-            SlideTransition(
-              position: _offsetAnimation, // Animación de deslizamiento para el campo de búsqueda
-              child: SearchInput(
-                onChanged: _filterMessages, // Filtra los mensajes según la consulta de búsqueda
-                hintText: 'Buscar por título...',
-              ),
+                IconButton(
+                  onPressed: _toggleSearch, // Alterna la visibilidad del campo de búsqueda
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return RotationTransition(
+                        turns: child.key == const ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
+                        child: FadeTransition(opacity: animation, child: child),
+                      ); // Transición animada para el ícono de búsqueda
+                    },
+                    child: Icon(
+                      _isSearchVisible ? Icons.close : Icons.search,
+                      key: ValueKey(_isSearchVisible ? 'close' : 'search'),
+                      color: whiteColor,
+                      size: 25.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
-        ],
-      ),
-    );
+            if (_isSearchVisible)
+              SlideTransition(
+                position: _offsetAnimation, // Animación de deslizamiento para el campo de búsqueda
+                child: SearchInput(
+                  onChanged: _filterMessages, // Filtra los mensajes según la consulta de búsqueda
+                  hintText: 'Buscar por título...',
+                ),
+              ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('Error construyendo la cabecera: $e'); // Manejo de errores al construir la cabecera
+      return Container(); // Devuelve un contenedor vacío en caso de error
+    }
   }
 
   Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
-    return FadeTransition(
-      opacity: animation,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(-1, 0),
-          end: Offset.zero,
-        ).animate(animation), // Transición de deslizamiento para las tarjetas de chat
-        child: _chatCards[index], // Construye la tarjeta de chat
-      ),
-    );
+    try {
+      return FadeTransition(
+        opacity: animation,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(-1, 0),
+            end: Offset.zero,
+          ).animate(animation), // Transición de deslizamiento para las tarjetas de chat
+          child: _chatCards[index], // Construye la tarjeta de chat
+        ),
+      );
+    } catch (e) {
+      print('Error construyendo el elemento animado: $e'); // Manejo de errores al construir el elemento animado
+      return Container(); // Devuelve un contenedor vacío en caso de error
+    }
   }
 
   Widget _buildFilteredItem(BuildContext context, int index, Animation<double> animation) {
-    if (_searchQuery.isEmpty || _chatCards[index].title.toLowerCase().contains(_searchQuery)) {
-      return _buildAnimatedItem(context, index, animation); // Muestra las tarjetas filtradas
-    } else {
-      return Container(); // Oculta el elemento si no coincide con la búsqueda
+    try {
+      if (_searchQuery.isEmpty || _chatCards[index].title.toLowerCase().contains(_searchQuery)) {
+        return _buildAnimatedItem(context, index, animation); // Muestra las tarjetas filtradas
+      } else {
+        return Container(); // Oculta el elemento si no coincide con la búsqueda
+      }
+    } catch (e) {
+      print('Error construyendo el elemento filtrado: $e'); // Manejo de errores al construir el elemento filtrado
+      return Container(); // Devuelve un contenedor vacío en caso de error
     }
   }
 }
