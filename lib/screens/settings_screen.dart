@@ -88,15 +88,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         const SizedBox(height: 50),
-        const Text(
-          'Escoge un aspecto',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        Visibility(
+          visible: _currentPage == 0,
+          child: const Text(
+            'Escoge un aspecto',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
         ),
         const SizedBox(height: 20),
-        const Text(
-          'Escoge el estilo que más te guste.',
-          style: TextStyle(fontWeight: FontWeight.w100, fontSize: 25),
-          textAlign: TextAlign.center,
+        Visibility(
+          visible: _currentPage == 0,
+          child: const Text(
+            'Escoge el estilo que más te guste.',
+            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
         ),
         const SizedBox(height: 30),
         _buildToggleButtons(themeProvider),
@@ -195,41 +201,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
       selectedColor: const Color.fromARGB(255, 85, 85, 85),
       borderRadius: BorderRadius.circular(30),
       children: [
-        Container(
-          width: 150,
-          height: 100,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: !isDarkMode
-                ? const Color.fromARGB(255, 240, 240, 240)
-                : const Color.fromARGB(188, 0, 0, 0),
-          ),
-          child: Text(
-            'CLARO',
-            style: TextStyle(
-              fontSize: 20,
+        Visibility(
+          visible: _currentPage == 0,
+          child: Container(
+            width: 150,
+            height: 100,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
               color: !isDarkMode
-                  ? const Color.fromARGB(255, 7, 7, 7)
-                  : const Color.fromARGB(255, 219, 219, 219),
+                  ? const Color.fromARGB(255, 240, 240, 240)
+                  : const Color.fromARGB(188, 0, 0, 0),
+            ),
+            child: Text(
+              'CLARO',
+              style: TextStyle(
+                fontSize: 20,
+                color: !isDarkMode
+                    ? const Color.fromARGB(255, 7, 7, 7)
+                    : const Color.fromARGB(255, 219, 219, 219),
+              ),
             ),
           ),
         ),
-        Container(
-          width: 150,
-          height: 100,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isDarkMode
-                ? const Color.fromARGB(255, 240, 240, 240)
-                : const Color.fromARGB(188, 0, 0, 0),
-          ),
-          child: Text(
-            'OSCURO',
-            style: TextStyle(
-              fontSize: 20,
+        Visibility(
+          visible: _currentPage == 0,
+          child: Container(
+            width: 150,
+            height: 100,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
               color: isDarkMode
-                  ? const Color.fromARGB(255, 7, 7, 7)
-                  : const Color.fromARGB(255, 219, 219, 219),
+                  ? const Color.fromARGB(255, 240, 240, 240)
+                  : const Color.fromARGB(188, 0, 0, 0),
+            ),
+            child: Text(
+              'OSCURO',
+              style: TextStyle(
+                fontSize: 20,
+                color: isDarkMode
+                    ? const Color.fromARGB(255, 7, 7, 7)
+                    : const Color.fromARGB(255, 219, 219, 219),
+              ),
             ),
           ),
         ),
