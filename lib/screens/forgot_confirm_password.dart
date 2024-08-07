@@ -40,8 +40,15 @@ class _ConfirmViewState extends State<ConfirmView> {
         final result = await _recoveryController.sendRequest(
             arguments.idUsuario, arguments.codigo, hashedPassword, 'clave');
         if (result == 1) {
-          showAlertDialogScreen('Éxito', 'Contraseña cambiada correctamente', 3,
-              context, '/login');
+          showAlertDialogScreen(
+            'Éxito',
+            'Contraseña cambiada correctamente',
+            3,
+            context,
+            () {
+              context.push("/login");
+            },
+          );
         } else {
           showAlertDialog(
               'Advertencia', 'No se pudo cambiar la contraseña', 1, context);

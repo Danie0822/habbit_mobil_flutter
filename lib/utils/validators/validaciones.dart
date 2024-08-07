@@ -82,21 +82,21 @@ class CustomValidator {
     return null;
   }
 
-  // Validación de nombre
-  static String? validateName(String? value) {
-    final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$');
+// Validación de nombre
+static String? validateName(String? value) {
+  final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$');
 
-    if (value == null || value.isEmpty) {
-      return 'El campo no puede estar vacío';
-    } else if (value.length < 3) {
-      return 'La longitud mínima es 3 caracteres';
-    } else if (value.length > 100) {
-      return 'La longitud máxima es 100 caracteres';
-    } else if (!regExp.hasMatch(value)) {
-      return 'El nombre solo puede contener letras';
-    }
-    return null;
+  if (value == null || value.isEmpty) {
+    return 'El campo no puede estar vacío';
+  } else if (value.length < 3) {
+    return 'La longitud mínima es 3 caracteres';
+  } else if (value.length > 100) {
+    return 'La longitud máxima es 100 caracteres';
+  } else if (!regExp.hasMatch(value)) {
+    return 'El nombre solo puede contener letras y espacios';
   }
+  return null;
+}
 
 // Validación de teléfono
   static String? validatePhoneNumber(String? value) {

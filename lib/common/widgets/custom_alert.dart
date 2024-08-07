@@ -172,7 +172,7 @@ void showAlertDialog(
 }
 
 void showAlertDialogScreen(String title, String message, int type,
-    BuildContext context, String router) {
+    BuildContext context, void Function() onPressed  ) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -180,9 +180,7 @@ void showAlertDialogScreen(String title, String message, int type,
         title: title,
         message: message,
         type: type,
-        onPressed: () {
-          context.push(router);
-        },
+        onPressed: onPressed
       );
     },
   );

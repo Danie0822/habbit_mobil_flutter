@@ -81,9 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       // Petición de inicio de sesión
       final success = await _authService.register(name, email, phone, password);
       if (success) {
-        showAlertDialogScreen('Éxito', 'El usuario se ha registrado correctamente', 3,
-        context, '/ubi');
-        
+        context.go('/thanks_register');
       } else {
         showAlertDialog('Error', 'Credenciales inválidas', 1, context);
       }
@@ -195,6 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.email_outlined,
                           key: const Key('email'),
+                          keyboardType: TextInputType.emailAddress,
                           validator: CustomValidator.validateEmail,
                           controller: _emailController,
                         ),
@@ -206,6 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.smartphone,
                           key: const Key('telefono'),
+                          keyboardType: TextInputType.emailAddress,
                           validator: CustomValidator.validatePhoneNumber,
                           controller: _phoneController,
                           inputFormatters: <TextInputFormatter>[
