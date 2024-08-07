@@ -119,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             visible: _currentPage == 1,
             child: const Text(
               'Tamaño del texto',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),
             ),
           ),
           const SizedBox(height: 20),

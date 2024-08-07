@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
-// Pantalla principal con barra de navegación inferior y transiciones de página
 class MainScreen extends StatefulWidget {
   final int initialIndex;
   const MainScreen({Key? key, required this.initialIndex}) : super(key: key);
@@ -28,7 +28,6 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  // Lista de pantallas mostradas en el PageView
   final List<Widget> _screens = [
     HomeScreen(),
     LikeScreen(),
@@ -36,51 +35,36 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
-  // Actualiza el índice seleccionado y anima a la página correspondiente
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _pageController.animateToPage(
-        index,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
+      _pageController.jumpToPage(index); // Cambio rápido sin animación intermedia
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        itemCount: _screens.length,
+      body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
           setState(() {
             _selectedIndex = index;
           });
         },
-        itemBuilder: (context, index) {
-          return AnimatedBuilder(
-            animation: _pageController,
-            builder: (context, child) {
-              double value = 1.0;
-              if (_pageController.position.haveDimensions) {
-                value = _pageController.page! - index;
-                value = (1 - (value.abs() * .3)).clamp(0.0, 1.0);
-              }
-              return Opacity(
-                opacity: value,
-                child: Transform(
-                  transform: Matrix4.identity()
-                    ..scale(value, value),
-                  alignment: Alignment.center,
-                  child: _screens[index],
-                ),
+        children: _screens.map((screen) {
+          return PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
+              return FadeThroughTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                child: child,
               );
             },
-            child: _screens[index],
+            child: screen,
           );
-        },
+        }).toList(),
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,
