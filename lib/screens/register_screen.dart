@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       if (success) {
         context.go('/thanks_register');
       } else {
-        showAlertDialog('Error', 'Credenciales inválidas', 1, context);
+        showAlertDialog('Error', 'Este correo ya ha sido registrado en el programa por favor intente con otro', 1, context);
       }
     }
   }

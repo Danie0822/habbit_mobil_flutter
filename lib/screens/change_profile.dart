@@ -78,7 +78,7 @@ void _updateInfo() async {
         context.push("/main", extra: 3);
       });
     } else {
-      showAlertDialog('Error', 'No se pudo actualizar la información. Verifica tus datos e intenta nuevamente.', 2, context);
+      showAlertDialog('Error', 'Este correo ya ha sido registrado en el programa por favor intente con otro', 2, context);
     }
   }
 }
