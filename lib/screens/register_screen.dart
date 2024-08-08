@@ -205,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           isPassword: false,
                           icon: Icons.smartphone,
                           key: const Key('telefono'),
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.phone,
                           validator: CustomValidator.validatePhoneNumber,
                           controller: _phoneController,
                           inputFormatters: <TextInputFormatter>[
