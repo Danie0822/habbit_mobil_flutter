@@ -70,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     });
   }
 
-  // Maneja el inicio de sesión
+  // Maneja el registro de usuario
   void _handleRegister() async {
     // Validar el formulario
     if (_formKey.currentState?.validate() ?? false) {
@@ -78,7 +78,6 @@ class _RegisterScreenState extends State<RegisterScreen>
       final email = _emailController.text;
       final phone = _phoneController.text;
       final password = _passwordController.text;
-      // Petición de inicio de sesión
       final success = await _authService.register(name, email, phone, password);
       if (success) {
         context.go('/thanks_register');

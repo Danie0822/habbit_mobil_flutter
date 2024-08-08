@@ -45,7 +45,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
     });
     _loadClientInfo(idCliente);
   }
-
+  // Método para cargar la información
 Future<void> _loadClientInfo(String id) async {
   try {
     final clientInfo = await _updateInfoController.infoClient(id);
