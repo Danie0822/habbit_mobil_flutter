@@ -37,49 +37,51 @@ class ThankScreen extends StatelessWidget {
 
 //Incio de la construccion de la pantalla
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05,
-            vertical: height * 0.12,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //Widget que muestra el texto
-              Text(
-                "¡Muchas gracias por contestar!",
-                textAlign: TextAlign.center,
-                style: AppStyles.headline5(context, colorTexto),
-              ),
-              SizedBox(height: height * 0.02),
-              //Widget que muestra el texto
-              Text(
-                "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
-                textAlign: TextAlign.center,
-                style: AppStyles.subtitle1(context),
-              ),
-              SizedBox(
-                  height: height * 0.10), // Espacio entre el texto y la imagen
-              Image.asset(
-                'assets/images/thanks.png',
-                height: height * 0.3, // Ajusta la altura de la imagen
-                width: width * 0.8, // Ajusta el ancho de la imagen
-                fit: BoxFit.contain,
-              ),
-              SizedBox(
-                  height: height * 0.1), // Espacio entre la imagen y el botón
-              Align(
-                alignment: Alignment.center,
-                //Widget del boton para seguir a la siguiente pantalla
-                child: CustomButton(
-                  onPressed: () async {
-                    _enviarEstadisticas(context);
-                  },
-                  text: "Finalizar",
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.05,
+              vertical: height * 0.12,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //Widget que muestra el texto
+                Text(
+                  "¡Muchas gracias por contestar!",
+                  textAlign: TextAlign.center,
+                  style: AppStyles.headline5(context, colorTexto),
                 ),
-              ),
-            ],
+                SizedBox(height: height * 0.02),
+                //Widget que muestra el texto
+                Text(
+                  "Con cada respuesta tuya nos ayudas a mostrarte propiedades que te puedan interesar.",
+                  textAlign: TextAlign.center,
+                  style: AppStyles.subtitle1(context),
+                ),
+                SizedBox(
+                    height: height * 0.10), // Espacio entre el texto y la imagen
+                Image.asset(
+                  'assets/images/thanks.png',
+                  height: height * 0.3, // Ajusta la altura de la imagen
+                  width: width * 0.8, // Ajusta el ancho de la imagen
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(
+                    height: height * 0.1), // Espacio entre la imagen y el botón
+                Align(
+                  alignment: Alignment.center,
+                  //Widget del boton para seguir a la siguiente pantalla
+                  child: CustomButton(
+                    onPressed: () async {
+                      _enviarEstadisticas(context);
+                    },
+                    text: "Finalizar",
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
