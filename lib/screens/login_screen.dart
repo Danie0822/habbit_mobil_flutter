@@ -86,7 +86,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       // Petición de inicio de sesión
       final success = await _authService.login(email, password);
       if (success) {
-        context.push('/main', extra: 0);
+        context.go('/main', extra: 0);
       } else {
         showAlertDialog('Error', 'Asegúrese que a ingresando las credenciales correctamente.', 1, context);
       }
