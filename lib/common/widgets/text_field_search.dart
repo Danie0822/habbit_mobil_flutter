@@ -29,7 +29,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       decoration: InputDecoration(
         filled: true,
         fillColor: fillColor,
-        hintText: 'Search',
+        hintText: 'Buscar...',
         hintStyle: TextStyle(
           fontSize: 18,
           color: Colors.grey[400],
