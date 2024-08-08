@@ -46,7 +46,7 @@ class _ConfirmViewState extends State<ConfirmView> {
             3,
             context,
             () {
-              context.push("/login");
+              context.go("/login");
             },
           );
         } else {

@@ -117,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            context.push('/main', extra: 2);
+            context.go('/main', extra: 2);
           },
         ),
       ),
