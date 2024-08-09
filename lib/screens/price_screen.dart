@@ -8,6 +8,7 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:get/get.dart';
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart'; // Importa tu controlador
+import 'package:habbit_mobil_flutter/data/controlers/prices.dart';
 
 //Creación y construcción de stateful widget llamado price screen
 class PriceScreen extends StatefulWidget {
@@ -22,9 +23,13 @@ class _PriceScreenState extends State<PriceScreen>
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-  //Definimos los valores para el rango
-  var selectedRange = RangeValues(500, 1000);
+  // Inicializa el rango con valores predeterminados que se actualizarán más tarde.
+  var selectedRange = RangeValues(0, 0);
+  double minPrice = 0;
+  double maxPrice = 0;
+  bool isLoading = true;
 
+  final DataPrices _dataPreferences = DataPrices();
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -32,7 +37,7 @@ class _PriceScreenState extends State<PriceScreen>
   void initState() {
     super.initState();
 
-    //Creacion para animacion de la pantalla
+    // Creación para animación de la pantalla
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -41,9 +46,24 @@ class _PriceScreenState extends State<PriceScreen>
       CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
     );
     _fadeInController.forward();
+
+    // Cargar el rango de precios desde la api
+    _dataPreferences.fetchPrecioRange().then((range) {
+      setState(() {
+        minPrice = range.minimo;
+        maxPrice = range.maximo;
+        selectedRange = RangeValues(minPrice, maxPrice);
+        isLoading = false;
+      });
+    }).catchError((error) {
+      print('Error al cargar el rango de precios: $error');
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
-//Funcion para enviar datos al controlador
+  //Funcion para enviar datos al controlador
   void _handlePrecio() async {
     String? validationError = CustomValidator.validatePriceRange(
       selectedRange.start.toDouble(),
@@ -62,13 +82,6 @@ class _PriceScreenState extends State<PriceScreen>
   }
 
   @override
-  void dispose() {
-    _fadeInController.dispose();
-    super.dispose();
-  }
-
-// Método build que define la interfaz de usuario del widget
-  @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? secondaryColor
@@ -78,7 +91,6 @@ class _PriceScreenState extends State<PriceScreen>
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Incio de la construccion de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -94,95 +106,89 @@ class _PriceScreenState extends State<PriceScreen>
         padding: EdgeInsets.symmetric(
           horizontal: width * 0.05,
         ),
-        child: Column(
-          children: [
-            AnimatedBuilder(
-              animation: _fadeInAnimation,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _fadeInAnimation.value,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: height * 0,
-                        horizontal: width * 0.01,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //Widget que muestra el texto
-                          Text(
-                            "Elige el precio máximo y mínimo",
-                            style: AppStyles.headline5(context, colorTexto),
-                          ),
-                          SizedBox(height: height * 0.01),
-                          //Widget que muestra el texto
-                          Text(
-                            "Selecciona un precio máximo y un precio mínimo de los que están en el rango",
-                            style: AppStyles.subtitle1(context),
-                          ),
-                          SizedBox(height: height * 0.05),
-                          //Widget que se encarga del control deslizante que muestra los distintos valores para el precio
-                          RangeSlider(
-                            values: selectedRange,
-                            onChanged: (RangeValues newRange) {
-                              setState(() {
-                                selectedRange = newRange;
-                              });
-                            },
-                            min: 70,
-                            max: 1000,
-                            activeColor: Theme.of(context).primaryColor,
-                            inactiveColor: Colors.grey[300],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              //Textos que muestran el valor seleccionado en el slider
-                              Text(
-                                "\$${selectedRange.start.round()}k",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                              //Textos que muestran el valor seleccionado en el sliders
-                              Text(
-                                "\$${selectedRange.end.round()}k",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                              height: height *
-                                  0.42), // Espacio añadido para igualar la distancia
-                          Align(
-                            alignment: Alignment.center,
-                            //Boton para pasar a la siguiente pantalla
-                            child: CustomButton(
-                              onPressed: () {
-                                _handlePrecio();
-                              },
-                              text: "Siguiente",
+        child: isLoading
+            ? const Center(
+                child:
+                    CircularProgressIndicator()) // Muestra un indicador de carga mientras se obtienen los datos
+            : Column(
+                children: [
+                  AnimatedBuilder(
+                    animation: _fadeInAnimation,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: _fadeInAnimation.value,
+                        child: Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: height * 0,
+                              horizontal: width * 0.01,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Elige el precio máximo y mínimo",
+                                  style:
+                                      AppStyles.headline5(context, colorTexto),
+                                ),
+                                SizedBox(height: height * 0.01),
+                                Text(
+                                  "Selecciona un precio máximo y un precio mínimo de los que están en el rango",
+                                  style: AppStyles.subtitle1(context),
+                                ),
+                                SizedBox(height: height * 0.05),
+                                RangeSlider(
+                                  values: selectedRange,
+                                  min: minPrice,
+                                  max: maxPrice,
+                                  onChanged: (RangeValues newRange) {
+                                    setState(() {
+                                      selectedRange = newRange;
+                                    });
+                                  },
+                                  activeColor: Theme.of(context).primaryColor,
+                                  inactiveColor: Colors.grey[300],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "\$${selectedRange.start.round().toDouble()}",
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      "\$${selectedRange.end.round().toDouble()}",
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: height * 0.42),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: CustomButton(
+                                    onPressed: () {
+                                      _handlePrecio();
+                                    },
+                                    text: "Siguiente",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }
