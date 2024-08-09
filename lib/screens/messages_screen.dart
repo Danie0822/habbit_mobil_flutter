@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
@@ -163,9 +165,9 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                     child: RefreshIndicator(
                       onRefresh: _refreshMessages, // Refrescar mensajes al arrastrar hacia abajo
                       child: _isLoading
-                          ? Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
+                          ? const Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
                           : _chatCards.isEmpty
-                              ? Center(child: Text('No has iniciado ninguna conversación todavía.')) // Mostrar mensaje si no hay conversaciones
+                              ? const Center(child: Text('No has iniciado ninguna conversación todavía.')) // Mostrar mensaje si no hay conversaciones
                               : AnimatedList(
                                   key: _listKey,
                                   padding: const EdgeInsets.only(top: 35.0),

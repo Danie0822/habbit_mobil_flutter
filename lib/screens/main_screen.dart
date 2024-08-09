@@ -30,7 +30,6 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    LikeScreen(),
     MessagesScreen(),
     ProfileScreen(),
   ];

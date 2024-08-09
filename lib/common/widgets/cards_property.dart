@@ -1,62 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/data/data.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PropertyCard extends StatefulWidget {
-  final Property property;
-  final int index;
   final bool isFavorites;
+  final int idPropiedad;
+  final String title;
+  final String type;
+  final double price;
+  final String status;
+  final String direction;
+  final String imageUrl;
 
-  const PropertyCard({Key? key, required this.property, required this.index, required this.isFavorites}) : super(key: key);
+  const PropertyCard({
+    Key? key,
+    required this.idPropiedad,
+    required this.isFavorites,
+    required this.title,
+    required this.type,
+    required this.price,
+    required this.status,
+    required this.direction,
+    required this.imageUrl,
+  }) : super(key: key);
 
   @override
   _PropertyCardState createState() => _PropertyCardState();
 }
 
 class _PropertyCardState extends State<PropertyCard> {
-  late final Property property; // Inicialización de la propiedad
-  late bool isFavorite; // Estado de favorito
+  late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
-    property = widget.property;
-    isFavorite = widget.isFavorites; // Estado inicial del favorito
+    isFavorite = widget.isFavorites;
   }
 
   void toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite; // Alternar estado de favorito
+      isFavorite = !isFavorite;
     });
+  }
+
+  String cleanAndTruncateDirection(String direction) {
+    // Ocultar los primeros 8 caracteres
+    String cleanedDirection = direction.length > 10 ? direction.substring(10) : direction;
+
+    // Truncar la dirección a 50 caracteres
+    return cleanedDirection.length > 50
+        ? '${cleanedDirection.substring(0, 50)}...'
+        : cleanedDirection;
+  }
+
+  Widget _buildImage() {
+    try {
+      if (widget.imageUrl.isNotEmpty) {
+        return Image.network(
+          widget.imageUrl,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error loading image: $error');
+            return _defaultIcon();
+          },
+        );
+      }
+    } catch (e) {
+      print('Exception loading image: $e');
+    }
+    return _defaultIcon();
+  }
+
+  Widget _defaultIcon() {
+    return Container(
+      color: Colors.grey,
+      child: const Icon(
+        Icons.account_circle,
+        size: 75,
+        color: Colors.white,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     double containerHeight = MediaQuery.of(context).size.width * 0.6;
+
+    // Trunca el título si es muy largo
+    String truncatedTitle = widget.title.length > 25
+        ? '${widget.title.substring(0, 25)}...'
+        : widget.title;
+
+    // Obtén la dirección truncada
+    String truncatedDirection = cleanAndTruncateDirection(widget.direction);
+
     return GestureDetector(
       onTap: () {
-        context.push('/detalle', extra: property); // Navegar a la pantalla de detalles
+        context.push('/detalle', extra: {
+          'idPropiedad': widget.idPropiedad,
+        });
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
         clipBehavior: Clip.antiAlias,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)), 
+          borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         elevation: 5,
         child: Stack(
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeInOut,
+            SizedBox(
+              width: double.infinity,
               height: containerHeight,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(widget.property.frontImage),
-                  fit: BoxFit.cover, // Imagen ajustada para cubrir completamente
-                ),
-              ),
+              child: _buildImage(), 
             ),
             Container(
               height: containerHeight,
@@ -67,7 +126,7 @@ class _PropertyCardState extends State<PropertyCard> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.7), // Gradiente para el efecto de sombra
+                    Colors.black.withOpacity(0.7),
                   ],
                 ),
               ),
@@ -82,17 +141,12 @@ class _PropertyCardState extends State<PropertyCard> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Text(
-                  widget.property.label,
+                  widget.status,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
-                ).animate().fadeIn(duration: 800.ms).slideX(
-                  begin: 1.0,
-                  end: 0.0,
-                  duration: 800.ms,
-                  curve: Curves.easeInOut,
                 ),
               ),
             ),
@@ -107,37 +161,28 @@ class _PropertyCardState extends State<PropertyCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.property.name,
+                        truncatedTitle,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                      ).animate().fadeIn(duration: 800.ms).slideX(
-                        begin: -1.0,
-                        end: 0.0,
-                        duration: 800.ms,
-                        curve: Curves.easeInOut,
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: toggleFavorite, // Alternar favorito al hacer clic
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: isFavorite ? Colors.white : Colors.transparent,
-                              ),
-                              padding: const EdgeInsets.all(10),
-                              child: Icon(
-                                isFavorite ? Icons.favorite : Icons.favorite_border,
-                                color: isFavorite ? Colors.redAccent : Colors.white,
-                                size: 24,
-                              ),
-                            ),
+                      GestureDetector(
+                        onTap: toggleFavorite,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isFavorite ? Colors.white : Colors.transparent,
                           ),
-                        ],
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.redAccent : Colors.white,
+                            size: 24,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -152,7 +197,7 @@ class _PropertyCardState extends State<PropertyCard> {
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          widget.property.location,
+                          truncatedDirection,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -161,7 +206,7 @@ class _PropertyCardState extends State<PropertyCard> {
                         ),
                       ),
                       Text(
-                        r"$" + widget.property.price,
+                        r"$" + widget.price.toString(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -171,11 +216,6 @@ class _PropertyCardState extends State<PropertyCard> {
                     ],
                   ),
                 ],
-              ).animate().fadeIn(duration: 800.ms).slideY(
-                begin: 1.0,
-                end: 0.0,
-                duration: 800.ms,
-                curve: Curves.easeInOut,
               ),
             ),
           ],
