@@ -18,6 +18,7 @@ class EstadisticasController {
       longitudPreferida: 0.0,
       precioMin: 0.0,
       precioMax: 0.0,
+      fecha_modificacion: '',
       idCategoria: 0, // Asegúrate de que estos valores sean válidos o se inicialicen correctamente
       idZona: 0,
     );
@@ -71,6 +72,34 @@ class EstadisticasController {
     }
   } catch (error) {
     throw Exception('Error al enviar las estadísticas: $error');
+  }
+}
+
+Future<void> obtenerEstadisticas() async {
+  try {
+    final idCliente = await StorageService.getClientId();
+    if (idCliente == null) throw Exception('Hubo un error al encontrar el ID del cliente.');
+
+    final response = await ApiService.fetchData('/preferencias/$idCliente');
+
+    if (response['success'] == true) {
+      final data = response['data'];
+      
+      if (data is Map<String, dynamic>) {
+
+        // Utiliza el método fromJson de EstadisticasBusquedas para deserializar
+        estadisticasBusquedas = EstadisticasBusquedas.fromJson(data);
+
+        // Ahora tienes los datos cargados en estadisticasBusquedas y puedes usarlos en tus pantallas
+        print('Estadísticas obtenidas correctamente: ${estadisticasBusquedas.toJson()}');
+      } else {
+        throw Exception('La respuesta de la API no tiene el formato esperado.');
+      }
+    } else {
+      throw Exception('Error al obtener las estadísticas: ${response['message']}');
+    }
+  } catch (error) {
+    throw Exception('Error al obtener las estadísticas: $error');
   }
 }
 

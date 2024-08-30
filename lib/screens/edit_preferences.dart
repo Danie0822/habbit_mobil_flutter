@@ -37,7 +37,7 @@ class _EditPreferencesState extends State<EditPreferences> {
       'text': 'Zonas',
       'lottieUrl':
           'https://lottie.host/9de345f9-4d4f-44b1-8a92-4a20da167e29/ABG1WgpQ4W.json',
-      'destinationRoute': '/zone'
+      'destinationRoute': '/zone_update'
     },
   ];
 
