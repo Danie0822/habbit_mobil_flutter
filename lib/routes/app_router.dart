@@ -139,6 +139,16 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const ZoneScreenUp(), state),
     ),
+    GoRoute(
+      path: '/map_screen',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const MapScreen(), state),
+    ),
+    GoRoute(
+      path: '/recommend_option',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const RecommendOptionScreen(), state),
+    ),
   ],
    // Constructor de página de error para manejar rutas no encontradas
   errorBuilder: (context, state) => Scaffold(
