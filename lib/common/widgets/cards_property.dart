@@ -100,7 +100,7 @@ class _PropertyCardState extends State<PropertyCard> {
     return GestureDetector(
       onTap: () {
         context.push('/detalle', extra: {
-          'idPropiedad': widget.idPropiedad,
+          'id_propiedad': widget.idPropiedad,
         });
       },
       child: Card(

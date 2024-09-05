@@ -44,17 +44,17 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const PasswordDone(), state),
     ),
-   /* GoRoute(
+    GoRoute(
       path: '/detalle',
       pageBuilder: (context, state) {
         final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-        final int idPropiedad = extra['idPropiedad'];
+        final int idPropiedad = extra['id_propiedad'];
         return _buildPageWithFuturisticTransition(
-          PropertyDetailsScreen(idPropiedad : idPropiedad),++
+          PropertyDetailsScreen(idPropiedad : idPropiedad),
           state,
         );
       },
-    ),*/
+    ),
     GoRoute(
       path: '/PhotoDetailScreen',
       pageBuilder: (context, state) {

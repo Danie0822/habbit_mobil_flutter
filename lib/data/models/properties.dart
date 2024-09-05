@@ -13,6 +13,7 @@ class PropertiesResponse {
   final int? rooms;
   final int? parkings;
   final String? imageUrl;
+  final String? admin;
 
   PropertiesResponse({
     required this.idPropiedad,
@@ -28,7 +29,8 @@ class PropertiesResponse {
     this.bathroms,
     this.rooms,
     this.parkings,
-    this.imageUrl
+    this.imageUrl,
+    this.admin
   });
 
   factory PropertiesResponse.fromJson(Map<String, dynamic> json){
@@ -48,7 +50,8 @@ class PropertiesResponse {
       bathroms: json['sanitarios_inmobiliario'] ?? 0,
       rooms: json['habitaciones_inmobiliario']  ?? 0,
       parkings: json['estacionamientos_inmobiliario']  ?? 0,
-      imageUrl: json['Imagen'] as String?
+      imageUrl: json['Imagen'] as String?,
+      admin: json['nombre_admin'] as String?
 
     );
   }
