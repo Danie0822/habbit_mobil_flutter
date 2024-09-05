@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
+
 // Definición del enrutador utilizando GoRouter
 final GoRouter router = GoRouter(
   routes: [
@@ -28,15 +29,17 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/code',
       pageBuilder: (context, state) {
-         final int id = state.extra as int;
-        return _buildPageWithFuturisticTransition(CodeView(idUsuario: id), state);
+        final int id = state.extra as int;
+        return _buildPageWithFuturisticTransition(
+            CodeView(idUsuario: id), state);
       },
     ),
     GoRoute(
       path: '/pass',
-      pageBuilder: (context, state){
+      pageBuilder: (context, state) {
         final ConfirmViewArguments args = state.extra as ConfirmViewArguments;
-        return _buildPageWithFuturisticTransition(ConfirmView(arguments: args), state);
+        return _buildPageWithFuturisticTransition(
+            ConfirmView(arguments: args), state);
       },
     ),
     GoRoute(
@@ -50,7 +53,7 @@ final GoRouter router = GoRouter(
         final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
         final int idPropiedad = extra['id_propiedad'];
         return _buildPageWithFuturisticTransition(
-          PropertyDetailsScreen(idPropiedad : idPropiedad),
+          PropertyDetailsScreen(idPropiedad: idPropiedad),
           state,
         );
       },
@@ -81,7 +84,8 @@ final GoRouter router = GoRouter(
       path: '/main',
       pageBuilder: (context, state) {
         final int initialIndex = state.extra as int;
-        return _buildPageWithFuturisticTransition(MainScreen(initialIndex: initialIndex), state);
+        return _buildPageWithFuturisticTransition(
+            MainScreen(initialIndex: initialIndex), state);
       },
     ),
     GoRoute(
@@ -146,11 +150,16 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/recommend_option',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const RecommendOptionScreen(), state),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
+          const RecommendOptionScreen(), state),
+    ),
+    GoRoute(
+      path: '/home_screen',
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
+          const HomeScreenOne(), state),
     ),
   ],
-   // Constructor de página de error para manejar rutas no encontradas
+  // Constructor de página de error para manejar rutas no encontradas
   errorBuilder: (context, state) => Scaffold(
     appBar: AppBar(title: const Text('Error')),
     body: Center(
