@@ -161,7 +161,7 @@ class OnboardingViewState extends State<OnboardingView> {
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
-            context.push('/login');
+            context.push('/StartHome');
           },
           splashFactory: NoSplash.splashFactory,
           child: const Center(

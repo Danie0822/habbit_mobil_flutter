@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/constant_menu.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
 import 'package:rive/rive.dart';
 
 // Clase para la lista del menu de cada item
@@ -36,7 +37,7 @@ class MenuListScreen extends StatelessWidget {
               left: 0,
               child: Container(
                   decoration: const BoxDecoration(
-                color: Color(0xFF6792FF),
+                color: lightBlueBarColor2,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               )),
             ),
