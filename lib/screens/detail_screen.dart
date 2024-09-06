@@ -312,7 +312,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                     ),
                     SizedBox(height: verticalPadding * 1.5),
                     // Fotos de la propiedad
-                    Text("Fotos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                     const Text("Fotos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: verticalPadding / 2),
                     _buildPhotosList(size, verticalPadding),
                     SizedBox(height: verticalPadding / 2),
@@ -326,14 +326,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                               itemCount: _propertyImages!.length,
                               itemBuilder: (context, index) {
                                 final image = _propertyImages![index];
-                                return  Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _buildPhotosList(size, verticalPadding),
-                                );
+                                
                               },
                             ),
                     ),
-                    SizedBox(height: verticalPadding * 2),
                   ],
                 ),
               ),
@@ -356,7 +352,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
             child: Row(
               children: _propertyImages!.map((image) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: _buildPhoto(context, '${Config.imagen}${image.url}'),
                 );
               }).toList(),
