@@ -29,7 +29,7 @@ class PropertiesDetailService {
 
  Future<List<ImageModel>> getPropertiesDetailsImage(int idPropiedad) async {
   try {
-    final response = await ApiService.fetchData('/imagenes/view/propiedad/$idPropiedad');
+    final response = await ApiService.fetchData('/imagenes/movil/$idPropiedad');
     print('API response: $response');
 
     // Acceder al campo 'data' dentro del primer nivel
