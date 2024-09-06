@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 // Definición del enrutador utilizando GoRouter
@@ -155,8 +154,13 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/home_screen',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
-          const HomeScreenOne(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const HomeScreenOne(), state),
+    ),
+    GoRoute(
+      path: '/StartHome',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const StartHome(), state),
     ),
   ],
   // Constructor de página de error para manejar rutas no encontradas

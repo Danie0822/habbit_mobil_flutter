@@ -28,3 +28,5 @@ export 'package:habbit_mobil_flutter/screens/zone_screen_up.dart';
 export 'package:habbit_mobil_flutter/screens/map_screen.dart';
 export 'package:habbit_mobil_flutter/screens/recommend_option_screen.dart';
 export 'package:habbit_mobil_flutter/screens/home_screen.dart';
+export 'package:habbit_mobil_flutter/screens/start_home.dart';
+export 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
