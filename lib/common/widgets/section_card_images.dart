@@ -1,13 +1,15 @@
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, deprecated_member_use, unnecessary_string_interpolations
 
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-
 class SectionCardWithImage extends StatelessWidget {
   final String title;
   final String description;
   final LinearGradient backgroundGradient;
   final String buttonText;
   final String imagePath;
+  final String navegation;
+
 
   const SectionCardWithImage({
     super.key,
@@ -16,10 +18,12 @@ class SectionCardWithImage extends StatelessWidget {
     required this.backgroundGradient,
     required this.buttonText,
     required this.imagePath,
+    required this.navegation,
   });
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -50,7 +54,9 @@ class SectionCardWithImage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('${navegation}');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black87,

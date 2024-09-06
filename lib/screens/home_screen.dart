@@ -1,8 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/section_card_images.dart';
+import 'package:habbit_mobil_flutter/common/widgets/habit_card.dart';
 import 'package:habbit_mobil_flutter/common/widgets/informative_card.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class HomeScreenOne extends StatefulWidget {
   const HomeScreenOne({super.key});
@@ -17,29 +19,43 @@ class _HomeScreenState extends State<HomeScreenOne> {
 
   final List<Map<String, String>> habitItems = [
     {
-      "title": "Habit inmobiliaria 1",
-      "description":
-          "Consulta de asesoría para visualizar tu futuro con nosotros",
+      "title": "Habit inmobiliaria", 
+      "description": "Confia en nosotros para visualizar un futuro con nosotros", 
+      "imagePath": "assets/images/LogoBlanco.png",
+      "buttonText": "Conocer más",
+      "navegation": "/onboard",
     },
     {
-      "title": "Habit inmobiliaria 2",
-      "description": "Descubre nuevas oportunidades en el mercado inmobiliario",
+      "title": "Tus mensajes", 
+      "description": "Ver tus chats y conversa para ponerse de acuerdo", 
+      "imagePath": "assets/images/mensajeriaIcono.png",
+      "buttonText": "Chatea ya", 
+      "navegation": "/login",
     },
     {
-      "title": "Habit inmobiliaria 3",
-      "description":
-          "Confía en nuestros expertos para guiarte en el camino inmobiliario",
+      "title": "Tus me gustas", 
+      "description": "Ve tus me gustas y mantente al tanto de tus propiedades deseadas", 
+      "imagePath": "assets/images/corazonIcono.png",
+      "buttonText": "Ver ya", 
+      "navegation": "/forgot",
     },
   ];
 
   @override
   Widget build(BuildContext context) {
+    final Color colorTexto = Theme.of(context).brightness == Brightness.light
+        ? primaryColorAzul
+        : colorTextField;
+
+    final Color colorTextoSub = Theme.of(context).brightness == Brightness.light
+        ? normalText
+        : colorTextField;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(
-                16.0), // Padding global para todo el contenido
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,20 +65,19 @@ class _HomeScreenState extends State<HomeScreenOne> {
                   'Buenos días',
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: colorTexto,
                       ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$userName, ¡bienvenido!',
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                        color: Colors.black45,
+                        color: colorTextoSub,
                       ),
                 ),
                 const SizedBox(height: 20),
-                // Slider de Habit inmobiliaria
                 Container(
-                  height: 180, // Altura del contenedor del slider
+                  height: 200,
                   child: PageView.builder(
                     itemCount: habitItems.length,
                     onPageChanged: (index) {
@@ -74,49 +89,35 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       return HabitCard(
                         title: habitItems[index]['title']!,
                         description: habitItems[index]['description']!,
+                        imagePath: habitItems[index]['imagePath']!,
+                        currentIndex: _currentIndex,
+                        itemCount: habitItems.length,
+                        buttonText: habitItems[index]['buttonText']!, 
+                        startColor: const Color(0xff000094),
+                        endColor: const Color(0xff06065E),
+                        navegation: habitItems[index]['navegation']!,
                       );
                     },
                   ),
                 ),
-                // Puntos del slider
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    habitItems.length,
-                    (index) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      width: _currentIndex == index ? 12.0 : 8.0,
-                      height: 8.0,
-                      decoration: BoxDecoration(
-                        color: _currentIndex == index
-                            ? Colors.blue
-                            : Colors.blue.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ),
+
                 const SizedBox(height: 20),
                 // Sección de Informativo con mismo padding/margin
                 Text(
-                  'Informativo',
+                  'Información',
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: colorTexto,
                       ),
-                  ),
+                ),
                 SizedBox(
-                  height:
-                      120, // Ajusta la altura para dar más espacio a las sombras
+                  height: 120,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12), // Padding superior e inferior añadido
-                    clipBehavior:
-                        Clip.none, // Evita que el ListView recorte las sombras
-                    children: const [
+                        horizontal: 16, vertical: 12),
+                    clipBehavior: Clip.none,
+                    children:  const [
                       InformativeCard(
                         icon: Icons.notifications,
                         label: 'Mensajes sin leer',
@@ -138,14 +139,13 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 10),
                 // Sección Explorar con mismo padding/margin
                 Text(
                   'Explorar',
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: colorTexto,
                       ),
                 ),
                 const SizedBox(height: 20),
@@ -163,6 +163,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                       buttonText: 'Aprovecha y lee',
                       imagePath: 'blog.png',
+                      navegation : '/login',
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(
@@ -175,7 +176,8 @@ class _HomeScreenState extends State<HomeScreenOne> {
                         colors: [Color(0xffD3140E), Color(0xff430622)],
                       ),
                       buttonText: '¡Encuentra ya!',
-                      imagePath: 'encuentra.png', // Ruta de la imagen
+                      imagePath: 'encuentra.png',
+                      navegation : '/recommend_option',
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(
@@ -188,7 +190,8 @@ class _HomeScreenState extends State<HomeScreenOne> {
                         colors: [Color(0xff4FCA37), Color(0xff27641B)],
                       ),
                       buttonText: '¡Descubre!',
-                      imagePath: 'planet.png', // Ruta de la imagen
+                      imagePath: 'planet.png',
+                      navegation : '/map_screen',
                     ),
                   ],
                 ),
@@ -196,64 +199,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Widget para las tarjetas con el slider
-class HabitCard extends StatelessWidget {
-  final String title;
-  final String description;
-
-  const HabitCard({
-    super.key,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: const Color(0xff0d47a1), // Fondo azul similar a la imagen
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Colors.white,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xff0d47a1),
-                ),
-                child: const Text('Conocer más'),
-              ),
-              const Spacer(),
-              const Icon(Icons.more_horiz, color: Colors.white)
-            ],
-          ),
-        ],
       ),
     );
   }

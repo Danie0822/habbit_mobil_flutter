@@ -1,11 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class InformativeCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String count;
-  final bool showNotification; // Bandera para mostrar notificación
+  final bool showNotification; // Bandera para mostrar notificacións
 
   const InformativeCard({
     super.key,
@@ -17,21 +19,36 @@ class InformativeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    final Color colorTexto = Theme.of(context).brightness == Brightness.light
+        ? Colors.black.withOpacity(0.2)
+        : contenedorMensajeDark;
+
+    final Color backgroundColor = Theme.of(context).brightness == Brightness.light
+        ? colorTextField
+        : contenedorMensajeDark;
+    
+    final Color colorTextoTitulo = Theme.of(context).brightness == Brightness.light
+        ? const Color(0xFF06065E)
+        : colorTextField;
+    
+    final Color colorTextoSub = Theme.of(context).brightness == Brightness.light
+        ? Colors.black54
+        : contenedorMensajeLight;
+
     return IntrinsicWidth(
       child: Container(
         padding: const EdgeInsets.all(12.0),
         margin: const EdgeInsets.only(right: 8.0),
         decoration: BoxDecoration(
-          color:
-              Colors.white, // Fondo blanco para resaltar el borde y la sombra
-          borderRadius: BorderRadius.circular(12),
+          color:backgroundColor,
+          borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2), // Sombra más visible
-              blurRadius: 15, // Mayor difuminado de la sombra
-              spreadRadius: 3, // Sombra extendida alrededor de la tarjeta
-              offset: const Offset(
-                  0, 5), // La sombra se extiende ligeramente hacia abajo
+              color: colorTexto,
+              blurRadius: 5, 
+              spreadRadius: 4, 
+              offset: const Offset(0, 5),            
             ),
           ],
         ),
@@ -46,7 +63,7 @@ class InformativeCard extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: const Color(0xFF06065E), // Color del texto
+                          color: colorTextoTitulo, // Color del texto
                           fontWeight: FontWeight.bold,
                           fontSize: 16, 
                         ),
@@ -57,7 +74,7 @@ class InformativeCard extends StatelessWidget {
                   Text(
                     count,
                     style: Theme.of(context).textTheme.caption?.copyWith(
-                          color: Colors.black54,
+                          color: colorTextoSub,
                           fontSize: 14, 
                         ),
                     maxLines: 1,
@@ -74,7 +91,7 @@ class InformativeCard extends StatelessWidget {
                   radius: 28,
                   child: Icon(
                     icon,
-                    color: const Color(0xFF06065E), // Color del ícono
+                    color: colorTextoTitulo, // Color del ícono
                     size: 45,
                   ),
                 ),
@@ -86,10 +103,10 @@ class InformativeCard extends StatelessWidget {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF06065E),
+                        color: colorTextoTitulo,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.white,
+                          color: backgroundColor,
                           width: 2,
                         ),
                       ),
