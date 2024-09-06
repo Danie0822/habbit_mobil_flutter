@@ -33,23 +33,23 @@ List<RiveAsset> sideMenu = [
   ),
   RiveAsset(
     'assets/rive/icons.riv',
-    artboard: 'USER',
-    stateMachineName: 'USER_Interactivity',
-    title: 'Solicitudes',
+    artboard: 'SEARCH',
+    stateMachineName: 'SEARCH_Interactivity',
+    title: 'Búsquedas',
     screen: EditPreferences(),
-  ),
-  RiveAsset(
-    'assets/rive/icons.riv',
-    artboard: 'BELL',
-    stateMachineName: 'BELL_Interactivity',
-    title: 'Agenda',
-    screen: HomeScreen(),
   ),
   RiveAsset(
     'assets/rive/icons.riv',
     artboard: 'LIKE/STAR',
     stateMachineName: 'STAR_Interactivity',
-    title: 'Blogs',
+    title: 'Likes',
     screen: HomeScreen(),
   ),
+  RiveAsset(
+    'assets/rive/icons.riv',
+    artboard: 'USER',
+    stateMachineName: 'USER_Interactivity',
+    title: 'Editar perfil',
+    screen: EditPreferences(),
+  )
 ];

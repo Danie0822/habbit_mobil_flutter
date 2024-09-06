@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
-import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/data/models/image.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/properties_detail.dart';
 import 'package:habbit_mobil_flutter/data/models/properties.dart';
+import 'package:habbit_mobil_flutter/common/widgets/foto_widget.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
@@ -307,12 +307,29 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         if (property.bathroms != null && property.bathroms! > 0)
                           buildFeature(Icons.bathtub, "${property.bathroms}"),
                         if (property.parkings != null && property.parkings! > 0)
-                          buildFeature(Icons.garage, "${property.parkings}"),
-                        // Agregando el precio a las características
-                        buildFeature(Icons.attach_money, "\$${property.price ?? 0.0}"),
+                          buildFeature(Icons.directions_car, "${property.parkings}"),
                       ],
                     ),
-                    SizedBox(height: verticalPadding),
+                    SizedBox(height: verticalPadding * 1.5),
+                    // Fotos de la propiedad
+                     const Text("Fotos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: verticalPadding / 2),
+                    _buildPhotosList(size, verticalPadding),
+                    SizedBox(height: verticalPadding / 2),
+                    SizedBox(
+                      height: size.height * 0.2, // Definir altura de las fotos
+                      child: _propertyImages == null || _propertyImages!.isEmpty
+                          ? const Center(child: Text('No hay fotos disponibles'))
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _propertyImages!.length,
+                              itemBuilder: (context, index) {
+                                final image = _propertyImages![index];
+                                
+                              },
+                            ),
+                    ),
                   ],
                 ),
               ),
@@ -323,24 +340,99 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     );
   }
 
-  Widget buildFeature(IconData icon, String value) {
+
+  Widget _buildPhotosList(Size size, double verticalPadding) {
+  return SizedBox(
+    height: size.height * 0.2, // Altura de las fotos
+    child: _propertyImages == null || _propertyImages!.isEmpty
+        ? const Center(child: Text('No hay fotos disponibles'))
+        : SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              children: _propertyImages!.map((image) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: _buildPhoto(context, '${Config.imagen}${image.url}'),
+                );
+              }).toList(),
+            ),
+          ),
+  );
+}
+ 
+
+  Widget _buildPhoto(BuildContext context, String url) {
+    return GestureDetector(
+      onTap: () {
+        context.push("/PhotoDetailScreen", extra: url);
+      },
+      child: Hero(
+        tag: url,
+        child: AspectRatio(
+          aspectRatio: 3 / 2,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+              image: DecorationImage(
+                image: NetworkImage(url),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      'Ver',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+  Widget buildFeature(IconData icon, String label) {
     return Column(
       children: [
-        Icon(icon, size: 30),
-        SizedBox(height: 8),
-        Text(value, style: const TextStyle(fontSize: 16)),
+        Icon(icon, size: 32, color: Colors.grey),
+        SizedBox(height: 4),
+        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       ],
     );
   }
 
   Widget _defaultIcon() {
-    return Container(
+    return const Icon(
+      Icons.image_not_supported_outlined,
+      size: 80,
       color: Colors.grey,
-      child: const Icon(
-        Icons.error,
-        color: Colors.white,
-        size: 60,
-      ),
     );
   }
-}
+
+  

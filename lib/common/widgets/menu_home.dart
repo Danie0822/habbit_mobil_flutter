@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/header_menu.dart';
 import 'package:habbit_mobil_flutter/common/widgets/menu_list.dart';
 import 'package:habbit_mobil_flutter/data/models/menu_model.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
 import 'package:habbit_mobil_flutter/utils/constants/constant_menu.dart';
 import 'package:habbit_mobil_flutter/utils/constants/rive_utilis.dart';
 import 'package:rive/rive.dart';
@@ -29,7 +30,7 @@ class _MenuHomeState extends State<MenuHome> {
       body: Container(
         width: screenWidth * 0.8, // usa el 80% del ancho de la pantalla
         height: screenHeight, // usa el 100% del alto de la pantalla
-        color: const Color(0xFF17203A),
+        color: lightBlueBar,
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +40,7 @@ class _MenuHomeState extends State<MenuHome> {
                 padding: const EdgeInsets.only(left: 24, top: 20, bottom: 10),
                 // texto de menu
                 child: Text(
-                  'Menu'.toUpperCase(),
+                  'Menú',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!

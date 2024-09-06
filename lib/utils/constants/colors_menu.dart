@@ -6,6 +6,8 @@ const Color lightInactiveColor = Colors.grey;
 const Color lightBackgroundColor = Colors.white;
 const Color lightShadowColor = Colors.black12;
 const Color lightSplashColor = Colors.blueAccent;
+const Color lightBlueBar = Color(0xFF06065E);
+const Color lightBlueBarColor2 = Color(0xFF1E1EAE);
 
 
 // Constantes de colores para el modo oscuro
