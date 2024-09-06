@@ -6,8 +6,8 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/properties_detail.dart';
 import 'package:habbit_mobil_flutter/data/models/properties.dart';
-import 'package:habbit_mobil_flutter/common/widgets/foto_widget.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
   final int idPropiedad;
@@ -165,7 +165,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                       property.status ?? 'Sin estado',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -233,7 +233,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         Text(
                           property.direction ?? 'Sin dirección',
                           style: const TextStyle(
-                            color: Color.fromARGB(255, 22, 20, 20),
+                            color: Color.fromARGB(255, 236, 227, 227),
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -308,6 +308,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           buildFeature(Icons.bathtub, "${property.bathroms}"),
                         if (property.parkings != null && property.parkings! > 0)
                           buildFeature(Icons.directions_car, "${property.parkings}"),
+                        if(property.price != null && property.price! > 0)
+                          buildFeature(Icons.monetization_on, "${property.price}"),
                       ],
                     ),
                     SizedBox(height: verticalPadding * 1.5),
