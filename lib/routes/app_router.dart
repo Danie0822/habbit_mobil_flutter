@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/screens/request_screen.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 // Definición del enrutador utilizando GoRouter
@@ -9,7 +8,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const RequestsScreen(), state),
+          _buildPageWithFuturisticTransition(const SplashScreen(), state),
     ),
     GoRoute(
       path: '/login',

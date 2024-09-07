@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:habbit_mobil_flutter/common/widgets/bottom_nav_bar.dart';
+import 'package:habbit_mobil_flutter/screens/request_screen.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 class MainScreen extends StatefulWidget {
@@ -32,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     MessagesScreen(),
     ProfileScreen(),
+    RequestsScreen(),
   ];
 
   void _onItemTapped(int index) {
