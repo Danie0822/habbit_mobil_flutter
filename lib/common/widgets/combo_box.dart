@@ -8,7 +8,7 @@ class MyComboBox<T> extends StatelessWidget {
     required this.hint,
     required this.items,
     required this.onChanged,
-    required this.value,
+    this.value,
     this.icon,
     this.validator,
     this.iconColor,
@@ -31,6 +31,9 @@ class MyComboBox<T> extends StatelessWidget {
         ThemeUtils.getColorBasedOnBrightness(
             context, iconLightColor, iconDarkColor);
 
+    // Si no hay valor seleccionado, selecciona el primer ítem de la lista.
+    T? selectedValue = value ?? (items.isNotEmpty ? items.first.value : null);
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Center(
@@ -49,7 +52,7 @@ class MyComboBox<T> extends StatelessWidget {
             ],
           ),
           child: DropdownButtonFormField<T>(
-            value: value,
+            value: selectedValue,
             items: items,
             onChanged: onChanged,
             decoration: InputDecoration(
