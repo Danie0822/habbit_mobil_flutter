@@ -83,20 +83,20 @@ class CustomValidator {
   }
 
 // Validación de nombre
-static String? validateName(String? value) {
-  final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$');
+  static String? validateName(String? value) {
+    final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$');
 
-  if (value == null || value.isEmpty) {
-    return 'El campo no puede estar vacío';
-  } else if (value.length < 3) {
-    return 'La longitud mínima es 3 caracteres';
-  } else if (value.length > 100) {
-    return 'La longitud máxima es 100 caracteres';
-  } else if (!regExp.hasMatch(value)) {
-    return 'El nombre solo puede contener letras y espacios';
+    if (value == null || value.isEmpty) {
+      return 'El campo no puede estar vacío';
+    } else if (value.length < 3) {
+      return 'La longitud mínima es 3 caracteres';
+    } else if (value.length > 100) {
+      return 'La longitud máxima es 100 caracteres';
+    } else if (!regExp.hasMatch(value)) {
+      return 'El nombre solo puede contener letras y espacios';
+    }
+    return null;
   }
-  return null;
-}
 
 // Validación de teléfono
   static String? validatePhoneNumber(String? value) {
@@ -109,6 +109,19 @@ static String? validateName(String? value) {
       return 'Ingrese un número de teléfono válido en el formato 0000-0000';
     } else if (!validStart.hasMatch(value)) {
       return 'El número debe comenzar con 7, 6 o 2';
+    }
+    return null;
+  }
+
+  // Validación de títulos con caracteres especiales permitidos
+  static String? validateTitle(String? value, int maxLength, String fieldName) {
+    final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s,.;:$]+$');
+    if (value == null || value.isEmpty) {
+      return 'El campo no puede estar vacío';
+    } else if (value.length < 4 || value.length > maxLength) {
+      return 'El $fieldName debe tener al menos 4 caracteres y menos de $maxLength caracteres';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Solo se permiten letras, números, espacios, comas, puntos, punto y coma, dos puntos, y signo de dólar';
     }
     return null;
   }

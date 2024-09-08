@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/card_requests.dart';
 import 'package:habbit_mobil_flutter/common/widgets/detail_request.dart';
 import 'package:habbit_mobil_flutter/data/controlers/request_controlers.dart';
@@ -49,6 +50,14 @@ class _RequestsScreenState extends State<RequestsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Solicitudes'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+             context.go('/newRequest');
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(

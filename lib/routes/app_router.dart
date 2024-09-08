@@ -47,6 +47,11 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const PasswordDone(), state),
     ),
     GoRoute(
+      path: '/newRequest',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const NewRequest(), state)
+    ),
+    GoRoute(
       path: '/detalle',
       pageBuilder: (context, state) {
         final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
