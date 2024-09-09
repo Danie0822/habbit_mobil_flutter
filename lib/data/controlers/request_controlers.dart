@@ -51,7 +51,6 @@ class RequestService {
         'id_categoria': categoria,
         'id_zona': zona,
       };
-      print(exclusividad);
       // Enviar los datos de login al servidor
       final response = await ApiService.sendDataApiKey(
         '/solicitudes/save',

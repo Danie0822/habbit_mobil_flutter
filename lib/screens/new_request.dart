@@ -132,7 +132,7 @@ class _NewRequestState extends State<NewRequest> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.pop();
+            context.go("/main", extra: 3);
           },
         ),
       ),

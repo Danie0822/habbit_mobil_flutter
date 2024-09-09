@@ -13,69 +13,87 @@ class RequestsScreen extends StatefulWidget {
 }
 
 class _RequestsScreenState extends State<RequestsScreen> {
+  // Variables para almacenar los datos de las solicitudes
   List<RequestModel> requestsData = [];
   bool isLoading = true;
   String? errorMessage;
-
+  // Método para cargar solicitudes
   @override
   void initState() {
     super.initState();
-    // Cargar las solicitudes al inicializar el widget
-    _loadRequests();
+    _loadRequests(); // Cargar solicitudes al iniciar
   }
 
-  // Función para cargar solicitudes del cliente
+  // Función para cargar solicitudes
   Future<void> _loadRequests() async {
     try {
       setState(() {
-        isLoading = true; // Comienza la carga
+        isLoading = true;
       });
-      // Llama al servicio para cargar las solicitudes
-      final loadedRequests = await RequestService().cargarRequest();
+      final loadedRequests = await RequestService().cargarRequest(); // Cargar solicitudes
       setState(() {
         requestsData = loadedRequests;
-        isLoading = false; // Finaliza la carga
+        isLoading = false;
       });
     } catch (error) {
-      // Manejo de errores
       setState(() {
         errorMessage = 'Error al cargar solicitudes: $error';
-        isLoading = false; // Finaliza la carga con error
+        isLoading = false;
       });
     }
   }
-
+  // Diseño de la pantalla de solicitudes
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Barra superior de la pantalla
       appBar: AppBar(
-        title: const Text('Solicitudes'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-             context.go('/newRequest');
-            },
+        title: const Text(
+          'Solicitudes',
+          style: TextStyle(
+            fontSize: 24, // Tamaño del título
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-        ],
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(12), // Esquinas redondeadas
+          ),
+        ),
       ),
-      body: isLoading
+      // Cuerpo de la pantalla
+      body: isLoading // Mostrar indicador de carga si isLoading es verdadero
           ? const Center(
-              child:
-                  CircularProgressIndicator()) // Muestra un indicador de carga
+              child: CircularProgressIndicator(),
+            )
           : errorMessage != null
               ? Center(
-                  child: Text(errorMessage!)) // Muestra el error si hay alguno
-              : RefreshIndicator(
-                onRefresh: _loadRequests,
-                child: ListRequest(
-                    requestsData:
-                        requestsData),
-              ), // Muestra la lista de solicitudes si no hay errores
+                  child: Text(errorMessage!),
+                )
+              : RefreshIndicator( // Actualizar la lista de solicitudes
+                  onRefresh: _loadRequests,
+                  child: ListRequest(requestsData: requestsData),
+                ),
+      // Botón flotante para agregar una nueva solicitud
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go('/newRequest');
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
     );
   }
 }
-
+// Clase para mostrar la lista de solicitudes
 class ListRequest extends StatelessWidget {
   const ListRequest({
     super.key,
@@ -94,13 +112,20 @@ class ListRequest extends StatelessWidget {
         return GestureDetector(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => DetailRequest(context, request),
+            builder: (context) => DetailRequest(context, request), // Mostrar detalles de la solicitud
           ),
-          child: RequestsCards(
-            titulo: request.tituloSolicitud,
-            administrador: request.nombreAdministrador,
-            fecha: request.fechaSolicitud,
-            estado: request.estadoSolicitud,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12), // Borde redondeado
+            ),
+            elevation: 4, // Sombra para mayor profundidad
+            // Tarjeta de solicitud
+            child: RequestsCards(
+              titulo: request.tituloSolicitud,
+              administrador: request.nombreAdministrador,
+              fecha: request.fechaSolicitud,
+              estado: request.estadoSolicitud,
+            ),
           ),
         );
       },
