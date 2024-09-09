@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/section_card_images.dart';
-import 'package:habbit_mobil_flutter/common/widgets/habit_card.dart';
+import 'package:habbit_mobil_flutter/common/widgets/slider_card.dart';
 import 'package:habbit_mobil_flutter/common/widgets/informative_card.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
+import 'package:habbit_mobil_flutter/data/controlers/home_screen.dart';
+import 'package:habbit_mobil_flutter/data/models/home_screen.dart';
 
 class HomeScreenOne extends StatefulWidget {
   const HomeScreenOne({super.key});
@@ -14,29 +17,44 @@ class HomeScreenOne extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreenOne> {
-  final String userName = "Daniel"; // Nombre del usuario
+  late Future<HomeScreenResponse?> homeDataFuture;
+  late Future<String?> userNameFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // Cargar los datos del cliente al iniciar la pantalla
+    homeDataFuture = MessageService()
+        .cargarDatos()
+        .then((data) => data.isNotEmpty ? data.first : null);
+    // Cargar el nombre del usuario al iniciar la pantalla
+    userNameFuture = StorageService.getClientName();
+  }
+
   int _currentIndex = 0; // Índice actual para el slider
 
   final List<Map<String, String>> habitItems = [
     {
-      "title": "Habit inmobiliaria", 
-      "description": "Confia en nosotros para visualizar un futuro con nosotros", 
+      "title": "Habit inmobiliaria",
+      "description":
+          "Confia en nosotros para visualizar un futuro con nosotros",
       "imagePath": "assets/images/LogoBlanco.png",
       "buttonText": "Conocer más",
       "navegation": "/onboard",
     },
     {
-      "title": "Tus mensajes", 
-      "description": "Ver tus chats y conversa para ponerse de acuerdo", 
+      "title": "Tus mensajes",
+      "description": "Ver tus chats y conversa para ponerse de acuerdo",
       "imagePath": "assets/images/mensajeriaIcono.png",
-      "buttonText": "Chatea ya", 
+      "buttonText": "Chatea ya",
       "navegation": "/login",
     },
     {
-      "title": "Tus me gustas", 
-      "description": "Ve tus me gustas y mantente al tanto de tus propiedades deseadas", 
+      "title": "Tus me gustas",
+      "description":
+          "Ve tus me gustas y mantente al tanto de tus propiedades deseadas",
       "imagePath": "assets/images/corazonIcono.png",
-      "buttonText": "Ver ya", 
+      "buttonText": "Ver ya",
       "navegation": "/forgot",
     },
   ];
@@ -69,14 +87,42 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '$userName, ¡bienvenido!',
-                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                        color: colorTextoSub,
-                      ),
+                FutureBuilder<String?>(
+                  future: userNameFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text(
+                        'Cargando...',
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              color: colorTextoSub,
+                            ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error al cargar el nombre',
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              color: colorTextoSub,
+                            ),
+                      );
+                    } else if (snapshot.hasData && snapshot.data != null) {
+                      return Text(
+                        '${snapshot.data}, ¡bienvenido!',
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              color: colorTextoSub,
+                            ),
+                      );
+                    } else {
+                      return Text(
+                        '¡Bienvenido!',
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              color: colorTextoSub,
+                            ),
+                      );
+                    }
+                  },
                 ),
                 const SizedBox(height: 20),
-                Container(
+                SizedBox(
                   height: 200,
                   child: PageView.builder(
                     itemCount: habitItems.length,
@@ -86,13 +132,13 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       });
                     },
                     itemBuilder: (context, index) {
-                      return HabitCard(
+                      return SliderCard(
                         title: habitItems[index]['title']!,
                         description: habitItems[index]['description']!,
                         imagePath: habitItems[index]['imagePath']!,
                         currentIndex: _currentIndex,
                         itemCount: habitItems.length,
-                        buttonText: habitItems[index]['buttonText']!, 
+                        buttonText: habitItems[index]['buttonText']!,
                         startColor: const Color(0xff000094),
                         endColor: const Color(0xff06065E),
                         navegation: habitItems[index]['navegation']!,
@@ -112,31 +158,46 @@ class _HomeScreenState extends State<HomeScreenOne> {
                 ),
                 SizedBox(
                   height: 120,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    clipBehavior: Clip.none,
-                    children:  const [
-                      InformativeCard(
-                        icon: Icons.notifications,
-                        label: 'Mensajes sin leer',
-                        count: '12',
-                        showNotification: true,
-                      ),
-                      SizedBox(width: 16),
-                      InformativeCard(
-                        icon: Icons.favorite,
-                        label: 'Tus me gustas',
-                        count: '43',
-                      ),
-                      SizedBox(width: 16),
-                      InformativeCard(
-                        icon: Icons.chat_bubble_rounded,
-                        label: 'Tus chats',
-                        count: '5',
-                      ),
-                    ],
+                  child: FutureBuilder<HomeScreenResponse?>(
+                    future: homeDataFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                            child: Text('Error al cargar datos'));
+                      } else if (snapshot.hasData && snapshot.data != null) {
+                        final homeData = snapshot.data!;
+                        return ListView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          children: [
+                            InformativeCard(
+                              icon: Icons.notifications,
+                              label: 'Mensajes sin leer',
+                              count: '${homeData.messagesNotRead ?? 0}',
+                              showNotification: true,
+                            ),
+                            const SizedBox(width: 16),
+                            InformativeCard(
+                              icon: Icons.favorite,
+                              label: 'Tus me gustas',
+                              count: '${homeData.likes ?? 0}',
+                            ),
+                            const SizedBox(width: 16),
+                            InformativeCard(
+                              icon: Icons.chat_bubble_rounded,
+                              label: 'Tus chats',
+                              count: '${homeData.chats ?? 0}',
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const Center(
+                            child: Text('No hay datos disponibles'));
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -163,7 +224,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                       buttonText: 'Aprovecha y lee',
                       imagePath: 'blog.png',
-                      navegation : '/login',
+                      navegation: '/login',
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(
@@ -177,7 +238,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                       buttonText: '¡Encuentra ya!',
                       imagePath: 'encuentra.png',
-                      navegation : '/recommend_option',
+                      navegation: '/recommend_option',
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(
@@ -191,7 +252,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                       buttonText: '¡Descubre!',
                       imagePath: 'planet.png',
-                      navegation : '/map_screen',
+                      navegation: '/map_screen',
                     ),
                   ],
                 ),

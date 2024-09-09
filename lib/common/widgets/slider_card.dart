@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
-class HabitCard extends StatelessWidget {
+class SliderCard extends StatelessWidget {
   final String title;
   final String description;
   final String imagePath;
@@ -12,7 +12,7 @@ class HabitCard extends StatelessWidget {
   final Color endColor; 
   final String navegation;
 
-  const HabitCard({
+  const SliderCard({
     super.key,
     required this.title,
     required this.description,

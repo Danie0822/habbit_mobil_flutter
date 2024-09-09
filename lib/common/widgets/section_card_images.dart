@@ -68,7 +68,7 @@ class SectionCardWithImage extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Image.asset(
-            'assets/images/icon/${imagePath}',
+            'assets/images/${imagePath}',
             height: 100,
             width: 100,
             fit: BoxFit.cover,

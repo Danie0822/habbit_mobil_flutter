@@ -13,7 +13,6 @@ class ChatService {
       
       // Imprime el ID de la conversación y la respuesta para depuración
       print('idConversacion: $idConversacion');
-      print(response);
 
       // Extrae la lista de datos de la respuesta
       final List<dynamic> data = response['data']['data'] as List<dynamic>;
