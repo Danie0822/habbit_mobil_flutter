@@ -37,7 +37,7 @@ class ThanksRegister extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppStyles.headline5(context, colorTexto),
               ),
-              SizedBox(height: height * 0.08),
+              SizedBox(height: height * 0.06),
               Image.asset(
                 'assets/images/thanks_res.png',
                 height: height * 0.3, // Ajusta la altura de la imagen
