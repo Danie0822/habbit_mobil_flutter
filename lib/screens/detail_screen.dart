@@ -5,9 +5,9 @@ import 'package:habbit_mobil_flutter/data/models/image.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/properties_detail.dart';
+import 'package:habbit_mobil_flutter/data/controlers/message.dart';
 import 'package:habbit_mobil_flutter/data/models/properties.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
   final int idPropiedad;
@@ -34,8 +34,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   Future<void> _loadPropertyData() async {
     try {
       // Cargar detalles de la propiedad e imágenes en paralelo
-      final propertyDetailsFuture = await PropertiesDetailService().getPropertiesDetails(widget.idPropiedad);
-      final propertyImagesFuture =  await PropertiesDetailService().getPropertiesDetailsImage(widget.idPropiedad);
+      final propertyDetailsFuture = await PropertiesDetailService()
+          .getPropertiesDetails(widget.idPropiedad);
+      final propertyImagesFuture = await PropertiesDetailService()
+          .getPropertiesDetailsImage(widget.idPropiedad);
 
       final propertyDetails = await propertyDetailsFuture;
       final propertyImages = await propertyImagesFuture;
@@ -51,6 +53,53 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
         _hasError = true;
       });
       print('Error cargando los datos: $e');
+    }
+  }
+
+  Future<void> _handleCreateChat() async {
+    try {
+      // Verifica si los detalles de la propiedad están cargados
+      if (_propertyDetails != null && _propertyDetails!.isNotEmpty) {
+        final property = _propertyDetails![
+            0]; // Asume que siempre hay al menos un detalle de propiedad
+
+        // Llamada al servicio para crear el chat
+        final response = await MessageService().crearChat(widget.idPropiedad);
+        final idConversacion = response.idConversacion;
+
+        // Asegúrate de que property.admin no sea nulo antes de usarlo
+        if (property.admin != null && idConversacion != null) {
+          context.push('/chat', extra: {
+            'idConversacion': idConversacion,
+            'nameUser': property.admin,
+          });
+        } else {
+          // Si no hay administrador, maneja el caso apropiadamente
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se encontró el administrador de la propiedad.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } else {
+        // Maneja el caso en que no se hayan cargado los detalles de la propiedad
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Los detalles de la propiedad no están disponibles.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      // Si ocurre un error, muestra un mensaje genérico
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocurrió un error, intente más tarde.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      print('Error creando el chat: $e');
     }
   }
 
@@ -75,12 +124,22 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
               ? const Center(child: Text('Error al cargar los datos'))
               : _propertyDetails == null || _propertyDetails!.isEmpty
                   ? const Center(child: Text('Propiedad no encontrada'))
-                  : _buildPropertyDetails(context, size, colorTexto, horizontalPadding, verticalPadding),
+                  : _buildPropertyDetails(context, size, colorTexto,
+                      horizontalPadding, verticalPadding),
     );
   }
 
-  Widget _buildPropertyDetails(BuildContext context, Size size, Color colorTexto, double horizontalPadding, double verticalPadding) {
-    final property = _propertyDetails![0]; // Asume que siempre habrá al menos un detalle de propiedad
+  Widget _buildPropertyDetails(BuildContext context, Size size,
+      Color colorTexto, double horizontalPadding, double verticalPadding) {
+    final property = _propertyDetails![
+        0]; // Asume que siempre habrá al menos un detalle de propiedad
+
+    // Define el color basado en el tema (brillo de la pantalla)
+    final Color colorTextoTitulo =
+        Theme.of(context).brightness == Brightness.light
+            ? const Color(0xFF06065E) // Color para modo claro
+            : ThemeUtils.getColorBasedOnBrightness(
+                context, Colors.white, Colors.grey);
 
     return Stack(
       children: [
@@ -194,18 +253,12 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         duration: const Duration(milliseconds: 300),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isFavorite
-                              ? Colors.white
-                              : Colors.transparent,
+                          color: isFavorite ? Colors.white : Colors.transparent,
                         ),
                         padding: const EdgeInsets.all(10),
                         child: Icon(
-                          isFavorite
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: isFavorite
-                              ? Colors.redAccent
-                              : Colors.white,
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.redAccent : Colors.white,
                           size: 28,
                         ),
                       ),
@@ -264,24 +317,37 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   children: [
                     // Información del propietario
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment
+                          .center, // Alinea verticalmente el contenido al centro
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              property.admin ?? 'Sin administrador',
-                              style: AppStyles.headline6(context, colorTexto),
-                            ),
-                            SizedBox(height: verticalPadding / 4),
-                            Text(
-                              "Propietario",
-                              style: AppStyles.subtitle1(context),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                property.admin ?? 'Sin administrador',
+                                style: AppStyles.headline6(context, colorTexto),
+                                maxLines:
+                                    2, // Establecemos un límite máximo de líneas para evitar que el texto crezca mucho
+                                overflow: TextOverflow
+                                    .visible, // Permite el salto de línea sin cortar el texto
+                              ),
+                              SizedBox(height: verticalPadding / 4),
+                              Text(
+                                "Propietario",
+                                style: AppStyles.subtitle1(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          iconSize: 36, // Tamaño del ícono más grande
+                          icon: Icon(Icons.chat, color: colorTextoTitulo),
+                          onPressed: _handleCreateChat,
                         ),
                       ],
                     ),
+
                     SizedBox(height: verticalPadding),
                     Text(
                       "Descripción",
@@ -307,28 +373,32 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         if (property.bathroms != null && property.bathroms! > 0)
                           buildFeature(Icons.bathtub, "${property.bathroms}"),
                         if (property.parkings != null && property.parkings! > 0)
-                          buildFeature(Icons.directions_car, "${property.parkings}"),
-                        if(property.price != null && property.price! > 0)
-                          buildFeature(Icons.monetization_on, "${property.price}"),
+                          buildFeature(
+                              Icons.directions_car, "${property.parkings}"),
+                        if (property.price != null && property.price! > 0)
+                          buildFeature(
+                              Icons.monetization_on, "${property.price}"),
                       ],
                     ),
                     SizedBox(height: verticalPadding * 1.5),
                     // Fotos de la propiedad
-                     const Text("Fotos", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text("Fotos",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: verticalPadding / 2),
                     _buildPhotosList(size, verticalPadding),
                     SizedBox(height: verticalPadding / 2),
                     SizedBox(
                       height: size.height * 0.2, // Definir altura de las fotos
                       child: _propertyImages == null || _propertyImages!.isEmpty
-                          ? const Center(child: Text('No hay fotos disponibles'))
+                          ? const Center(
+                              child: Text('No hay fotos disponibles'))
                           : ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               itemCount: _propertyImages!.length,
                               itemBuilder: (context, index) {
                                 final image = _propertyImages![index];
-                                
                               },
                             ),
                     ),
@@ -342,27 +412,25 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     );
   }
 
-
   Widget _buildPhotosList(Size size, double verticalPadding) {
-  return SizedBox(
-    height: size.height * 0.2, // Altura de las fotos
-    child: _propertyImages == null || _propertyImages!.isEmpty
-        ? const Center(child: Text('No hay fotos disponibles'))
-        : SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
-              children: _propertyImages!.map((image) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: _buildPhoto(context, '${Config.imagen}${image.url}'),
-                );
-              }).toList(),
+    return SizedBox(
+      height: size.height * 0.2, // Altura de las fotos
+      child: _propertyImages == null || _propertyImages!.isEmpty
+          ? const Center(child: Text('No hay fotos disponibles'))
+          : SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: _propertyImages!.map((image) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: _buildPhoto(context, '${Config.imagen}${image.url}'),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-  );
-}
- 
+    );
+  }
 
   Widget _buildPhoto(BuildContext context, String url) {
     return GestureDetector(
@@ -395,7 +463,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   bottom: 16,
                   left: 16,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(10),
@@ -419,22 +488,21 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   }
 }
 
-  Widget buildFeature(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(icon, size: 32, color: Colors.grey),
-        SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      ],
-    );
-  }
+Widget buildFeature(IconData icon, String label) {
+  return Column(
+    children: [
+      Icon(icon, size: 32, color: Colors.grey),
+      SizedBox(height: 4),
+      Text(label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+    ],
+  );
+}
 
-  Widget _defaultIcon() {
-    return const Icon(
-      Icons.image_not_supported_outlined,
-      size: 80,
-      color: Colors.grey,
-    );
-  }
-
-  
+Widget _defaultIcon() {
+  return const Icon(
+    Icons.image_not_supported_outlined,
+    size: 80,
+    color: Colors.grey,
+  );
+}
