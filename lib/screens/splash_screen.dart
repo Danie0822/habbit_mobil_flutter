@@ -3,6 +3,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Importa SharedPreferences
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,7 +12,8 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<Offset> _slideAnimation;
@@ -50,14 +52,19 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
   Future<void> _checkFirstLaunch() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true; // Por defecto es true
-
+    bool isFirstLaunch =
+        prefs.getBool('isFirstLaunch') ?? true; // Por defecto es true
+    bool isLogged = await StorageService.isRegistered(); // Por defecto es false
     if (isFirstLaunch) {
       // Si es la primera vez, guardamos el valor como false para futuras ejecuciones
       await prefs.setBool('isFirstLaunch', false);
       context.go('/onboard'); // Navega a la pantalla de Onboarding
     } else {
-      context.go('/login'); // Navega a la pantalla de Login
+      if (isLogged) {
+        context.go("/main", extra: 0); // Navega a la pantalla principal
+      } else {
+        context.go('/login'); // Navega a la pantalla de Login
+      }
     }
   }
 
@@ -67,7 +74,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     super.dispose();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       splash: Stack(
@@ -106,7 +113,8 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
           ),
         ],
       ),
-      nextScreen: const SizedBox.shrink(), // No se necesita nextScreen, la redirección se maneja manualmente
+      nextScreen: const SizedBox
+          .shrink(), // No se necesita nextScreen, la redirección se maneja manualmente
       splashTransition: SplashTransition.fadeTransition,
       backgroundColor: primaryColor,
       splashIconSize: double.infinity,

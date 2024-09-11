@@ -58,4 +58,15 @@ class StorageService {
     ]);
     
   }
+  // Mértodo para validar si el usuario ya se registro
+  static Future<bool> isRegistered() async {
+    final String? clientId = await _storage.read(key: 'client_id');
+    final String? clientName = await _storage.read(key: 'client_name');
+    final String? token = await _storage.read(key: 'token');
+    if (clientId != null && clientName != null && token != null) {
+      return true;
+    } 
+    return false;
+  }
+
 }
