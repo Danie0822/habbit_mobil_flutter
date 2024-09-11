@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:habbit_mobil_flutter/screens/on_board.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; // Importa SharedPreferences
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -33,18 +33,32 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     ));
 
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.3), // Start slightly below the center
-      end: const Offset(0.0, 0.0), // End at the center
+      begin: const Offset(0.0, 0.3),
+      end: const Offset(0.0, 0.0),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     ));
 
+    // Una vez que la animación se complete, verifica si es la primera vez que se lanza la aplicación
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        context.go('/onboard'); 
+        _checkFirstLaunch();
       }
     });
+  }
+
+  Future<void> _checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true; // Por defecto es true
+
+    if (isFirstLaunch) {
+      // Si es la primera vez, guardamos el valor como false para futuras ejecuciones
+      await prefs.setBool('isFirstLaunch', false);
+      context.go('/onboard'); // Navega a la pantalla de Onboarding
+    } else {
+      context.go('/login'); // Navega a la pantalla de Login
+    }
   }
 
   @override
@@ -53,7 +67,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     super.dispose();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       splash: Stack(
@@ -92,7 +106,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
           ),
         ],
       ),
-      nextScreen: const OnboardingView(),
+      nextScreen: const SizedBox.shrink(), // No se necesita nextScreen, la redirección se maneja manualmente
       splashTransition: SplashTransition.fadeTransition,
       backgroundColor: primaryColor,
       splashIconSize: double.infinity,
