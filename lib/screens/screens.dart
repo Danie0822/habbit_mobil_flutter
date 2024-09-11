@@ -31,3 +31,4 @@ export 'package:habbit_mobil_flutter/screens/home_screen.dart';
 export 'package:habbit_mobil_flutter/screens/start_home.dart';
 export 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 export 'package:habbit_mobil_flutter/screens/new_request.dart';
+export 'package:habbit_mobil_flutter/screens/agenda_screen.dart';

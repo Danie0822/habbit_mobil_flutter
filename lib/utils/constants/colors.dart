@@ -21,7 +21,7 @@ const Color colorBackGroundMessageContainerLight = Color(0xFFFDFFFF);
 const Color contenedorMensajeLight = Color(0xFFF8FBFB);
 const Color contenedorWidgetLight = Color(0xFFdee2e6);
 const Color normalText = Color.fromARGB(218, 255, 255, 255);
-const Color primaryColorAzul = Color(0xff000094);
+const Color primaryColorAzul = Color(0xff0F0F70);
 
 // Define your custom dark mode colors
 const Color primaryDarkColor = Color(0xff0d47a1); 
