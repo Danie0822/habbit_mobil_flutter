@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
@@ -52,54 +54,59 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
         _isLoading = false;
         _hasError = true;
       });
-      print('Error cargando los datos: $e');
     }
   }
 
-  Future<void> _handleCreateChat() async {
-    try {
-      // Verifica si los detalles de la propiedad están cargados
-      if (_propertyDetails != null && _propertyDetails!.isNotEmpty) {
-        final property = _propertyDetails![
-            0]; // Asume que siempre hay al menos un detalle de propiedad
+  bool _isCreatingChat = false;
 
-        // Llamada al servicio para crear el chat
+  Future<void> _handleCreateChat() async {
+    if (_isCreatingChat)
+      return; // Evita que se vuelva a presionar el botón mientras se está creando el chat
+
+    setState(() {
+      _isCreatingChat = true; // Indica que se está creando un chat
+    });
+
+    try {
+      if (_propertyDetails != null && _propertyDetails!.isNotEmpty) {
+        final property = _propertyDetails![0];
+
         final response = await MessageService().crearChat(widget.idPropiedad);
         final idConversacion = response.idConversacion;
 
-        // Asegúrate de que property.admin no sea nulo antes de usarlo
         if (property.admin != null && idConversacion != null) {
           context.push('/chat', extra: {
             'idConversacion': idConversacion,
             'nameUser': property.admin,
           });
         } else {
-          // Si no hay administrador, maneja el caso apropiadamente
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('No se encontró el administrador de la propiedad.'),
+              content: Text('Inténtalo de nuevo.'),
               backgroundColor: Colors.red,
             ),
           );
         }
       } else {
-        // Maneja el caso en que no se hayan cargado los detalles de la propiedad
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Los detalles de la propiedad no están disponibles.'),
+            content: Text('Ocurrió un error, intente más tarde.'),
             backgroundColor: Colors.red,
           ),
         );
       }
     } catch (e) {
-      // Si ocurre un error, muestra un mensaje genérico
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ocurrió un error, intente más tarde.'),
           backgroundColor: Colors.red,
         ),
       );
-      print('Error creando el chat: $e');
+    } finally {
+      setState(() {
+        _isCreatingChat =
+            false; // Restablece el estado cuando la operación termine
+      });
     }
   }
 

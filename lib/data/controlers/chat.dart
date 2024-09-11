@@ -10,10 +10,6 @@ class ChatService {
   Future<List<ReadChatResponse>> getClientMessages(int idConversacion) async {
     try {
       final response = await ApiService.fetchData('/mensaje/conversation/cliente/$idConversacion');
-      
-      // Imprime el ID de la conversación y la respuesta para depuración
-      print('idConversacion: $idConversacion');
-
       // Extrae la lista de datos de la respuesta
       final List<dynamic> data = response['data']['data'] as List<dynamic>;
 

@@ -58,11 +58,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> _loadMessages() async {
     try {
-      print(
-          'Cargando mensajes para la conversación ID: ${widget.idConversacion}');
       List<ReadChatResponse> mensajes =
           await ChatService().getClientMessages(widget.idConversacion);
-      print('Mensajes cargados: ${mensajes.length}');
       setState(() {
         _mensajes = mensajes;
       });
@@ -85,7 +82,6 @@ class _ChatScreenState extends State<ChatScreen> {
           bool success = await ChatService()
               .updateMessageReadStatus(widget.idConversacion);
           if (success) {
-            print('Estado de leído actualizado exitosamente.');
             setState(() {
               ultimoMensaje.updateReadStatus(true);
             });
