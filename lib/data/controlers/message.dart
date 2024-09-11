@@ -49,7 +49,6 @@ class MessageService {
         'POST',
         body,
       );
-
         // Aquí parseamos el response y creamos una instancia del modelo
       final messageCreateResponse = MessageCreateResponse.fromJson(response['data']);
       return messageCreateResponse;
