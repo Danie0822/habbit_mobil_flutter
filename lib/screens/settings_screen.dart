@@ -17,10 +17,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final CarouselSliderController _carouselController = CarouselSliderController();
 
   @override
+  void initState() {
+    super.initState();
+    // Cargar el tema y ajustar la página inicial según el modo de tema
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+      setState(() {
+        _currentPage = isDarkMode ? 0 : 1; // 0 para la configuración de tema, 1 para el tamaño de texto
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
-    // Inicio de la construcción de la pantalla
+    // Diseño de la pantalla 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -35,7 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           double maxHeight = constraints.maxHeight;
-          // Inicio de la construcción de la pantalla
           return Column(
             children: [
               Expanded(
@@ -45,13 +57,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: maxHeight * 0.99,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
+                    initialPage: _currentPage, // Inicializa la página actual
                     onPageChanged: (index, reason) {
                       setState(() {
                         _currentPage = index;
                       });
                     },
                   ),
-                  // Lista de páginas de configuración
                   items: [
                     _buildThemeSettingsPage(themeProvider, isDarkMode),
                     _buildTextSizeSettingsPage(),
@@ -65,8 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
-  // Método para construir la página de configuración de temas
+  // 
   Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
     return Container(
       padding: const EdgeInsets.all(10.0),
@@ -107,7 +118,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Método para construir la página de configuración de tamaño de texto
   Widget _buildTextSizeSettingsPage() {
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -180,7 +190,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Método para construir los botones de cambio de tema
   Widget _buildToggleButtons(ThemeProvider themeProvider) {
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
 
@@ -239,7 +248,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Método para construir el control deslizante inferior
   Widget _buildBottomSlider() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
