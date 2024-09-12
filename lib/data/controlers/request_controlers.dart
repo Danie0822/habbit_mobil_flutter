@@ -9,6 +9,7 @@ class RequestService {
     try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
       final idCliente = await StorageService.getClientId();
+      print(idCliente);
       // Realiza una solicitud a la API para obtener las solicitudes del cliente
       final response =
           await ApiService.fetchData('/solicitudes/cliente/$idCliente');

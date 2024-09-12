@@ -50,23 +50,23 @@ class StorageService {
       _storage.write(key: 'client_name', value: clientName),
     ]);
   }
-    // Método para guardar ID del cliente 
-  static Future<void> saveCredentialsRegister(
-    String clientId) async {
+
+  // Método para guardar ID del cliente
+  static Future<void> saveCredentialsRegister(String clientId) async {
     await Future.wait([
       _storage.write(key: 'client_id', value: clientId),
     ]);
-    
-  }
-  // Mértodo para validar si el usuario ya se registro
-  static Future<bool> isRegistered() async {
-    final String? clientId = await _storage.read(key: 'client_id');
-    final String? clientName = await _storage.read(key: 'client_name');
-    final String? token = await _storage.read(key: 'token');
-    if (clientId != null && clientName != null && token != null) {
-      return true;
-    } 
-    return false;
   }
 
+  // Mértodo para validar si el usuario ya se registro
+  static Future<bool> isRegistered() async {
+    try {
+      final String? clientId = await _storage.read(key: 'client_id');
+      final String? clientName = await _storage.read(key: 'client_name');
+      final String? token = await _storage.read(key: 'token');
+      return clientId != null && clientName != null && token != null;
+    } catch (e) {
+      return false;
+    }
+  }
 }
