@@ -149,6 +149,7 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                 offsetAnimation: _offsetAnimation,
                 onSearchChanged: _filterMessages,
                 hintTextt: 'Buscar por titulo de propiedad..',
+                titleHeader: 'Mensajes',
               ),
               const SizedBox(height: 20.0),
               Expanded(

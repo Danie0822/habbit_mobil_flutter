@@ -10,6 +10,7 @@ class HeaderScreen extends StatelessWidget {
   final Animation<Offset> offsetAnimation;
   final Function(String) onSearchChanged;
   final String hintTextt;
+  final String titleHeader;
 
   const HeaderScreen({
     Key? key,
@@ -18,6 +19,7 @@ class HeaderScreen extends StatelessWidget {
     required this.offsetAnimation,
     required this.onSearchChanged,
     required this.hintTextt,
+    required this.titleHeader,
   }) : super(key: key);
 
   @override
@@ -29,9 +31,9 @@ class HeaderScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Mensajes',
-                style: TextStyle(
+              Text(
+                titleHeader,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
                   color: whiteColor,
