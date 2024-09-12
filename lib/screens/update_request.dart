@@ -11,15 +11,16 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:go_router/go_router.dart';
 
-// Pantalla para agregar una nueva solicitud
-class NewRequest extends StatefulWidget {
-  const NewRequest({super.key, required this.request});
+// Pantalla para actualizar una solicitud
+class UpdateRequest extends StatefulWidget {
+  const UpdateRequest({super.key, required this.request});
   final RequestModel request;
+  
   @override
-  State<NewRequest> createState() => _NewRequestState();
+  State<UpdateRequest> createState() => _UpdateRequestState();
 }
 
-class _NewRequestState extends State<NewRequest> {
+class _UpdateRequestState extends State<UpdateRequest> {
   final _formKey = GlobalKey<FormState>();
   // Controladores para los campos de texto
   TextEditingController _titleController = TextEditingController();
@@ -55,8 +56,8 @@ class _NewRequestState extends State<NewRequest> {
       final title = _titleController.text;
       final descripcion = _descriptionController.text;
       final dirrecion = _addressController.text;
-      final precio = int.parse(_priceController.text);
-      final ganancia = int.parse(_gananciaController.text);
+      final precio = double.parse(_priceController.text);
+      final ganancia = double.parse(_gananciaController.text);
       // Enviar la solicitud
       final result = await _updateController.requestUpdate(
           title, descripcion, dirrecion, precio, ganancia, idSolicitud);
@@ -177,7 +178,7 @@ class _NewRequestState extends State<NewRequest> {
                   alignment: Alignment.center,
                   child: CustomButton(
                     onPressed: _updateInfo,
-                    text: "Agregar solicitud",
+                    text: "Actualizar solicitud",
                   ),
                 ),
               ],

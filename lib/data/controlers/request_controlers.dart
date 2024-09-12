@@ -9,7 +9,6 @@ class RequestService {
     try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
       final idCliente = await StorageService.getClientId();
-      print(idCliente);
       // Realiza una solicitud a la API para obtener las solicitudes del cliente
       final response =
           await ApiService.fetchData('/solicitudes/cliente/$idCliente');
@@ -90,7 +89,7 @@ class RequestService {
         data,
       );
       // Convertir la respuesta en el modelo
-      final loginResponse = SendChatResponse.fromJson(response);
+        final loginResponse = SendChatResponse.fromJson(response);
       if (loginResponse.status == 200) {
         return 1;
         // 401 es un error de validaciones

@@ -24,7 +24,7 @@ class AuthService {
       final registerResponse = RegisterResponse.fromJson(response);
       if (registerResponse.success) {
           // Guardar token, ID del cliente
-          await StorageService.saveCredentialsRegister(
+          await StorageService.saveClientId(
             registerResponse.clientId!.toString(),
           );
         return true;

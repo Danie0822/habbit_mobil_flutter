@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class RequestsCards extends StatelessWidget {
-  final String titulo;
-  final String administrador;
-  final String fecha;
-  final String estado;
+  final RequestModel request;
 
   const RequestsCards({
     super.key,
-    required this.titulo,
-    required this.administrador,
-    required this.fecha,
-    required this.estado,
+    required this.request
   });
 
   @override
   Widget build(BuildContext context) {
     final Color container = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
+
     // Iconos y colores personalizados según el estado
     IconData icono;
     Color iconColor;
     Color iconBgColor;
-    switch (estado) {
+    final nombreAdmin = request.nombreAdministrador;
+    final fecha = request.fechaSolicitud; 
+    switch (request.estadoSolicitud) {
       case 'Revisando':
         icono = Icons.hourglass_top;
         iconColor = Colors.orangeAccent;
@@ -82,7 +81,7 @@ class RequestsCards extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  titulo,
+                  request.tituloSolicitud,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -90,7 +89,7 @@ class RequestsCards extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Administrador: $administrador',
+                  'Administrador: $nombreAdmin',
                   style: const TextStyle(
                     fontSize: 12,
                   ),
@@ -105,6 +104,17 @@ class RequestsCards extends StatelessWidget {
               ],
             ),
           ),
+          if (request.estadoSolicitud == 'Revisando')
+            IconButton(
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.blueAccent,
+                size: 24,
+              ),
+              onPressed: () {
+                context.go('/updateRequest', extra: request);
+              },
+            ),
         ],
       ),
     );

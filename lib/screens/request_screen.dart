@@ -154,10 +154,7 @@ class ListRequest extends StatelessWidget {
               ),
               elevation: 4,
               child: RequestsCards(
-                titulo: request.tituloSolicitud,
-                administrador: request.nombreAdministrador,
-                fecha: request.fechaSolicitud,
-                estado: request.estadoSolicitud,
+                    request: request,
               ),
             ),
           ),

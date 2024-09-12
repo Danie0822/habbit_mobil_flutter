@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
+import 'package:habbit_mobil_flutter/screens/update_request.dart';
 
 // Definición del enrutador utilizando GoRouter
 final GoRouter router = GoRouter(
@@ -91,6 +93,12 @@ final GoRouter router = GoRouter(
         return _buildPageWithFuturisticTransition(
             MainScreen(initialIndex: initialIndex), state);
       },
+    ),
+    GoRoute(path: '/updateRequest',
+    pageBuilder: (context, state) {
+      final RequestModel  request = state.extra as RequestModel; 
+      return _buildPageWithFuturisticTransition(UpdateRequest(request: request), state); 
+    },
     ),
     GoRoute(
       path: '/registar',

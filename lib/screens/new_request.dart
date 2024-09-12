@@ -83,8 +83,8 @@ class _NewRequestState extends State<NewRequest> {
       final title = _titleController.text;
       final descripcion = _descriptionController.text;
       final dirrecion = _addressController.text;
-      final precio = int.parse(_priceController.text);
-      final ganancia = int.parse(_gananciaController.text);
+      final precio = double.parse(_priceController.text);
+      final ganancia = double.parse(_gananciaController.text);
       // Enviar la solicitud
       final result = await _saveController.requestSave(
           title,
