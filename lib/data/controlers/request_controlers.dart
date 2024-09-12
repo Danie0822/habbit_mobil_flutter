@@ -70,6 +70,39 @@ class RequestService {
     }
   }
 
+  Future<int> requestUpdate(
+      titulo, descripcion, dirrecion, precio, ganancia, idSolicitud) async {
+    try {
+      // Data para enviar al servidor
+      final data = {
+        'id_solicitud': idSolicitud,
+        'titulo_solicitud': titulo,
+        'descripcion_solicitud': descripcion,
+        'direccion_propiedad': dirrecion,
+        'precio_casa': precio,
+        'ganancia_empresa': ganancia
+      };
+      // Enviar los datos al servidor
+      final response = await ApiService.sendData(
+        '/solicitudes/update/cliente',
+        'PUT',
+        data,
+      );
+      // Convertir la respuesta en el modelo
+      final loginResponse = SendChatResponse.fromJson(response);
+      if (loginResponse.status == 200) {
+        return 1;
+        // 401 es un error de validaciones
+      } else if (loginResponse.status == 401) {
+        return 2;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      return 0;
+    }
+  }
+
   Future<int> requestDelete(idRequest) async {
     try {
       // Enviar la petición de eliminación al servidor
