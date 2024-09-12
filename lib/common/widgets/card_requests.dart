@@ -44,7 +44,7 @@ class RequestsCards extends StatelessWidget {
         iconColor = Colors.grey;
         iconBgColor = Colors.grey.withOpacity(0.2);
     }
-
+    // Diseño de la cards 
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
@@ -108,11 +108,10 @@ class RequestsCards extends StatelessWidget {
             IconButton(
               icon: const Icon(
                 Icons.edit,
-                color: Colors.blueAccent,
-                size: 24,
+                size: 20,
               ),
               onPressed: () {
-                context.go('/updateRequest', extra: request);
+                context.go('/updateRequest', extra: request); // Actualizar la solicitud 
               },
             ),
         ],

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/card_requests.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
 import 'package:habbit_mobil_flutter/common/widgets/detail_request.dart';
+import 'package:habbit_mobil_flutter/common/widgets/header_screen.dart';
 import 'package:habbit_mobil_flutter/data/controlers/request_controlers.dart';
 import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 
@@ -13,17 +14,39 @@ class RequestsScreen extends StatefulWidget {
   State<RequestsScreen> createState() => _RequestsScreenState();
 }
 
-class _RequestsScreenState extends State<RequestsScreen> {
+class _RequestsScreenState extends State<RequestsScreen> with SingleTickerProviderStateMixin {
+  // Variables de listas de solicitudes
   List<RequestModel> requestsData = [];
+  List<RequestModel> filteredRequests = [];
+  // Variables de estado
   bool isLoading = true;
+  // Variables de error
   String? errorMessage;
-
+  // Variables de búsqueda
+  bool isSearchVisible = false;
+  // Variables de busquedas 
+  String searchQuery = '';
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+ // Inicializar las solicitudes
   @override
   void initState() {
     super.initState();
     _loadRequests();
+    // Inicializar la animación del buscador
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
   }
-
+  // Cargar las solicitudes
   Future<void> _loadRequests() async {
     try {
       setState(() {
@@ -32,6 +55,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
       final loadedRequests = await RequestService().cargarRequest();
       setState(() {
         requestsData = loadedRequests;
+        filteredRequests = requestsData; // Inicialmente, todas las solicitudes
         isLoading = false;
       });
     } catch (error) {
@@ -40,37 +64,62 @@ class _RequestsScreenState extends State<RequestsScreen> {
         isLoading = false;
       });
     }
+  } 
+  // Función para mostrar u ocultar el buscador
+  void _toggleSearch() {
+    setState(() {
+      isSearchVisible = !isSearchVisible;
+      if (isSearchVisible) {
+        _controller.forward(); // Mostrar el buscador
+      } else {
+        _controller.reverse(); // Ocultar el buscador
+        setState(() {
+          filteredRequests = requestsData; // Resetear la lista al cerrar el buscador
+        });
+      }
+    });
   }
-
+  // Función para filtrar las solicitudes
+  void _onSearchChanged(String query) {
+    setState(() {
+      searchQuery = query;
+      filteredRequests = requestsData
+          .where((request) => request.tituloSolicitud
+              .toLowerCase()
+              .contains(query.toLowerCase())) // Filtrar solicitudes
+          .toList();
+    });
+  }
+  // Construir la pantalla de solicitudes el diseño 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Solicitudes',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+      body: Column(
+        children: [
+          const SizedBox(height: 40),
+          // Encabezado de la pantalla
+          HeaderScreen(
+            isSearchVisible: isSearchVisible,
+            onSearchToggle: _toggleSearch,
+            offsetAnimation: _offsetAnimation,
+            onSearchChanged: _onSearchChanged,
+            hintTextt: 'Buscar solicitudes...',
+            titleHeader: 'Solicitudes',
           ),
-        ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 4,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(12),
+          // Cuerpo de la pantalla
+          Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : errorMessage != null
+                    ? Center(child: Text(errorMessage!))
+                    : RefreshIndicator(
+                        onRefresh: _loadRequests,
+                        child: ListRequest(requestsData: filteredRequests), // Mostrar la lista filtrada
+                      ),
           ),
-        ),
+        ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : errorMessage != null
-              ? Center(child: Text(errorMessage!))
-              : RefreshIndicator(
-                  onRefresh: _loadRequests,
-                  child: ListRequest(requestsData: requestsData),
-                ),
+      // Botón flotante para agregar una nueva solicitud
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.go('/newRequest');
@@ -84,8 +133,14 @@ class _RequestsScreenState extends State<RequestsScreen> {
       ),
     );
   }
+  // Liberar recursos
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
-
+// Clase para mostrar la lista de solicitudes
 class ListRequest extends StatelessWidget {
   const ListRequest({super.key, required this.requestsData});
 
@@ -93,12 +148,12 @@ class ListRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.builder( // Construir la lista de solicitudes
       padding: const EdgeInsets.all(8.0),
       itemCount: requestsData.length,
       itemBuilder: (context, index) {
         final request = requestsData[index];
-
+        // Widget para deslizar y eliminar una solicitud
         return Dismissible(
           key: ValueKey(request.idSolicitud),
           direction: DismissDirection

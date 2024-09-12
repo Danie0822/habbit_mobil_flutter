@@ -113,12 +113,12 @@ class _UpdateRequestState extends State<UpdateRequest> {
               children: [
                 // Título y descripción
                 Text(
-                  "Agregar nueva solicitud",
+                  "Actualizar la solicitud",
                   style: AppStyles.headline5(context, colorTexto),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "Por favor, complete los campos para agregar una nueva solicitud de servicio de venta de propiedades",
+                  "Por favor, complete los campos para actualizar la solicitud de servicio de venta de propiedades",
                   style: AppStyles.subtitle1(context),
                 ),
                 const SizedBox(height: 20),
