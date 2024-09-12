@@ -62,7 +62,7 @@ class InformativeCard extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: colorTextoTitulo, // Color del texto
                           fontWeight: FontWeight.bold,
                           fontSize: 16, 
@@ -73,7 +73,7 @@ class InformativeCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     count,
-                    style: Theme.of(context).textTheme.caption?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: colorTextoSub,
                           fontSize: 14, 
                         ),

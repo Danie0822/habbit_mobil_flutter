@@ -33,7 +33,6 @@ final kDarkTheme = ThemeData(
   fontFamily: 'SFProText',
   primaryColor: kDarkPrimaryColor,
   canvasColor: kDarkPrimaryColor,
-  backgroundColor: kDarkSecondaryColor,
   hintColor: kAccentColor,
   iconTheme: ThemeData.dark().iconTheme.copyWith(
         color: kLightSecondaryColor,
@@ -43,6 +42,18 @@ final kDarkTheme = ThemeData(
         bodyColor: kLightSecondaryColor,
         displayColor: kLightSecondaryColor,
       ),
+  colorScheme: const ColorScheme.dark(
+    primary: kDarkPrimaryColor,
+    secondary: kDarkSecondaryColor,
+    surface: kDarkSecondaryColor,
+    background: kDarkPrimaryColor,
+    error: Colors.red,
+    onPrimary: Colors.white,
+    onSecondary: Colors.white,
+    onSurface: Colors.white,
+    onBackground: Colors.white,
+    onError: Colors.white,
+  ),
 );
 
 // Tema claro configurado
@@ -51,7 +62,6 @@ final kLightTheme = ThemeData(
   fontFamily: 'SFProText',
   primaryColor: kLightPrimaryColor,
   canvasColor: kLightPrimaryColor,
-  backgroundColor: kLightSecondaryColor,
   hintColor: kAccentColor,
   iconTheme: ThemeData.light().iconTheme.copyWith(
         color: kDarkSecondaryColor,
@@ -61,4 +71,16 @@ final kLightTheme = ThemeData(
         bodyColor: kDarkSecondaryColor,
         displayColor: kDarkSecondaryColor,
       ),
+  colorScheme: const ColorScheme.light(
+    primary: kLightPrimaryColor,
+    secondary: kLightSecondaryColor,
+    surface: kLightSecondaryColor,
+    background: kLightPrimaryColor,
+    error: Colors.red,
+    onPrimary: Colors.black,
+    onSecondary: Colors.black,
+    onSurface: Colors.black,
+    onBackground: Colors.black,
+    onError: Colors.white,
+  ),
 );

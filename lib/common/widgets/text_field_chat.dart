@@ -80,7 +80,7 @@ class MyTextField extends StatelessWidget {
           fillColor: fillColor, // Color de fondo del campo de texto
         ),
         style: TextStyle( // Estilo del texto del campo de texto
-          color: Theme.of(context).textTheme.bodyText1?.color, // Color del texto basado en el tema
+          color: Theme.of(context).textTheme.bodyLarge?.color, // Color del texto basado en el tema
         ),
       ),
     );

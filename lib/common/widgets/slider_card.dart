@@ -54,7 +54,7 @@ class SliderCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 26,
@@ -63,7 +63,7 @@ class SliderCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       description,
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.white,
                             fontSize: 12,
                           ),

@@ -38,7 +38,7 @@ class SectionCardWithImage extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
                         fontSize: 30, 
                         fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class SectionCardWithImage extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   description,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white70,
                         fontSize: 12, 
                       ),
