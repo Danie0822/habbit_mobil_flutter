@@ -1,12 +1,10 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_chat.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/message.dart';
-import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
+import 'package:habbit_mobil_flutter/common/widgets/header_screen.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -145,7 +143,13 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(), // Construir encabezado
+              HeaderScreen(
+                isSearchVisible: _isSearchVisible,
+                onSearchToggle: _toggleSearch,
+                offsetAnimation: _offsetAnimation,
+                onSearchChanged: _filterMessages,
+                hintTextt: 'Buscar por titulo de propiedad..',
+              ),
               const SizedBox(height: 20.0),
               Expanded(
                 child: Container(
@@ -183,56 +187,6 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // Construir encabezado
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Mensajes',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: whiteColor,
-                ),
-              ),
-              IconButton(
-                onPressed: _toggleSearch,
-                icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 600),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return RotationTransition(
-                      turns: child.key == const ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
-                      child: FadeTransition(opacity: animation, child: child),
-                    );
-                  },
-                  child: Icon(
-                    _isSearchVisible ? Icons.close : Icons.search,
-                    key: ValueKey(_isSearchVisible ? 'close' : 'search'),
-                    color: whiteColor,
-                    size: 25.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          if (_isSearchVisible)
-            SlideTransition(
-              position: _offsetAnimation,
-              child: SearchInput(
-                onChanged: _filterMessages,
-                hintText: 'Buscar por título...',
-              ),
-            ),
-        ],
       ),
     );
   }
