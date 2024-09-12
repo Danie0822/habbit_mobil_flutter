@@ -220,6 +220,48 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+   Future<void> _loadPropertiesProyects() async {
+    setState(() {
+      _isLoading = true; // Establecer estado de carga al comenzar
+    });
+
+    try {
+      final properties = await PropertiesService().getPropertiesProyects(); // Cargar propiedades desde el servicio
+
+      // Crea una nueva lista de PropertyCard a partir de las propiedades
+      List<PropertyCard> newPropertyCards = properties.map((property) {
+        return PropertyCard(
+          idPropiedad: property.idPropiedad ?? 0,
+          title: property.title ?? 'Propiedad no encontrada',
+          type: property.type ?? 'Error de datos',
+          status: property.status ?? 'Error de datos',
+          direction: property.direction ?? 'Error de datos',
+          price: property.price ?? 0.0,
+          imageUrl: property.imageUrl != null
+              ? '${Config.imagen}${property.imageUrl}'
+              : '',
+          isFavorites: false,
+        );
+      }).toList();
+
+      setState(() {
+        _propertyCards.clear(); // Limpiar la lista actual
+        _propertyCards.addAll(newPropertyCards); // Agregar las nuevas tarjetas a la lista
+
+        // Si estás utilizando AnimatedList, puedes usar insertItem aquí
+        for (int i = 0; i < newPropertyCards.length; i++) {
+          _listKey.currentState?.insertItem(i);
+        }
+      });
+    } catch (e) {
+      print('Error cargando propiedades: $e'); // Manejo de errores
+    } finally {
+      setState(() {
+        _isLoading = false; // Cambiar el estado de carga
+      });
+    }
+  }
+
 
   // Maneja la selección del filtro
  // Maneja la selección del filtro
@@ -238,6 +280,9 @@ void _onFilterSelected(String filter) {
       break;
     case 'Inmuebles':
       _loadPropertiesIn();
+      break;
+      case 'Proyectos':
+      _loadPropertiesProyects();
       break;
   }
 }
