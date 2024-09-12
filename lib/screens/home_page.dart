@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/buildFilter.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/common/widgets/filters.dart';
@@ -17,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // Filtro seleccionado
-  String selectedFilter = 'Inmuebles';
+  String selectedFilter = 'Tus preferencias';
 
   // Lista de tarjetas de propiedades
   final List<PropertyCard> _propertyCards = [];
@@ -31,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadProperties(); // Cargar propiedades al iniciar
+    _loadPropertiesPreferences(); // Cargar propiedades al iniciar
   }
 
   @override
@@ -70,8 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 children: [
+                  _buildFilterOption('Tus preferencias', Icons.favorite),
                   _buildFilterOption('Inmuebles', Icons.home),
-                  _buildFilterOption('Proyectos', Icons.work),
+                  _buildFilterOption('Proyectos', Icons.work)
                 ],
               ),
             ),
@@ -137,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Carga las propiedades de forma asíncrona
-  Future<void> _loadProperties() async {
+  Future<void> _loadPropertiesPreferences() async {
     setState(() {
       _isLoading = true; // Establecer estado de carga al comenzar
     });
@@ -179,12 +178,81 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Maneja la selección del filtro
-  void _onFilterSelected(String filter) {
+   Future<void> _loadPropertiesIn() async {
     setState(() {
-      selectedFilter = filter;
+      _isLoading = true; // Establecer estado de carga al comenzar
     });
+
+    try {
+      final properties = await PropertiesService().getPropertiesInm(); // Cargar propiedades desde el servicio
+
+      // Crea una nueva lista de PropertyCard a partir de las propiedades
+      List<PropertyCard> newPropertyCards = properties.map((property) {
+        return PropertyCard(
+          idPropiedad: property.idPropiedad ?? 0,
+          title: property.title ?? 'Propiedad no encontrada',
+          type: property.type ?? 'Error de datos',
+          status: property.status ?? 'Error de datos',
+          direction: property.direction ?? 'Error de datos',
+          price: property.price ?? 0.0,
+          imageUrl: property.imageUrl != null
+              ? '${Config.imagen}${property.imageUrl}'
+              : '',
+          isFavorites: false,
+        );
+      }).toList();
+
+      setState(() {
+        _propertyCards.clear(); // Limpiar la lista actual
+        _propertyCards.addAll(newPropertyCards); // Agregar las nuevas tarjetas a la lista
+
+        // Si estás utilizando AnimatedList, puedes usar insertItem aquí
+        for (int i = 0; i < newPropertyCards.length; i++) {
+          _listKey.currentState?.insertItem(i);
+        }
+      });
+    } catch (e) {
+      print('Error cargando propiedades: $e'); // Manejo de errores
+    } finally {
+      setState(() {
+        _isLoading = false; // Cambiar el estado de carga
+      });
+    }
   }
+
+
+  // Maneja la selección del filtro
+ // Maneja la selección del filtro
+void _onFilterSelected(String filter) {
+  setState(() {
+    selectedFilter = filter;
+  });
+
+  // Eliminar los ítems actuales de la lista antes de cargar los nuevos
+  _clearPropertyList();
+
+  // Cargar nuevas propiedades según el filtro seleccionado
+  switch (filter) {
+    case 'Tus preferencias':
+      _loadPropertiesPreferences();
+      break;
+    case 'Inmuebles':
+      _loadPropertiesIn();
+      break;
+  }
+}
+
+// Función para eliminar los ítems de la AnimatedList uno por uno
+void _clearPropertyList() {
+  for (int i = _propertyCards.length - 1; i >= 0; i--) {
+    PropertyCard removedCard = _propertyCards.removeAt(i);
+    _listKey.currentState?.removeItem(
+      i,
+      (context, animation) => _buildPropertyItem(removedCard, animation),
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+}
 
   // Muestra el modal con los filtros
   void _showBottomSheet() {

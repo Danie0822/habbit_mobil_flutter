@@ -28,6 +28,31 @@ class PropertiesService {
     }
 
   }
+    Future<List<PropertiesResponse>> getPropertiesInm() async {
+    try {
+       final response = await ApiService.fetchData('/propiedades/movilFilt1');
+      
+
+       final innerData = response['data'];
+       if(innerData is Map<String, dynamic>){
+         final data = innerData['data'];
+         print(data);
+         if(data is List<dynamic>){
+           
+           return PropertiesResponse.fromJsonList(data);
+          
+         } else {
+           throw Exception('Unexpected API response');
+           
+         }
+       } else {
+         throw Exception('Unexpected API response');
+       }
+    }catch (error){
+      throw Exception('Error loading properties: $error');
+    }
+
+  }
   
 }
 

@@ -25,6 +25,7 @@ class PropertyCard extends StatefulWidget {
     required this.imageUrl,
   }) : super(key: key);
 
+
   @override
   _PropertyCardState createState() => _PropertyCardState();
 }
