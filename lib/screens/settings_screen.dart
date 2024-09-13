@@ -28,12 +28,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       });
     });
   }
-
+ // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
-    // Diseño de la pantalla 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -51,6 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           return Column(
             children: [
               Expanded(
+                // CarouselSlider para cambiar entre las páginas de configuración de tema y tamaño de texto
                 child: CarouselSlider(
                   carouselController: _carouselController,
                   options: CarouselOptions(
@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-  // 
+  // Páginas de configuración de tema y tamaño de texto
   Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
     return Container(
       padding: const EdgeInsets.all(10.0),
@@ -117,7 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
+  // Página de configuración de tamaño de texto
   Widget _buildTextSizeSettingsPage() {
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -189,7 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
+  // Botones de alternancia para el tema claro y oscuro
   Widget _buildToggleButtons(ThemeProvider themeProvider) {
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
 
@@ -247,7 +247,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ],
     );
   }
-
+  // Indicador de página inferior para cambiar entre las páginas de configuración de tema y tamaño de texto
   Widget _buildBottomSlider() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
