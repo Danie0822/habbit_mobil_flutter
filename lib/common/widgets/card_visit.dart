@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class EventCard extends StatelessWidget {
 
@@ -18,6 +19,8 @@ class EventCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+      final Color container = ThemeUtils.getColorBasedOnBrightness(
+      context, primaryColorAzul, contenedorMensajeDark);
     
     Color color;
     //Se cambia de color la chip del estado segun el mismo
@@ -35,10 +38,10 @@ class EventCard extends StatelessWidget {
       color = Colors.blueGrey;
     }
     return Container(
-      margin: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(4.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: primaryColorAzul, 
+        color: container, 
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Column(
@@ -91,27 +94,6 @@ class EventCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16.0),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                backgroundColor: Colors.white, // Fondo blanco para el botón
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-                elevation: 5,
-              ),
-              onPressed: () {
-                // Acción del botón
-              },
-              child: const Icon(
-                CupertinoIcons.arrow_right,
-                color: Colors.blue, // Color del ícono de flecha
-                size: 25.0,
-              ),
-            ),
-          ),
         ],
       ),
     );

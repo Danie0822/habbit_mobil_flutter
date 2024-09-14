@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habbit_mobil_flutter/screens/agenda_screen.dart';
 import 'package:rive/rive.dart';
 import 'package:habbit_mobil_flutter/screens/home_page.dart';
 import 'package:habbit_mobil_flutter/screens/edit_preferences.dart';
@@ -44,6 +45,13 @@ List<RiveAsset> sideMenu = [
     stateMachineName: 'STAR_Interactivity',
     title: 'Likes',
     screen: HomeScreen(),
+  ),
+  RiveAsset(
+    'assets/rive/icons.riv',
+    artboard: 'BELL',
+    stateMachineName: 'BELL_Interactivity',
+    title: 'Eventos',
+    screen: VisitScreen(),
   ),
   RiveAsset(
     'assets/rive/icons.riv',

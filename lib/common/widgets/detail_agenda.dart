@@ -7,11 +7,12 @@ import 'package:intl/intl.dart';
 // Diseño de detalles de las solicitudes
 Widget DetailAgenda(BuildContext context, VisitModel visit) {
   final Color container = ThemeUtils.getColorBasedOnBrightness(
-      context, contenedorMensajeLight, contenedorMensajeDark);
+      context, primaryColor, contenedorMensajeDark);
 
   // Diálogo que muestra los detalles de la solicitud
   return Dialog(
-    backgroundColor: Colors.transparent,
+  backgroundColor: Colors.transparent,
+  child: SingleChildScrollView(  // Envuelve el contenido del diálogo
     child: Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -36,6 +37,9 @@ Widget DetailAgenda(BuildContext context, VisitModel visit) {
               fontSize: 22,
               color: Colors.white,
             ),
+            softWrap: true,
+            maxLines: null,
+            overflow: TextOverflow.visible,
           ),
           const SizedBox(height: 12),
           // Construir las tarjetas de detalles
@@ -67,12 +71,16 @@ Widget DetailAgenda(BuildContext context, VisitModel visit) {
         ],
       ),
     ),
-  );
+  ),
+);
+
 }
-    // Función para formatear la fecha
-  String formatFecha(DateTime fecha) {
-    return DateFormat('d \'de\' MMMM \'de\' yyyy, h:mm a', 'es_ES').format(fecha.toLocal());
-  }
+
+// Función para formatear la fecha
+String formatFecha(DateTime fecha) {
+  return DateFormat('d \'de\' MMMM \'de\' yyyy, h:mm a', 'es_ES')
+      .format(fecha.toLocal());
+}
 
 // Construir las tarjetas de detalles de la solicitud con la información de la solicitud
 List<Widget> _buildDetailCards(VisitModel visit) {
@@ -141,7 +149,7 @@ class _DetailCard extends StatelessWidget {
                   value,
                   style: const TextStyle(
                     fontSize: 14,
-                    height: 1.5, // Espaciado de líneas para mejor lectura
+                    height: 1.5, 
                     color: Colors.white,
                   ),
                   maxLines: 3,
