@@ -33,4 +33,26 @@ class VisitControler {
 
     }
   }
+
+// Método para actualizar el estado del cliente (como si eliminara una visita)
+Future<bool> visitUpdate(int idVisita) async {
+  try {
+    final data = {'estado_visita_cliente': 'Inactivo'};
+    final response = await ApiService.sendData('/visitas/update/estado/$idVisita', 'PUT', data);
+
+    // Verifica tanto el success principal como el anidado
+    if (response['success'] == true && 
+        response['data']['success'] == true && 
+        response['data']['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    print('Error al actualizar estado: $error');
+    return false;
+  }
+}
+
+
 }

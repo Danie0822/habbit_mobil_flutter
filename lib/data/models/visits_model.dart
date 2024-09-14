@@ -7,6 +7,7 @@ class VisitModel {
   final int idPropiedad;
   final String estadoVisita;
   final int idAdmin;
+  final String nombreAdmin;
 
   VisitModel({
     required this.IdVisita,
@@ -17,6 +18,7 @@ class VisitModel {
     required this.idPropiedad,
     required this.estadoVisita,
     required this.idAdmin,
+    required this.nombreAdmin
   });
 
   factory VisitModel.fromJson(Map<String, dynamic> json) {
@@ -28,7 +30,8 @@ class VisitModel {
       idCliente: json['id_cliente'],
       idPropiedad: json['id_propiedad'],
       estadoVisita: json['estado_visita'],
-      idAdmin: json['id_administrador'],
+      idAdmin: json['id_administrador'], 
+      nombreAdmin: json['nombre_administrador'],
     );
   }
 
