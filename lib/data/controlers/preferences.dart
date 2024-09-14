@@ -12,7 +12,8 @@ class DataPreferences {
         final nestedData = response['data'];
         if (nestedData['success'] == true) {
           List<dynamic> data = nestedData['data'];
-          List<Category> categories = data.map((item) => Category.fromJson(item)).toList();
+          List<Category> categories =
+              data.map((item) => Category.fromJson(item)).toList();
           return categories;
         } else {
           throw Exception('Estructura de respuesta inesperada');
@@ -30,7 +31,6 @@ class DataPreferences {
     try {
       final response = await ApiService.fetchData('/zonas/');
       if (response['success'] == true) {
-        
         final nestedData = response['data'];
         if (nestedData['success'] == true) {
           List<dynamic> data = nestedData['data'];
@@ -44,6 +44,21 @@ class DataPreferences {
       }
     } catch (error) {
       throw Exception('Error al obtener las zonas: $error');
+    }
+  }
+
+  // Método para actualizar las preferencias del usuario
+  Future<bool> updatePreferences(Map<String, dynamic>? formData) async {
+    try {
+      final response =
+          await ApiService.sendData('/preferencias/update', 'PUT', formData);
+      if (response['success'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      throw Exception('Error al actualizar las preferencias: $error');
     }
   }
 }
