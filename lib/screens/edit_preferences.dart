@@ -56,7 +56,7 @@ class _EditPreferencesState extends State<EditPreferences> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.pop();
+            context.pushNamed('/main', extra: 3);
           },
         ),
       ),
@@ -92,7 +92,7 @@ class _EditPreferencesState extends State<EditPreferences> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.push(preferences[index]['destinationRoute']!);
+                          context.go(preferences[index]['destinationRoute']!);
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
