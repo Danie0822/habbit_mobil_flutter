@@ -17,16 +17,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
   // Lista de íconos para las pestañas
   final iconList = <IconData>[
     Icons.home,
-    Icons.favorite,
     Icons.message,
+    Icons.home_repair_service_outlined,
     Icons.person,
   ];
 
   // Lista de etiquetas para las pestañas
   final labelList = <String>[
     'Inicio',
-    'Favorito',
-    'Mensaje',
+    'Mensajes',
+    'Solicitudes',
     'Perfil',
   ];
 

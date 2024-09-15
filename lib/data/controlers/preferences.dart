@@ -26,7 +26,7 @@ class DataPreferences {
     }
   }
 
-  // Método para obtener zonas (suponiendo que la estructura es similar)
+  // Método para obtener zonas 
   Future<List<Zone>> fetchZones() async {
     try {
       final response = await ApiService.fetchData('/zonas/');
@@ -47,18 +47,4 @@ class DataPreferences {
     }
   }
 
-  // Método para actualizar las preferencias del usuario
-  Future<bool> updatePreferences(Map<String, dynamic>? formData) async {
-    try {
-      final response =
-          await ApiService.sendData('/preferencias/update', 'PUT', formData);
-      if (response['success'] == true) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      throw Exception('Error al actualizar las preferencias: $error');
-    }
-  }
 }

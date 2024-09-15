@@ -1,7 +1,7 @@
 import 'package:habbit_mobil_flutter/data/models/search_statistics.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class EstadisticasController {
   late EstadisticasBusquedas estadisticasBusquedas;
@@ -57,43 +57,93 @@ class EstadisticasController {
 
   Future<void> enviarEstadisticas() async {
     try {
-      estadisticasBusquedas.fecha_modificacion = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      
+      estadisticasBusquedas.fecha_modificacion =
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
+
       final json = estadisticasBusquedas.toJson();
 
-      final response = await ApiService.sendData('/preferencias/save/', 'POST', json);
+      final response =
+          await ApiService.sendData('/preferencias/save/', 'POST', json);
+
+      print(json);
 
       if (response['success'] == true) {
         print('Estadísticas enviadas correctamente');
       } else {
-        throw Exception('Error al enviar las estadísticas: ${response['message']}');
+        throw Exception(
+            'Error al enviar las estadísticas ${response['message']}');
       }
     } catch (error) {
-      throw Exception('Error al enviar las estadísticas: $error');
+      throw Exception('Error al enviar las estadísticas sjj: $error');
     }
   }
 
-  Future<void> obtenerEstadisticas() async {
+  Future<EstadisticasBusquedas> obtenerEstadisticas() async {
     try {
       final idCliente = await StorageService.getClientId();
-      if (idCliente == null) throw Exception('Hubo un error al encontrar el ID del cliente.');
+      if (idCliente == null)
+        throw Exception('Hubo un error al encontrar el ID del cliente.');
 
       final response = await ApiService.fetchData('/preferencias/$idCliente');
 
       if (response['success'] == true) {
-        final data = response['data'];
-        
-        if (data is Map<String, dynamic>) {
-          estadisticasBusquedas = EstadisticasBusquedas.fromJson(data);
-          print('Estadísticas obtenidas correctamente: ${estadisticasBusquedas.toJson()}');
+        final nestedData = response['data']; // Obtén el mapa anidado
+
+        // Verifica si 'data' es un mapa que contiene otra clave 'data' que es una lista
+        if (nestedData is Map<String, dynamic>) {
+          final listData = nestedData['data']; // Obtén la lista dentro del mapa
+
+          // Verifica si 'listData' es una lista
+          if (listData is List && listData.isNotEmpty) {
+            final estadisticaData =
+                listData[0]; // Accede al primer elemento de la lista
+
+            // Verifica si el primer elemento es un mapa
+            if (estadisticaData is Map<String, dynamic>) {
+              final estadisticas =
+                  EstadisticasBusquedas.fromJson(estadisticaData);
+              return estadisticas;
+            } else {
+              throw Exception('El primer elemento de la lista no es un mapa.');
+            }
+          } else {
+            throw Exception(
+                'La clave "data" dentro del mapa no es una lista o está vacía.');
+          }
         } else {
-          throw Exception('La respuesta de la API no tiene el formato esperado.');
+          throw Exception(
+              'La clave "data" no es un mapa o no contiene la clave "data" como lista.');
         }
       } else {
-        throw Exception('Error al obtener las estadísticas: ${response['message']}');
+        throw Exception(
+            'Error al obtener las estadísticas: ${response['message']}');
       }
     } catch (error) {
       throw Exception('Error al obtener las estadísticas: $error');
     }
   }
+
+  // Método para actualizar las preferencias del usuario
+Future<bool> updatePreferences(Map<String, dynamic>? formData) async {
+  try {
+    if (formData == null) {
+      throw Exception('Los datos del formulario no pueden ser nulos.');
+    }
+
+    // No conviertas formData a JSON, pásalo tal cual
+    final response = await ApiService.sendData('/preferencias/update', 'PUT', formData);
+
+    if (response['success'] == true) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    print('Error al actualizar las preferencias: $error');
+    throw Exception('Error al actualizar las preferencias: $error');
+  }
+}
+
+
+
 }
