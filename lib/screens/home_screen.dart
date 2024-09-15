@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
       "description": "Ver tus chats y conversa para ponerse de acuerdo",
       "imagePath": "assets/images/mensajeriaIcono.png",
       "buttonText": "Chatea ya",
-      "navegation": "/login",
+      "navegation": "/message",
     },
     {
       "title": "Tus me gustas",

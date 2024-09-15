@@ -87,6 +87,11 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/message',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const MessagesScreen(), state),
+    ),
+    GoRoute(
       path: '/main',
       pageBuilder: (context, state) {
         final int initialIndex = state.extra as int;
