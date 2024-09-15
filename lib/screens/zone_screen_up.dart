@@ -6,6 +6,7 @@ import 'package:habbit_mobil_flutter/data/models/zone.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
+import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:get/get.dart';
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
@@ -18,14 +19,14 @@ class ZoneScreenUp extends StatefulWidget {
   State<ZoneScreenUp> createState() => _ZoneScreenUpState();
 }
 
-class _ZoneScreenUpState extends State<ZoneScreenUp> with TickerProviderStateMixin {
+class _ZoneScreenUpState extends State<ZoneScreenUp>
+    with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
 //Creacion de la lista de strings para los radio items
   List<Zone> _zoneItems = [];
   Zone? _selectedRadioItem;
-
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -43,47 +44,103 @@ class _ZoneScreenUpState extends State<ZoneScreenUp> with TickerProviderStateMix
     );
     _fadeInController.forward();
 
-    _fetchZone();
+    cargarDatos();
+  }
+
+//Funcion que se encarga primero de cargar las estadisticas y luego se setearlo para llena la lista
+  void cargarDatos() async {
+    final estadisticas = await _estadisticasController.obtenerEstadisticas();
+    print('Datos de EstadisticasBusquedas: $estadisticas');
+    _estadisticasController.estadisticasBusquedas = estadisticas;
+
+    // Luego, llama a _fetchZone
+    await _fetchZone();
   }
 
 //Funcion asincrona para manejar la respuesta del servidor.
-Future<void> _fetchZone() async {
-  try {
-    // Obtenemos las zonas del controlador
-    final zones = await DataPreferences().fetchZones();
-    setState(() {
-      _zoneItems = zones;
+  Future<void> _fetchZone() async {
+    try {
+      // Obtenemos las zonas del controlador
+      final zones = await DataPreferences().fetchZones();
+      setState(() {
+        _zoneItems = zones;
 
-      Zone? selectedZone;
+        // Verifica el valor de idZona
+        final selectedIdZona =
+            _estadisticasController.estadisticasBusquedas.idZona;
+        print('ID Zona seleccionada: $selectedIdZona');
 
-      // Verifica si _zoneItems no está vacío y hay un idZona en las estadísticas
-      if (_zoneItems.isNotEmpty) {
-        if (_estadisticasController.estadisticasBusquedas.idZona != 0) {
-          selectedZone = _zoneItems.firstWhere(
-            (zone) => zone.id == _estadisticasController.estadisticasBusquedas.idZona // Aquí se maneja la ausencia de coincidencias.
+        // Buscar la zona seleccionada según el idZona en el modelo de EstadisticasBusquedas
+        if (selectedIdZona != 0) {
+          _selectedRadioItem = _zoneItems.firstWhere(
+            (zone) => zone.id == selectedIdZona,
+            orElse: () => _zoneItems[0], // Fallback
+          );
+          print('Zona seleccionada: $_selectedRadioItem');
+        } else {
+          _selectedRadioItem = _zoneItems[0];
+          print('Zona seleccionada por defecto: $_selectedRadioItem');
+        }
+      });
+    } catch (error) {
+      print('Error al obtener las zonas: $error');
+    }
+  }
+
+  //Funcion para manejar los datos de las zonas
+  void _handleZoneupdate() async {
+    try {
+      // Obtener el cliente ID
+      final clientId = await StorageService.getClientId();
+
+      if (clientId == null) {
+        throw Exception('No se pudo obtener el ID del cliente.');
+      }
+
+      // Validar que se haya seleccionado una zona
+      if (_selectedRadioItem == null) {
+        showAlertDialog(
+          'Zona no seleccionada',
+          'Selecciona un valor para la zona antes de continuar.',
+          1,
+          context,
+        );
+      } else {
+        final formData = {
+          'id_cliente': clientId,
+          'id_zona': _selectedRadioItem?.id,
+        };
+        print(formData);
+
+        // Llamar al controlador para actualizar las preferencias
+        final success =
+            await _estadisticasController.updatePreferences(formData);
+
+        if (success) {
+          showAlertDialog(
+            'Éxito',
+            'Los datos fueron modificados con éxito.',
+            3,
+            context,
+          );
+        } else {
+          showAlertDialog(
+            'Error',
+            'No se pudo actualizar los datos.',
+            1,
+            context,
           );
         }
       }
-
-      // Asigna el resultado a _selectedRadioItem
-      _selectedRadioItem = selectedZone;
-    });
-  } catch (error) {
-    print(error);
-  }
-}
-
-
-
-
-  //Funcion para manejar los datos de las zonas
-  void _handleZone() async {
-    if (_selectedRadioItem == null) {
-      showAlertDialog('Zona no seleccionada',
-          'Selecciona un valor para la zona antes de continuar.', 1, context);
-    } else {
-      _estadisticasController.actualizarZone(idZona: _selectedRadioItem!.id);
-      context.push('/thanks');
+    } catch (error) {
+      // Manejo de errores
+      print('Error al manejar la actualización de zonas: $error');
+      showAlertDialog(
+        'Error',
+        'Hubo un problema al actualizar los datos.',
+        1,
+        context,
+      );
     }
   }
 
@@ -161,7 +218,6 @@ Future<void> _fetchZone() async {
                               child: Column(
                                 children: [
                                   for (int i = 0; i < _zoneItems.length; i++)
-                                    //Muestra la lista de radio button
                                     RadioListTile<Zone>(
                                       value: _zoneItems[i],
                                       groupValue: _selectedRadioItem,
@@ -188,7 +244,7 @@ Future<void> _fetchZone() async {
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
-                                _handleZone();
+                                _handleZoneupdate();
                               },
                               text: "Terminar",
                             ),

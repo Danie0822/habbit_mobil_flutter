@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
+import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
+import 'package:habbit_mobil_flutter/data/models/search_statistics.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart'; // Importa el archivo con las tarjetas y la lista
 
@@ -11,8 +13,34 @@ class EditPreferences extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _EditPreferencesState();
 }
+//Funcion para obtener los datos de la estadistica y pasarlos al modelo
 
 class _EditPreferencesState extends State<EditPreferences> {
+
+   EstadisticasBusquedas? estadisticas;
+   final EstadisticasController _estadisticasController = EstadisticasController();
+  
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos();
+  }
+
+ // Función para obtener los datos y setearlos al modelo
+  Future<void> _cargarDatos() async {
+    try {
+      // Obtén las estadísticas usando el controlador
+      final estadisticasObtenidas = await _estadisticasController.obtenerEstadisticas();
+      setState(() {
+        // Actualiza el estado con las estadísticas obtenidas
+        estadisticas = estadisticasObtenidas;
+        print('Estadísticas cargadas');
+      });
+    } catch (error) {
+      // Manejo de errores
+      print('Error al cargar estadísticas: $error');
+    }
+  }
   // Lista de tarjetas de preferencia
   final List<Map<String, String>> preferences = [
     {
