@@ -3,14 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 import 'package:habbit_mobil_flutter/screens/update_request.dart';
+import 'package:habbit_mobil_flutter/data/models/slider.dart';
 
 // Definición del enrutador utilizando GoRouter
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const SplashScreen(), state),
+      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
+          const SplashScreen(), state),
     ),
     GoRoute(
       path: '/login',
@@ -49,10 +50,9 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const PasswordDone(), state),
     ),
     GoRoute(
-      path: '/newRequest',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const NewRequest(), state)
-    ),
+        path: '/newRequest',
+        pageBuilder: (context, state) =>
+            _buildPageWithFuturisticTransition(const NewRequest(), state)),
     GoRoute(
       path: '/detalle',
       pageBuilder: (context, state) {
@@ -94,11 +94,13 @@ final GoRouter router = GoRouter(
             MainScreen(initialIndex: initialIndex), state);
       },
     ),
-    GoRoute(path: '/updateRequest',
-    pageBuilder: (context, state) {
-      final RequestModel  request = state.extra as RequestModel; 
-      return _buildPageWithFuturisticTransition(UpdateRequest(request: request), state); 
-    },
+    GoRoute(
+      path: '/updateRequest',
+      pageBuilder: (context, state) {
+        final RequestModel request = state.extra as RequestModel;
+        return _buildPageWithFuturisticTransition(
+            UpdateRequest(request: request), state);
+      },
     ),
     GoRoute(
       path: '/registar',
@@ -164,6 +166,16 @@ final GoRouter router = GoRouter(
       path: '/recommend_option',
       pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
           const RecommendOptionScreen(), state),
+    ),
+    GoRoute(
+      path: '/slider',
+      pageBuilder: (context, state) {
+        final List<SliderResponse> cards = state.extra as List<SliderResponse>;
+        return MaterialPage(
+          child:
+              SliderScreen(cards: cards), // Pasamos las tarjetas a la pantalla
+        );
+      },
     ),
     GoRoute(
       path: '/home_screen',
