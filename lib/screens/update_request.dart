@@ -66,7 +66,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
         showAlertDialogScreen(
             'Éxito', 'Se ha enviando la operación exitosamente ', 3, context,
             () {
-          context.go("/main", extra: 3);
+          context.go("/main", extra: 2);
         });
       } else if (result == 2) {
         showAlertDialog(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:photo_view/photo_view.dart';
 
-// Pantalla para mostrar una foto en detalle
+// Pantalla para mostrar una foto en detalle desde una URL en línea
 class PhotoDetailScreen extends StatelessWidget {
   final String imageUrl;
 
@@ -13,9 +13,9 @@ class PhotoDetailScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Visor de fotos con zoom
+          // Visor de fotos con zoom cargado desde una URL
           PhotoView(
-            imageProvider: AssetImage(imageUrl),
+            imageProvider: NetworkImage(imageUrl),
             minScale: PhotoViewComputedScale.contained * 0.8,
             maxScale: PhotoViewComputedScale.covered * 2,
           ),

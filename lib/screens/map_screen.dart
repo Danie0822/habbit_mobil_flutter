@@ -158,73 +158,64 @@ class MapScreenState extends State<MapScreen> {
   }
 
   void _showPropertyDetails(MapResponse property) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final Color colorTexto = isDarkMode ? colorTextField : textColorNegro;
-    final Color colorFondoModal = isDarkMode ? Colors.grey[900]! : Colors.white;
-    final Color colorTextoButton = isDarkMode ? colorTextField : primaryColor;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: colorFondoModal, // Fondo del modal
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(8),
-          height: MediaQuery.of(context).size.height * 0.5,
-          width: MediaQuery.of(context).size.width,
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  final Color colorTexto = isDarkMode ? colorTextField : textColorNegro;
+  final Color colorFondoModal = isDarkMode ? Colors.grey[900]! : Colors.white;
+  final Color colorTextoButton = isDarkMode ? colorTextField : primaryColor;
+  
+  // Obteniendo el tamaño de la pantalla para un diseño más flexible
+  final double screenHeight = MediaQuery.of(context).size.height;
+  final double screenWidth = MediaQuery.of(context).size.width;
+  
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: colorFondoModal, 
+    builder: (context) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        height: screenHeight * 0.5, // Ajusta la altura dinámica según el tamaño de la pantalla
+        width: screenWidth, // Asegúrate de que el modal ocupe todo el ancho disponible
+        child: SingleChildScrollView( // Habilita desplazamiento para pantallas más pequeñas
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Imagen de la propiedad con bordes redondeados
               ClipRRect(
                 borderRadius: const BorderRadius.only(
-                  topLeft:
-                      Radius.circular(20), 
+                  topLeft: Radius.circular(20), 
                   topRight: Radius.circular(20),
                 ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Image.network(
-                    '${Config.imagen}${property.imageUrl}',
-                    width: MediaQuery.of(context).size.width,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
+                child: Image.network(
+                  '${Config.imagen}${property.imageUrl}',
+                  width: screenWidth,
+                  height: screenHeight * 0.25, // Ajusta la altura de la imagen según el tamaño de pantalla
+                  fit: BoxFit.cover,
                 ),
               ),
-
               const SizedBox(height: 16),
-
-              // Título de la propiedad
+              
               Text(
                 property.title ?? 'Sin título',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: screenWidth * 0.05, // Ajuste dinámico de tamaño de texto
                   fontWeight: FontWeight.bold,
                   color: colorTexto,
                 ),
               ),
               const SizedBox(height: 10),
 
-              // Descripción
               Text(
                 property.description ?? 'Sin descripción disponible',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: screenWidth * 0.04, // Ajuste dinámico de tamaño de texto
                   color: colorTexto,
                 ),
               ),
               const SizedBox(height: 10),
 
-              // Dirección y otros detalles usando RichText para juntar los textos
               RichText(
                 text: TextSpan(
-                  style: TextStyle(fontSize: 16, color: colorTexto),
+                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
                   children: [
                     const TextSpan(
                       text: 'Dirección: ',
@@ -240,7 +231,7 @@ class MapScreenState extends State<MapScreen> {
 
               RichText(
                 text: TextSpan(
-                  style: TextStyle(fontSize: 16, color: colorTexto),
+                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
                   children: [
                     const TextSpan(
                       text: 'Estado de la propiedad: ',
@@ -256,7 +247,7 @@ class MapScreenState extends State<MapScreen> {
 
               RichText(
                 text: TextSpan(
-                  style: TextStyle(fontSize: 16, color: colorTexto),
+                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
                   children: [
                     const TextSpan(
                       text: 'Tipo de propiedad: ',
@@ -269,35 +260,35 @@ class MapScreenState extends State<MapScreen> {
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 10),
 
-              // Botón "Ver más"
+              // Botón "Ver más" centrado
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                      context.push('/detalle', extra: {
-                        'id_propiedad': property.idProperty,
-                      });
+                    context.push('/detalle', extra: {
+                      'id_propiedad': property.idProperty,
+                    });
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: Text(
                     'Ver más',
-                    style: TextStyle(fontSize: 16, color: colorTextoButton),
+                    style: TextStyle(fontSize: screenWidth * 0.045, color: colorTextoButton),
                   ),
                 ),
               ),
             ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
   Future<void> _printVisibleRegion() async {
     final GoogleMapController controller = await _controller.future;
