@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
           "Confia en nosotros para visualizar un futuro con nosotros",
       "imagePath": "assets/images/LogoBlanco.png",
       "buttonText": "Conocer más",
-      "navegation": "/onboard",
+      "navegation": "/about",
     },
     {
       "title": "Tus mensajes",

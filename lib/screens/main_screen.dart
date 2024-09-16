@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
 
   // Lista de pantallas
   final List<Widget> _screens = [
-    HomeScreen(),
+    HomeScreenOne(),
     MessagesScreen(),
     RequestsScreen(),
     ProfileScreen(),
