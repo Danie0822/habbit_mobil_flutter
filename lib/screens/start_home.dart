@@ -2,14 +2,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/menu_btn.dart';
 import 'package:habbit_mobil_flutter/common/widgets/menu_home.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
 import 'package:habbit_mobil_flutter/utils/constants/constant_menu.dart';
 import 'package:habbit_mobil_flutter/utils/constants/rive_utilis.dart';
 import 'package:rive/rive.dart';
 
 // Pantalla de inicio con menu lateral
 class StartHome extends StatefulWidget {
-  const StartHome({super.key});
+  final Function(bool)
+      onMenuStateChange; // Callback para cambiar el estado del menú
+  const StartHome({super.key, required this.onMenuStateChange});
 
   @override
   State<StartHome> createState() => _StartHomeState();
@@ -31,6 +33,8 @@ class _StartHomeState extends State<StartHome>
   void toggleSideMenu() {
     setState(() {
       isSideMenuClose = !isSideMenuClose;
+      widget
+          .onMenuStateChange(!IsSideMenuClose); // Actualiza el estado del menú
     });
   }
 
@@ -65,7 +69,7 @@ class _StartHomeState extends State<StartHome>
   Widget build(BuildContext context) {
     return Scaffold(
       // diseño de dashboard
-      backgroundColor: primaryColor, // color de fondo
+      backgroundColor: lightBlueBar, // color de fondo
       resizeToAvoidBottomInset: false, // no se redimensiona la pantalla
       extendBody: true,
       body: Stack(
@@ -133,6 +137,7 @@ class _StartHomeState extends State<StartHome>
                 // estado del menu se cambiara
                 setState(() {
                   IsSideMenuClose = isMenuOpen.value;
+                  widget.onMenuStateChange(!IsSideMenuClose); // Actualiza el estado del menú
                 });
               },
             ),

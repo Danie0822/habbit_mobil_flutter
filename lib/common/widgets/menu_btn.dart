@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-// Clase para el botón del menú de la pantalla principal de abrir y cerrar
-class MenuBtnScreen extends StatelessWidget {
-  const MenuBtnScreen({Key? key, required this.press, required this.riveOnInit})
+class MenuBtnScreen extends StatefulWidget {
+  const MenuBtnScreen({Key? key, required this.riveOnInit, required this.press})
       : super(key: key);
-  final VoidCallback press;
+
   final ValueChanged<Artboard> riveOnInit;
+  final VoidCallback press;
 
   @override
-  // Diseño del botón de menú
+  _MenuBtnScreenState createState() => _MenuBtnScreenState();
+}
+
+class _MenuBtnScreenState extends State<MenuBtnScreen> {
+  bool isMenuOpen = false; // Estado para controlar si el menú está abierto o cerrado
+
+  // Método para manejar el estado del botón y ejecutar la función `press`
+  void toggleMenu() {
+    setState(() {
+      isMenuOpen = !isMenuOpen; // Cambia entre el ícono de menú y la "X"
+    });
+    widget.press(); // Ejecuta la función de abrir/cerrar el menú
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        onTap: press, // evento de abrir y cerrar el menú
+        onTap: toggleMenu, // Cambia entre el ícono de menú y la "X" al hacer clic
         child: Container(
           margin: const EdgeInsets.only(left: 10),
           height: 35,
@@ -24,18 +38,19 @@ class MenuBtnScreen extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Animación de Rive (invisible)
+              // Animación de Rive (invisible, pero onInit sigue funcionando)
               Opacity(
-                opacity: 0.0, // Oculta la animación pero permite que onInit funcione
+                opacity: 0.0, // Oculta la animación de Rive
                 child: RiveAnimation.asset(
                   'assets/rive/menu_button.riv',
-                  onInit: riveOnInit,
+                  onInit: widget.riveOnInit,
                 ),
               ),
-              // Icono de menú
-              const Icon(
-                Icons.menu, // Icono de menú
-                size: 30, // Tamaño del icono
+              // Icono dinámico que alterna entre el menú y la "X"
+              Icon(
+                isMenuOpen ? Icons.close : Icons.menu, // Cambia entre el icono de menú y la "X"
+                size: 30, // Tamaño del ícono
+                color: isMenuOpen ? Colors.white : null, 
               ),
             ],
           ),

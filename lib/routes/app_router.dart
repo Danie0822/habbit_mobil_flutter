@@ -194,11 +194,6 @@ final GoRouter router = GoRouter(
           _buildPageWithFuturisticTransition(const HomeScreenOne(), state),
     ),
     GoRoute(
-      path: '/StartHome',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const StartHome(), state),
-    ),
-    GoRoute(
       path: '/calendar',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const VisitScreen(), state),
