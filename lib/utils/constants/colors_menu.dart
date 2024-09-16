@@ -6,7 +6,7 @@ const Color lightInactiveColor = Colors.grey;
 const Color lightBackgroundColor = Colors.white;
 const Color lightShadowColor = Colors.black12;
 const Color lightSplashColor = Colors.blueAccent;
-const Color lightBlueBar = Color.fromARGB(255, 2, 31, 75);
+const Color lightBlueBar = Color.fromARGB(255, 4, 23, 53);
 const Color lightBlueBarColor2 = Color.fromARGB(255, 4, 41, 110);
 
 
