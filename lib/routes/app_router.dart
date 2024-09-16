@@ -215,6 +215,11 @@ final GoRouter router = GoRouter(
       path: '/UbiScreenUp',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const UbiScreenUp(), state),
+    ),   
+    GoRoute(
+      path: '/detailBlogs',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const blogDetal(), state),
     ),
   ],
   // Constructor de página de error para manejar rutas no encontradas
