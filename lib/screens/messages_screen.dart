@@ -151,7 +151,6 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                 hintTextt: 'Buscar por titulo de propiedad..',
                 titleHeader: 'Mensajes',
               ),
-              const SizedBox(height: 20.0),
               Expanded(
                 child: Container(
                   width: double.infinity,
