@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/data/models/blogs_main.dart';
 import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/screens/screens.dart';
 import 'package:habbit_mobil_flutter/screens/update_request.dart';
@@ -10,10 +11,11 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
-          const SplashScreen(), state),
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const SplashScreen(), state),
     ),
-    GoRoute(path:  '/about',
+    GoRoute(
+      path: '/about',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const AboutCompany(), state),
     ),
@@ -215,11 +217,14 @@ final GoRouter router = GoRouter(
       path: '/UbiScreenUp',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const UbiScreenUp(), state),
-    ),   
+    ),
     GoRoute(
       path: '/detailBlogs',
-      pageBuilder: (context, state) =>
-          _buildPageWithFuturisticTransition(const blogDetal(), state),
+      pageBuilder: (context, state) {
+        final BlogsResponse blogsData = (state.extra as List<BlogsResponse>).first;
+        return _buildPageWithFuturisticTransition(
+            BlogDetail(blogsResponse: blogsData), state);
+      },
     ),
   ],
   // Constructor de página de error para manejar rutas no encontradas

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/screens/agenda_screen.dart';
+import 'package:habbit_mobil_flutter/screens/home_screen.dart';
 import 'package:rive/rive.dart';
 import 'package:habbit_mobil_flutter/screens/home_page.dart';
 import 'package:habbit_mobil_flutter/screens/edit_preferences.dart';
@@ -30,7 +31,7 @@ List<RiveAsset> sideMenu = [
     artboard: 'HOME',
     stateMachineName: 'HOME_interactivity',
     title: 'Inicio',
-    screen: EditPreferences(),
+    screen: HomeScreenOne(),
   ),
   RiveAsset(
     'assets/rive/icons.riv',

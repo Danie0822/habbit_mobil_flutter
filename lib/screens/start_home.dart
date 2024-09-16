@@ -111,7 +111,7 @@ class _StartHomeState extends State<StartHome>
             curve: Curves.fastOutSlowIn,
             left:
                 IsSideMenuClose ? 0 : 220, // posicion de la pantalla de inicio
-            top: 16,
+            top: 1,
             child: MenuBtnScreen(
               // boton de menu
               riveOnInit: (artboard) {

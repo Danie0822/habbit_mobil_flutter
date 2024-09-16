@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button_blog.dart';
 import 'package:habbit_mobil_flutter/data/models/blogs_main.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
 class BlogCard extends StatelessWidget {
   final BlogsResponse dataBlogs;
-  final Function(String id) onViewPressed; // Función que recibe el ID
 
   const BlogCard({
     super.key,
-    required this.dataBlogs,
-    required this.onViewPressed, // Requiere la función
+    required this.dataBlogs, // Requiere la función
   });
 
   @override
@@ -112,7 +111,9 @@ class BlogCard extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: CustomButton(
-                  onPressed: () => onViewPressed(dataBlogs.idBlogs.toString()), // Convertir ID a String
+                  onPressed: () {
+                    context.push('/detailBlogs', extra: dataBlogs);
+                  } , // Convertir ID a String
                   text: "Ver",
                 ),
               ),

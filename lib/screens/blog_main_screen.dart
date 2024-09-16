@@ -147,12 +147,6 @@ class _blogMainState extends State<blogMain> {
                       itemBuilder: (context, index, realIdx) {
                         return BlogCard(
                           dataBlogs: requestsData[index], // Pasar un solo blog
-                          onViewPressed: (String blogId) {
-                            // Imprimir el ID del blog
-                            print('Blog ID: $blogId');
-                            // Navegar a la página de detalles del blog con el ID como parámetro extra
-                            context.go('/detailBlogs', extra: blogId);
-                          },
                         );
                       },
                       options: CarouselOptions(
