@@ -13,6 +13,10 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => _buildPageWithFuturisticTransition(
           const SplashScreen(), state),
     ),
+    GoRoute(path:  '/about',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const AboutCompany(), state),
+    ),
     GoRoute(
       path: '/login',
       pageBuilder: (context, state) =>

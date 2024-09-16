@@ -35,3 +35,4 @@ export 'package:habbit_mobil_flutter/screens/agenda_screen.dart';
 export 'package:habbit_mobil_flutter/screens/slider_screen.dart';
 export 'package:habbit_mobil_flutter/screens/category_screen_up.dart';
 export 'package:habbit_mobil_flutter/screens/price_screen_up.dart';
+export 'package:habbit_mobil_flutter/screens/about_company.dart';
