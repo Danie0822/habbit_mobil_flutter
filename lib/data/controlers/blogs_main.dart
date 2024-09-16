@@ -9,7 +9,6 @@ class BlogsService {
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
-        print(data);
         if (data is List<dynamic>) {
           return BlogsResponse.fromJsonList(data);
         } else {

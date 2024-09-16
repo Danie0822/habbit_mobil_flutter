@@ -6,7 +6,7 @@ import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
 class BlogDetail extends StatefulWidget {
   final BlogsResponse blogsResponse;
-  const BlogDetail({Key? key, required this.blogsResponse});
+  const BlogDetail({Key? key, required this.blogsResponse}) : super(key: key);
 
   @override
   State<BlogDetail> createState() => _BlogDetailState();
@@ -17,38 +17,55 @@ class _BlogDetailState extends State<BlogDetail> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final _data = widget.blogsResponse;
-    
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: _buildAppBar(size),
+      appBar: _buildAppBar(size, isDarkMode),
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildImageBackground(size, _data.imageUrl),
-            _buildContent(size, _data),
+            _buildImageBackground(size, _data.imageUrl, isDarkMode),
+            _buildContent(size, _data, isDarkMode),
           ],
         ),
       ),
     );
   }
 
-  AppBar _buildAppBar(Size size) {
+  // Método para construir el AppBar con una flecha de retroceso
+  AppBar _buildAppBar(Size size, bool isDarkMode) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(size.width * 0.3),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            splashColor: isDarkMode ? Colors.white30 : Colors.black26, // Efecto de splash
+            customBorder: CircleBorder(), // Forma circular
+            onTap: () {
+              Navigator.pop(context); // Regresa a la pantalla anterior
+            },
             child: Container(
-              color: Colors.black.withOpacity(0.2),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  context.go('/main', extra: 2);
-                },
+              width: size.width * 0.12, // Forma circular
+              height: size.width * 0.12,
+              decoration: BoxDecoration(
+                color: isDarkMode ? Colors.black.withOpacity(0.6) : Colors.white.withOpacity(0.6),
+                shape: BoxShape.circle, // Botón circular
+                boxShadow: [
+                  BoxShadow(
+                    color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.4),
+                    blurRadius: 8,
+                    offset: Offset(0, 4), // Sombra debajo
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.arrow_back, // Icono de flecha
+                color: isDarkMode ? Colors.white : Colors.black,
+                size: size.width * 0.06, // Tamaño de la flecha
               ),
             ),
           ),
@@ -57,7 +74,8 @@ class _BlogDetailState extends State<BlogDetail> {
     );
   }
 
-  Widget _buildImageBackground(Size size, String? imageUrl) {
+  // Método para construir el fondo de imagen
+  Widget _buildImageBackground(Size size, String? imageUrl, bool isDarkMode) {
     return Stack(
       children: [
         Container(
@@ -66,10 +84,20 @@ class _BlogDetailState extends State<BlogDetail> {
           child: FittedBox(
             fit: BoxFit.cover,
             child: Image.network(
-              '${Config.imagen}${imageUrl}', 
+              '${Config.imagen}${imageUrl}',
               width: size.width,
               height: size.height * 0.5,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Text(
+                    'Error al cargar la imagen',
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -80,15 +108,25 @@ class _BlogDetailState extends State<BlogDetail> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.transparent,
-                Colors.grey.shade50.withOpacity(0.1),
-                Colors.grey.shade50.withOpacity(0.3),
-                Colors.grey.shade50.withOpacity(0.5),
-                Colors.grey.shade50.withOpacity(0.7),
-                Colors.grey.shade50.withOpacity(1.0),
-              ],
+              colors: isDarkMode
+                  ? [
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.1),
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.5),
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(1.0),
+                    ]
+                  : [
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.grey.shade50.withOpacity(0.1),
+                      Colors.grey.shade50.withOpacity(0.3),
+                      Colors.grey.shade50.withOpacity(0.5),
+                      Colors.grey.shade50.withOpacity(0.7),
+                      Colors.grey.shade50.withOpacity(1.0),
+                    ],
             ),
           ),
         ),
@@ -96,10 +134,11 @@ class _BlogDetailState extends State<BlogDetail> {
     );
   }
 
-  Widget _buildContent(Size size, BlogsResponse _data) {
+  // Método para construir el contenido del detalle del blog
+  Widget _buildContent(Size size, BlogsResponse _data, bool isDarkMode) {
     return Container(
       width: size.width,
-      color: Colors.grey.shade50,
+      color: isDarkMode ? Colors.black : Colors.grey.shade50,
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +146,7 @@ class _BlogDetailState extends State<BlogDetail> {
           Text(
             _data.title ?? 'No se encontró título',
             style: TextStyle(
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
               fontSize: size.width * 0.08,
               fontWeight: FontWeight.bold,
             ),
@@ -119,7 +158,10 @@ class _BlogDetailState extends State<BlogDetail> {
               SizedBox(width: size.width * 0.02),
               Text(
                 '4.5',
-                style: TextStyle(color: Colors.black, fontSize: size.width * 0.05),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                  fontSize: size.width * 0.05,
+                ),
               ),
             ],
           ),
@@ -127,7 +169,7 @@ class _BlogDetailState extends State<BlogDetail> {
           Text(
             _data.description ?? 'No se encontró descripción',
             style: TextStyle(
-              color: Colors.black,
+              color: isDarkMode ? Colors.white70 : Colors.black,
               fontSize: size.width * 0.045,
             ),
           ),

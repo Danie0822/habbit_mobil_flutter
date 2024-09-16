@@ -9,17 +9,19 @@ class BlogCard extends StatelessWidget {
 
   const BlogCard({
     super.key,
-    required this.dataBlogs, // Requiere la función
+    required this.dataBlogs,
   });
 
   @override
   Widget build(BuildContext context) {
-    final double valoracion = dataBlogs.rating ?? 0.0; // Valor por defecto si es null
+    final double valoracion = dataBlogs.rating ?? 0.0;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDarkMode ? const Color(0xff121212) : const Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: SingleChildScrollView(
@@ -35,14 +37,14 @@ class BlogCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Image.network(
-                '${Config.imagen}${dataBlogs.imageUrl}', // Proporcionar una cadena vacía si es null
+                '${Config.imagen}${dataBlogs.imageUrl}',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return const Center(
+                  return Center(
                     child: Text(
                       'Error al cargar la imagen',
                       style: TextStyle(
-                        color: Colors.red,
+                        color: isDarkMode ? Colors.red : Colors.black,
                         fontSize: 18,
                       ),
                     ),
@@ -55,27 +57,35 @@ class BlogCard extends StatelessWidget {
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                           : null,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
                   );
                 },
               ),
             ),
             const SizedBox(height: 20),
+
+            // Título con manejo de desbordamiento de texto
             Padding(
               padding: const EdgeInsets.only(left: 28),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  dataBlogs.title ?? 'Título no disponible', // Valor por defecto si es null
-                  style: const TextStyle(
+                  dataBlogs.title ?? 'Título no disponible',
+                  style: TextStyle(
                     fontSize: 19.0,
                     fontWeight: FontWeight.w800,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
                   textAlign: TextAlign.left,
+                  maxLines: 2, // Limita el número de líneas
+                  overflow: TextOverflow.ellipsis, // Agrega puntos suspensivos si es necesario
                 ),
               ),
             ),
             const SizedBox(height: 10),
+
+            // Rating (Valoración)
             AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               opacity: 1.0,
@@ -93,10 +103,10 @@ class BlogCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '$valoracion', // Muestra la calificación en lugar de un valor fijo
+                          '$valoracion',
                           style: TextStyle(
                             fontSize: 17.0,
-                            color: Colors.grey.shade600,
+                            color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
                           ),
                         ),
                       ],
@@ -106,6 +116,7 @@ class BlogCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            // Botón "Ver"
             Padding(
               padding: const EdgeInsets.only(left: 28, bottom: 20),
               child: Align(
@@ -113,7 +124,7 @@ class BlogCard extends StatelessWidget {
                 child: CustomButton(
                   onPressed: () {
                     context.push('/detailBlogs', extra: dataBlogs);
-                  } , // Convertir ID a String
+                  },
                   text: "Ver",
                 ),
               ),

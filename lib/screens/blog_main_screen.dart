@@ -17,7 +17,6 @@ class blogMain extends StatefulWidget {
 class _blogMainState extends State<blogMain> {
   List<BlogsResponse> requestsData = [];
   List<BlogsResponse> filteredRequests = [];
-  final CarouselController _carouselController = CarouselController();
   int _current = 0;
   bool isLoading = true;
 
@@ -35,6 +34,7 @@ class _blogMainState extends State<blogMain> {
       final loadedRequests = await BlogsService().getBlogs();
       setState(() {
         requestsData = loadedRequests;
+        requestsData.shuffle(); // Mezclar la lista
         filteredRequests = requestsData;
         isLoading = false;
       });
@@ -47,7 +47,55 @@ class _blogMainState extends State<blogMain> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              splashColor: Colors.transparent,
+              customBorder: CircleBorder(),
+              onTap: () {
+                context.push('/login');
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.12,
+                height: MediaQuery.of(context).size.width * 0.12,
+                decoration: BoxDecoration(
+                  color: isDarkMode ? Colors.black.withOpacity(0.6) : Colors.white.withOpacity(0.6),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.4),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: isDarkMode ? Colors.white : Colors.black,
+                  size: MediaQuery.of(context).size.width * 0.06,
+                ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          'Blogs',
+          style: TextStyle(
+            color: isDarkMode ? Colors.white : Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Stack(
@@ -66,8 +114,13 @@ class _blogMainState extends State<blogMain> {
                       '${Config.imagen}${requestsData[_current].imageUrl?.trim()}', // Elimina espacios al final
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Text('Error al cargar la imagen'),
+                        return Center(
+                          child: Text(
+                            'Error al cargar la imagen',
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                          ),
                         );
                       },
                       loadingBuilder: (context, child, loadingProgress) {
@@ -78,6 +131,7 @@ class _blogMainState extends State<blogMain> {
                                 ? loadingProgress.cumulativeBytesLoaded /
                                     loadingProgress.expectedTotalBytes!
                                 : null,
+                            color: isDarkMode ? Colors.white : Colors.black,
                           ),
                         );
                       },
@@ -88,7 +142,9 @@ class _blogMainState extends State<blogMain> {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                       child: Container(
-                        color: Colors.black.withOpacity(0), // Ajusta la opacidad
+                        color: isDarkMode
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.black.withOpacity(0),
                       ),
                     ),
                   ),
@@ -103,36 +159,27 @@ class _blogMainState extends State<blogMain> {
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                          colors: [
-                            Colors.grey.shade50.withOpacity(1),
-                            Colors.grey.shade50.withOpacity(1),
-                            Colors.grey.shade50.withOpacity(0.8),
-                            Colors.grey.shade50.withOpacity(0.7),
-                            Colors.grey.shade50.withOpacity(0.6),
-                            Colors.grey.shade50.withOpacity(0.4),
-                            Colors.grey.shade50.withOpacity(0.3),
-                            Colors.grey.shade50.withOpacity(0.0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Título Blogs
-                  Positioned(
-                    top: 40,
-                    left: 30,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text(
-                        'Blogs',
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          colors: isDarkMode
+                              ? [
+                                  Colors.black.withOpacity(1),
+                                  Colors.black.withOpacity(0.8),
+                                  Colors.black.withOpacity(0.6),
+                                  Colors.black.withOpacity(0.4),
+                                  Colors.black.withOpacity(0.3),
+                                  Colors.black.withOpacity(0.2),
+                                  Colors.black.withOpacity(0.1),
+                                  Colors.black.withOpacity(0.0),
+                                ]
+                              : [
+                                  Colors.grey.shade50.withOpacity(1),
+                                  Colors.grey.shade50.withOpacity(1),
+                                  Colors.grey.shade50.withOpacity(0.8),
+                                  Colors.grey.shade50.withOpacity(0.7),
+                                  Colors.grey.shade50.withOpacity(0.6),
+                                  Colors.grey.shade50.withOpacity(0.4),
+                                  Colors.grey.shade50.withOpacity(0.3),
+                                  Colors.grey.shade50.withOpacity(0.0),
+                                ],
                         ),
                       ),
                     ),
@@ -146,7 +193,7 @@ class _blogMainState extends State<blogMain> {
                       itemCount: requestsData.length,
                       itemBuilder: (context, index, realIdx) {
                         return BlogCard(
-                          dataBlogs: requestsData[index], // Pasar un solo blog
+                          dataBlogs: requestsData[index],
                         );
                       },
                       options: CarouselOptions(
