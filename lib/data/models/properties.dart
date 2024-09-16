@@ -52,7 +52,6 @@ class PropertiesResponse {
       parkings: json['estacionamientos_inmobiliario']  ?? 0,
       imageUrl: json['Imagen'] as String?,
       admin: json['nombre_admin'] as String?
-
     );
   }
   

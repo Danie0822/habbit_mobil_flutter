@@ -11,4 +11,7 @@ class Zone {
       name: json['nombre_zona'],
     );
   }
+  static List<Zone> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => Zone.fromJson(json)).toList();
+  }
 }

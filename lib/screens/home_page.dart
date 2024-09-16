@@ -4,6 +4,8 @@ import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/common/widgets/filters.dart';
 import 'package:habbit_mobil_flutter/common/widgets/text_field_search.dart';
 import 'package:habbit_mobil_flutter/data/controlers/properties.dart';
+import 'package:habbit_mobil_flutter/data/controlers/categorys.dart';
+import 'package:habbit_mobil_flutter/data/controlers/zones.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -131,6 +133,39 @@ class _HomeScreenState extends State<HomeScreen> {
           imageUrl: propertyCard.imageUrl, // Asegúrate de que el nombre de la propiedad sea correcto
           isFavorites: propertyCard.isFavorites,
         ),
+      ),
+    );
+  }
+
+  Widget _buildFilters(Filter filters, BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Filtros',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Cierra el modal
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          filters,
+        ],
       ),
     );
   }
@@ -337,7 +372,7 @@ void _clearPropertyList() {
                 ],
               ),
               const SizedBox(height: 20),
-              const Filter(), // Contenido del modal de filtros
+              Filter(), // Contenido del modal de filtros
             ],
           ),
         );
