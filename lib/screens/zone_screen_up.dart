@@ -44,13 +44,13 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     );
     _fadeInController.forward();
 
-    cargarDatos();
+    _fetchData();
   }
 
 //Funcion que se encarga primero de cargar las estadisticas y luego se setearlo para llena la lista
-  void cargarDatos() async {
+  void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
-
+    _estadisticasController.estadisticasBusquedas = estadisticas;
     // Luego, llama a _fetchZone
     await _fetchZone();
   }
@@ -121,7 +121,7 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
             3,
             context,
             () {
-              context.push('/editPreferences');
+              context.go('/editPreferences');
             },
           );
         } else {

@@ -47,7 +47,7 @@ class _EditPreferencesState extends State<EditPreferences> {
       'text': 'Ubicación',
       'lottieUrl':
           'https://lottie.host/bf2fe8d3-d5a5-4302-88d3-55daea2d8531/RuRaGNd3Ut.json',
-      'destinationRoute': '/ubi'
+      'destinationRoute': '/UbiScreenUp'
     },
     {
       'text': 'Precio',

@@ -51,46 +51,47 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
     _fetchData();
   }
 
- void _fetchData() async {
+  void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
     //print('Datos de EstadisticasBusquedas: $estadisticas');
     _estadisticasController.estadisticasBusquedas = estadisticas;
 
-    // Luego, llama a _fetchZone
+    // Luego, llama a _fetchPrices
     await _fetchPrices();
   }
 
   Future<void> _fetchPrices() async {
-  try {
-    // Cargar el rango de precios desde la API
-    _dataPreferences.fetchPrecioRange().then((range) {
-      setState(() {
-        minPrice = range.minimo; // Asegúrate de que estos valores existan
-        maxPrice = range.maximo;
+    try {
+      // Cargar el rango de precios desde la API
+      _dataPreferences.fetchPrecioRange().then((range) {
+        setState(() {
+          minPrice = range.minimo; // Asegúrate de que estos valores existan
+          maxPrice = range.maximo;
 
-        // Obtener los valores de precios seleccionados del controlador
-        final selectedPriceMin = _estadisticasController.estadisticasBusquedas.precioMin;
-        final selectedPriceMax = _estadisticasController.estadisticasBusquedas.precioMax;
+          // Obtener los valores de precios seleccionados del controlador
+          final selectedPriceMin =
+              _estadisticasController.estadisticasBusquedas.precioMin;
+          final selectedPriceMax =
+              _estadisticasController.estadisticasBusquedas.precioMax;
 
-        // Asegurar que los precios seleccionados estén dentro del rango
-        selectedRange = RangeValues(
-          selectedPriceMin.clamp(minPrice, maxPrice),
-          selectedPriceMax.clamp(minPrice, maxPrice),
-        );
+          // Asegurar que los precios seleccionados estén dentro del rango
+          selectedRange = RangeValues(
+            selectedPriceMin.clamp(minPrice, maxPrice),
+            selectedPriceMax.clamp(minPrice, maxPrice),
+          );
 
-        isLoading = false;
+          isLoading = false;
+        });
+      }).catchError((error) {
+        print('Error al cargar el rango de precios: $error');
+        setState(() {
+          isLoading = false;
+        });
       });
-    }).catchError((error) {
-      print('Error al cargar el rango de precios: $error');
-      setState(() {
-        isLoading = false;
-      });
-    });
-  } catch (error) {
-    print(error);
+    } catch (error) {
+      print(error);
+    }
   }
-}
-
 
   //Funcion para enviar datos al controlador
   void _handlePrecioUpdate() async {
@@ -122,7 +123,7 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
             3,
             context,
             () {
-              context.push('/editPreferences');
+              context.go('/editPreferences');
             },
           );
         } else {

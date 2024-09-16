@@ -50,7 +50,7 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
     //print('Datos de EstadisticasBusquedas: $estadisticas');
     _estadisticasController.estadisticasBusquedas = estadisticas;
 
-    // Luego, llama a _fetchZone
+    // Luego, llama a _categories
     await _fetchCategories();
   }
 
@@ -117,7 +117,7 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
             3,
             context,
             () {
-              context.push('/editPreferences');
+              context.go('/editPreferences');
             },
           );
         } else {
