@@ -33,3 +33,5 @@ export 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 export 'package:habbit_mobil_flutter/screens/new_request.dart';
 export 'package:habbit_mobil_flutter/screens/agenda_screen.dart';
 export 'package:habbit_mobil_flutter/screens/slider_screen.dart';
+export 'package:habbit_mobil_flutter/screens/category_screen_up.dart';
+export 'package:habbit_mobil_flutter/screens/price_screen_up.dart';

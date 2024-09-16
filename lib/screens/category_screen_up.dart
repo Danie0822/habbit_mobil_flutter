@@ -1,8 +1,7 @@
-//Importacion de paquetes a utilizar
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/data/controlers/preferences.dart';
-import 'package:habbit_mobil_flutter/data/models/zone.dart';
+import 'package:habbit_mobil_flutter/data/models/category.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/common/widgets/button.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
@@ -11,22 +10,21 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:get/get.dart';
 import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 
-//Creación y construcción de stateful widget llamado Zona screen
-class ZoneScreenUp extends StatefulWidget {
-  const ZoneScreenUp({super.key});
+class CategoryScreenUp extends StatefulWidget {
+  const CategoryScreenUp({super.key});
 
   @override
-  State<ZoneScreenUp> createState() => _ZoneScreenUpState();
+  State<CategoryScreenUp> createState() => _CategoryScreenStateUp();
 }
 
-class _ZoneScreenUpState extends State<ZoneScreenUp>
+class _CategoryScreenStateUp extends State<CategoryScreenUp>
     with TickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-//Creacion de la lista de strings para los radio items
-  List<Zone> _zoneItems = [];
-  Zone? _selectedRadioItem;
+  List<Category> _categories = [];
+  Category? _selectedRadioItem;
+
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -34,7 +32,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
   void initState() {
     super.initState();
 
-    //Creacion para animacion de la pantalla
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -44,58 +41,57 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     );
     _fadeInController.forward();
 
-    cargarDatos();
+    _fetchData();
   }
 
 //Funcion que se encarga primero de cargar las estadisticas y luego se setearlo para llena la lista
-  void cargarDatos() async {
+  void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
+    //print('Datos de EstadisticasBusquedas: $estadisticas');
+    _estadisticasController.estadisticasBusquedas = estadisticas;
 
     // Luego, llama a _fetchZone
-    await _fetchZone();
+    await _fetchCategories();
   }
 
-//Funcion asincrona para manejar la respuesta del servidor.
-  Future<void> _fetchZone() async {
+//Funcion para cargar los datos de categorias
+  Future<void> _fetchCategories() async {
     try {
-      // Obtenemos las zonas del controlador
-      final zones = await DataPreferences().fetchZones();
+      final categories = await DataPreferences().fetchCategories();
       setState(() {
-        _zoneItems = zones;
+        _categories = categories;
 
-        // Verifica el valor de idZona
-        final selectedIdZona =
-            _estadisticasController.estadisticasBusquedas.idZona;
-        //print('ID Zona seleccionada: $selectedIdZona');
+        final selectedIdCategory =
+            _estadisticasController.estadisticasBusquedas.idCategoria;
 
-        // Buscar la zona seleccionada según el idZona en el modelo de EstadisticasBusquedas
-        if (selectedIdZona != 0) {
-          _selectedRadioItem = _zoneItems.firstWhere(
-            (zone) => zone.id == selectedIdZona,
-            orElse: () => _zoneItems[0], // Fallback
+        print('ID categoria seleccionada> $selectedIdCategory');
+
+        if (selectedIdCategory != 0) {
+          _selectedRadioItem = _categories.firstWhere(
+            (category) => category.id == selectedIdCategory,
+            orElse: () => _categories[0],
           );
-          //print('Zona seleccionada: $_selectedRadioItem');
+          print('Categoria seleccionada: $_selectedRadioItem');
         } else {
-          _selectedRadioItem = _zoneItems[0];
+          _selectedRadioItem = _categories[0];
           print('Zona seleccionada por defecto: $_selectedRadioItem');
         }
       });
     } catch (error) {
-      print('Error al obtener las zonas: $error');
+      print('Error al obtener las categorías: $error');
     }
   }
 
-  //Funcion para manejar los datos de las zonas
-  void _handleZoneupdate() async {
+  //Funcion para manejar los datos de la categoria
+  void _handleCategoryUpdate() async {
     try {
-      // Obtener el cliente ID
+      //Obtener el ID del cliente
       final clientId = await StorageService.getClientId();
 
       if (clientId == null) {
         throw Exception('No se pudo obtener el ID del cliente.');
       }
 
-      // Validar que se haya seleccionado una zona
       if (_selectedRadioItem == null) {
         showAlertDialog(
           'Zona no seleccionada',
@@ -106,9 +102,9 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
       } else {
         final formData = {
           'id_cliente': clientId,
-          'id_zona': _selectedRadioItem?.id,
+          'id_categoria': _selectedRadioItem?.id,
         };
-        print(formData);
+        //print(formData);
 
         // Llamar al controlador para actualizar las preferencias
         final success =
@@ -151,7 +147,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     super.dispose();
   }
 
-// Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -162,7 +157,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Incio de la construccion de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -201,15 +195,13 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //Widget que muestra el texto
                           Text(
-                            "Actualización de zona",
+                            "Elige una categoría",
                             style: AppStyles.headline5(context, colorTexto),
                           ),
                           SizedBox(height: height * 0.01),
-                          //Widget que muestra el texto
                           Text(
-                            "Selecciona una zona para mostrarte propiedades similares",
+                            "Selecciona una categoría para mostrarte propiedades similares",
                             style: AppStyles.subtitle1(context),
                           ),
                           SizedBox(height: height * 0.02),
@@ -218,16 +210,16 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  for (int i = 0; i < _zoneItems.length; i++)
-                                    RadioListTile<Zone>(
-                                      value: _zoneItems[i],
+                                  for (int i = 0; i < _categories.length; i++)
+                                    RadioListTile<Category>(
+                                      value: _categories[i],
                                       groupValue: _selectedRadioItem,
-                                      onChanged: (Zone? value) {
+                                      onChanged: (Category? value) {
                                         setState(() {
                                           _selectedRadioItem = value;
                                         });
                                       },
-                                      title: Text(_zoneItems[i].name),
+                                      title: Text(_categories[i].name),
                                       activeColor: colorTextYellow,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(30),
@@ -241,11 +233,10 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
                           ),
                           SizedBox(height: height * 0.1),
                           Align(
-                            //Widget del boton para seguir a la siguiente pantalla
                             alignment: Alignment.center,
                             child: CustomButton(
                               onPressed: () {
-                                _handleZoneupdate();
+                                _handleCategoryUpdate();
                               },
                               text: "Guardar",
                             ),

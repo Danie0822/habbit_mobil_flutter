@@ -53,13 +53,13 @@ class _EditPreferencesState extends State<EditPreferences> {
       'text': 'Precio',
       'lottieUrl':
           'https://lottie.host/3ac43d64-bac4-4254-a583-418a5a6c6c9a/LOQKQYlQrn.json',
-      'destinationRoute': '/price'
+      'destinationRoute': '/PriceScreenUp'
     },
     {
       'text': 'Categorías',
       'lottieUrl':
           'https://lottie.host/ca5bf7aa-8e8a-40c6-b2b9-aad377a37773/k3mtC3AYsm.json',
-      'destinationRoute': '/category'
+      'destinationRoute': '/categoryUpdate'
     },
     {
       'text': 'Zonas',
@@ -84,7 +84,7 @@ class _EditPreferencesState extends State<EditPreferences> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.pushNamed('/main', extra: 3);
+            context.push('/main', extra: 3);
           },
         ),
       ),

@@ -197,6 +197,16 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const VisitScreen(), state),
     ),
+    GoRoute(
+      path: '/categoryUpdate',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const CategoryScreenUp(), state),
+    ),
+    GoRoute(
+      path: '/PriceScreenUp',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const PriceScreenUp(), state),
+    ),
   ],
   // Constructor de página de error para manejar rutas no encontradas
   errorBuilder: (context, state) => Scaffold(
