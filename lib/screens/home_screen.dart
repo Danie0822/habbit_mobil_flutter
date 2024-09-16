@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
         : colorTextField;
 
     final Color colorTextoSub = Theme.of(context).brightness == Brightness.light
-        ? normalText
+        ? textColorNegro
         : colorTextField;
 
     return Scaffold(

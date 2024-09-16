@@ -38,9 +38,13 @@ class SliderScreenState extends State<SliderScreen> {
   Widget build(BuildContext context) {
     final primaryBackground = ThemeUtils.getColorBasedOnBrightness(
         context, whiteColor, contenedorMensajeDark);
-    
+
     final Color textoTitle = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, whiteColor);
+
+    // Obtener el tamaño de la pantalla
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     if (cards.isEmpty) {
       return Scaffold(
@@ -68,12 +72,18 @@ class SliderScreenState extends State<SliderScreen> {
                       GoRouter.of(context).pop();
                     },
                   ),
-                  Text(
-                    'Nuestras recomendaciones',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: textoTitle,
+                  // Hacemos el título responsivo
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Nuestras recomendaciones',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: textoTitle,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -89,13 +99,13 @@ class SliderScreenState extends State<SliderScreen> {
                   if (currentIndex == cards.length - 1) {
                     showReloadDialog(context);
                   }
-                  return true; // Asegúrate de devolver un valor booleano
+                  return true;
                 },
                 onUndo: (previousIndex, currentIndex, direction) {
                   debugPrint(
-                    'The card $currentIndex was undod from the ${direction.name}',
+                    'The card $currentIndex was undone from the ${direction.name}',
                   );
-                  return true; // Asegúrate de devolver un valor booleano
+                  return true;
                 },
                 numberOfCardsDisplayed: 3,
                 backCardOffset: const Offset(40, 40),
@@ -132,8 +142,8 @@ class SliderScreenState extends State<SliderScreen> {
     final boxStyle = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageWidget, Colors.black.withOpacity(0.6));
 
-        final Color texto = ThemeUtils.getColorBasedOnBrightness(
-        context, whiteColor, whiteColor);
+    final Color texto =
+        ThemeUtils.getColorBasedOnBrightness(context, whiteColor, whiteColor);
 
     return GestureDetector(
       onTap: () {
@@ -151,52 +161,54 @@ class SliderScreenState extends State<SliderScreen> {
           ),
           child: Column(
             children: [
-              // Aseguramos que la imagen llene completamente el espacio
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-                child: Image.network(
-                  '${Config.imagen}${card.imageUrl}',
-                  width: double.infinity,
-                  height: 520, // Ajusta la altura según tu preferencia
-                  fit: BoxFit
-                      .cover, // O usa BoxFit.fill si deseas distorsionar la imagen
-                ),
-              ),
-              // La información de la propiedad
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                width: double.infinity,
-                height: 202,
-                decoration: BoxDecoration(
-                  color: boxStyle,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(
-                        16.0), // Radio del borde inferior izquierdo
-                    bottomRight: Radius.circular(
-                        16.0), // Radio del borde inferior derecho
+              // Imagen ocupando el 75% del espacio de la tarjeta
+              Expanded(
+                flex: 3, // 75% del espacio
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(16.0)),
+                  child: Image.network(
+                    '${Config.imagen}${card.imageUrl}',
+                    width: double.infinity,
+                    fit: BoxFit.cover, // La imagen se ajusta sin distorsionar
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      card.propertyTitle ?? '',
-                      style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                          color: texto),
+              ),
+              // La información de la propiedad ocupando el 25% del espacio restante
+              Expanded(
+                flex: 1, // 25% del espacio
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: boxStyle,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16.0),
+                      bottomRight: Radius.circular(16.0),
                     ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '${card.propertyType} - ${card.propertyState}',
-                      style: TextStyle(fontSize: 18.0, color: texto),
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '${card.distanceKm?.toStringAsFixed(2)} km',
-                      style: TextStyle(fontSize: 16.0, color: texto),
-                    ),
-                  ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        card.propertyTitle ?? '',
+                        style: TextStyle(
+                            fontSize: 22.0, // Ajustado para mantener proporción
+                            fontWeight: FontWeight.bold,
+                            color: texto),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        '${card.propertyType} - ${card.propertyState}',
+                        style: TextStyle(fontSize: 18.0, color: texto),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        '${card.distanceKm?.toStringAsFixed(2)} km',
+                        style: TextStyle(fontSize: 16.0, color: texto),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
