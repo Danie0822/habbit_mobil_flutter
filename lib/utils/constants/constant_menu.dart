@@ -38,7 +38,7 @@ List<RiveAsset> sideMenu = [
     artboard: 'SEARCH',
     stateMachineName: 'SEARCH_Interactivity',
     title: 'Búsquedas',
-    screen: EditPreferences(),
+    screen: HomeScreen(),
   ),
   RiveAsset(
     'assets/rive/icons.riv',
