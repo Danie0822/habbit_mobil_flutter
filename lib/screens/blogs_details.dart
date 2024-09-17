@@ -1,6 +1,6 @@
 import 'dart:ui'; // Importa esto para usar BackdropFilter
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/common/widgets/rating.dart';
 import 'package:habbit_mobil_flutter/data/models/blogs_main.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
@@ -13,6 +13,8 @@ class BlogDetail extends StatefulWidget {
 }
 
 class _BlogDetailState extends State<BlogDetail> {
+  int _userRating = 0; // Valoración seleccionada por el usuario
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -20,7 +22,7 @@ class _BlogDetailState extends State<BlogDetail> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: _buildAppBar(size, isDarkMode),
+      appBar: _buildAppBar(size, isDarkMode, _data.idBlogs ?? 0),
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Column(
@@ -33,8 +35,8 @@ class _BlogDetailState extends State<BlogDetail> {
     );
   }
 
-  // Método para construir el AppBar con una flecha de retroceso
-  AppBar _buildAppBar(Size size, bool isDarkMode) {
+  // Método para construir el AppBar con una flecha de retroceso y una estrella
+  AppBar _buildAppBar(Size size, bool isDarkMode, int id) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -71,7 +73,58 @@ class _BlogDetailState extends State<BlogDetail> {
           ),
         ),
       ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              splashColor: isDarkMode ? Colors.white30 : Colors.black26, // Efecto de splash
+              customBorder: CircleBorder(), // Forma circular
+              onTap: () {
+                // Mostrar el modal de valoración al hacer clic
+                _openRatingModal(context, id);
+              },
+              child: Container(
+                width: size.width * 0.12, // Forma circular
+                height: size.width * 0.12,
+                decoration: BoxDecoration(
+                  color: isDarkMode ? Colors.black.withOpacity(0.6) : Colors.white.withOpacity(0.6),
+                  shape: BoxShape.circle, // Botón circular
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.4),
+                      blurRadius: 8,
+                      offset: Offset(0, 4), // Sombra debajo
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.star, // Icono de estrella
+                  color: isDarkMode ? Colors.white : Colors.black,
+                  size: size.width * 0.06, // Tamaño de la estrella
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  // Método para abrir el modal de valoración
+  void _openRatingModal(BuildContext context, int id) async {
+    final selectedRating = await showDialog<int>(
+      context: context,
+      builder: (context) => RatingModal(idSolicitud: id,), // Abre el modal
+    );
+
+    if (selectedRating != null) {
+      setState(() {
+        _userRating = selectedRating; // Guardar la valoración seleccionada
+      });
+      print('Valoración seleccionada: $_userRating');
+    }
   }
 
   // Método para construir el fondo de imagen

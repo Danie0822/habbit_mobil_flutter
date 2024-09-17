@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       ),
                       buttonText: 'Aprovecha y lee',
                       imagePath: 'blog.png',
-                      navegation: '/login',
+                      navegation: '/blogMain',
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(

@@ -38,3 +38,4 @@ export 'package:habbit_mobil_flutter/screens/price_screen_up.dart';
 export 'package:habbit_mobil_flutter/screens/about_company.dart';
 export 'package:habbit_mobil_flutter/screens/ubi_screen_up.dart';
 export 'package:habbit_mobil_flutter/screens/blogs_details.dart';
+export 'package:habbit_mobil_flutter/screens/blog_main_screen.dart';

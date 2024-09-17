@@ -61,7 +61,7 @@ class _blogMainState extends State<blogMain> {
               splashColor: Colors.transparent,
               customBorder: CircleBorder(),
               onTap: () {
-                context.push('/login');
+                context.push('/home_screen');
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.12,

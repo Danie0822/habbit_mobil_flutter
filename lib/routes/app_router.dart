@@ -216,10 +216,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/detailBlogs',
       pageBuilder: (context, state) {
-        final BlogsResponse blogsData = (state.extra as List<BlogsResponse>).first;
+        final BlogsResponse blogsData = state.extra as BlogsResponse;
         return _buildPageWithFuturisticTransition(
             BlogDetail(blogsResponse: blogsData), state);
       },
+    ),
+      GoRoute(
+      path: '/blogMain',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(const blogMain(), state),
     ),
   ],
   // Constructor de página de error para manejar rutas no encontradas
