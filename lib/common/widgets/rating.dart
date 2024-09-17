@@ -40,7 +40,7 @@ void _updateInfo() async {
     } else if (result == 2) {
       showAlertDialog(
           'Error',
-          'Revisar el formato de los campos, no se puede usar malas palabras, por favor intenta de nuevo.',
+          'No se puede agregar la volariocion, ya que ya se ha realizado una valoracion',
           2,
           context);
     } else {
@@ -113,9 +113,10 @@ void _updateInfo() async {
                         _errorMessage = 'Por favor selecciona al menos una estrella';
                       });
                     } else {
-
+                      
                       _updateInfo();
-                      context.pop();
+                      context.pop(); // Cerrar el modal y guardar la valoración
+                     
                     }
                   },
                   style: ElevatedButton.styleFrom(
