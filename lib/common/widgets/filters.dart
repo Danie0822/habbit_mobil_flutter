@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/data/controlers/categorys.dart'; // Controlador para categorías
 import 'package:habbit_mobil_flutter/data/controlers/zones.dart'; // Controlador para zonas
 import 'package:habbit_mobil_flutter/data/models/category.dart'; // Modelo de categorías
 import 'package:habbit_mobil_flutter/data/models/zone.dart'; // Modelo de zonas
 
 class Filter extends StatefulWidget {
-  const Filter({Key? key}) : super(key: key);
+  final void Function(String category, String zone)? onApplyFilters;
+
+  const Filter({Key? key, this.onApplyFilters}) : super(key: key);
 
   @override
   _FilterState createState() => _FilterState();
@@ -119,6 +119,13 @@ class _FilterState extends State<Filter> {
     );
   }
 
+  // Aplica los filtros seleccionados
+  void _applyFilters() {
+    if (widget.onApplyFilters != null) {
+      widget.onApplyFilters!(selectedCategory, selectedZone);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -202,6 +209,11 @@ class _FilterState extends State<Filter> {
                       return buildZoneOption(zones[index]);
                     },
                   ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _applyFilters,
+                  child: const Text("Aplicar Filtros"),
                 ),
               ],
             ),
