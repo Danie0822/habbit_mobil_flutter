@@ -14,8 +14,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   int _currentPage = 0;
   double _textSize = 20.0;
-  final CarouselSliderController _carouselController = CarouselSliderController();
-
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
   @override
   void initState() {
     super.initState();
@@ -24,15 +24,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
       bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
       setState(() {
-        _currentPage = isDarkMode ? 0 : 1; // 0 para la configuración de tema, 1 para el tamaño de texto
+        _currentPage = isDarkMode
+            ? 0
+            : 1; // 0 para la configuración de tema, 1 para el tamaño de texto
       });
     });
   }
- // Diseño de la pantalla
+
+  // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -77,6 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   // Páginas de configuración de tema y tamaño de texto
   Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
     return Container(
@@ -117,6 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   // Página de configuración de tamaño de texto
   Widget _buildTextSizeSettingsPage() {
     return Container(
@@ -189,6 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   // Botones de alternancia para el tema claro y oscuro
   Widget _buildToggleButtons(ThemeProvider themeProvider) {
     bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
@@ -247,6 +253,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ],
     );
   }
+
   // Indicador de página inferior para cambiar entre las páginas de configuración de tema y tamaño de texto
   Widget _buildBottomSlider() {
     return Container(
