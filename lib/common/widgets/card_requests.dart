@@ -111,7 +111,7 @@ class RequestsCards extends StatelessWidget {
                 size: 20,
               ),
               onPressed: () {
-                context.go('/updateRequest', extra: request); // Actualizar la solicitud 
+                context.push('/updateRequest', extra: request); // Actualizar la solicitud 
               },
             ),
         ],

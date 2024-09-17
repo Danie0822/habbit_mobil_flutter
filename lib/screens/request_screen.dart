@@ -147,7 +147,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/newRequest');
+          context.push('/newRequest');
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(

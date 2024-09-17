@@ -98,7 +98,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.go("/main", extra: 2);
+            context.pop();
           },
         ),
       ),
