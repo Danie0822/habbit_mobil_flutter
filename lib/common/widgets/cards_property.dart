@@ -10,6 +10,32 @@ class PropertyCard extends StatefulWidget {
   final String status;
   final String direction;
   final String imageUrl;
+  final Function(int) onFavorite; // Cambié el tipo de función para aceptar un entero
+
+  // Método copyWith que permite crear una copia del PropertyCard y modificar valores específicos
+  PropertyCard copyWith({
+    bool? isFavorites,
+    int? idPropiedad,
+    String? title,
+    String? type,
+    double? price,
+    String? status,
+    String? direction,
+    String? imageUrl,
+    Function(int)? onFavorite,
+  }) {
+    return PropertyCard(
+      idPropiedad: idPropiedad ?? this.idPropiedad,
+      isFavorites: isFavorites ?? this.isFavorites,
+      title: title ?? this.title,
+      type: type ?? this.type,
+      price: price ?? this.price,
+      status: status ?? this.status,
+      direction: direction ?? this.direction,
+      imageUrl: imageUrl ?? this.imageUrl,
+      onFavorite: onFavorite ?? this.onFavorite,
+    );
+  }
 
   const PropertyCard({
     Key? key,
@@ -21,8 +47,8 @@ class PropertyCard extends StatefulWidget {
     required this.status,
     required this.direction,
     required this.imageUrl,
+    required this.onFavorite,
   }) : super(key: key);
-
 
   @override
   _PropertyCardState createState() => _PropertyCardState();
@@ -34,54 +60,17 @@ class _PropertyCardState extends State<PropertyCard> {
   @override
   void initState() {
     super.initState();
+    // Inicializamos el estado de favorito con el valor inicial del widget
     isFavorite = widget.isFavorites;
   }
 
+  // Esta función invierte el estado de favorito localmente y llama al método del padre
   void toggleFavorite() {
     setState(() {
       isFavorite = !isFavorite;
     });
-  }
-
-  String cleanAndTruncateDirection(String direction) {
-    // Ocultar los primeros 8 caracteres
-    String cleanedDirection = direction.length > 10 ? direction.substring(10) : direction;
-
-    // Truncar la dirección a 50 caracteres
-    return cleanedDirection.length > 50
-        ? '${cleanedDirection.substring(0, 50)}...'
-        : cleanedDirection;
-  }
-
-  Widget _buildImage() {
-    try {
-      if (widget.imageUrl.isNotEmpty) {
-        return Image.network(
-          widget.imageUrl,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            print('Error loading image: $error');
-            return _defaultIcon();
-          },
-        );
-      }
-    } catch (e) {
-      print('Exception loading image: $e');
-    }
-    return _defaultIcon();
-  }
-
-  Widget _defaultIcon() {
-    return Container(
-      color: Colors.grey,
-      child: const Icon(
-        Icons.account_circle,
-        size: 75,
-        color: Colors.white,
-      ),
-    );
+    // Llamamos a la función proporcionada por el widget padre
+    widget.onFavorite(widget.idPropiedad);
   }
 
   @override
@@ -93,7 +82,7 @@ class _PropertyCardState extends State<PropertyCard> {
         ? '${widget.title.substring(0, 25)}...'
         : widget.title;
 
-    // Obtén la dirección truncada
+    // Trunca y limpia la dirección
     String truncatedDirection = cleanAndTruncateDirection(widget.direction);
 
     return GestureDetector(
@@ -114,7 +103,7 @@ class _PropertyCardState extends State<PropertyCard> {
             SizedBox(
               width: double.infinity,
               height: containerHeight,
-              child: _buildImage(), 
+              child: _buildImage(), // Función que carga la imagen
             ),
             Container(
               height: containerHeight,
@@ -168,7 +157,7 @@ class _PropertyCardState extends State<PropertyCard> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: toggleFavorite,
+                        onTap: toggleFavorite, // Al hacer clic, cambia el favorito
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           decoration: BoxDecoration(
@@ -219,6 +208,44 @@ class _PropertyCardState extends State<PropertyCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  String cleanAndTruncateDirection(String direction) {
+    String cleanedDirection = direction.length > 10 ? direction.substring(10) : direction;
+    return cleanedDirection.length > 50
+        ? '${cleanedDirection.substring(0, 50)}...'
+        : cleanedDirection;
+  }
+
+  Widget _buildImage() {
+    try {
+      if (widget.imageUrl.isNotEmpty) {
+        return Image.network(
+          widget.imageUrl,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error loading image: $error');
+            return _defaultIcon();
+          },
+        );
+      }
+    } catch (e) {
+      print('Exception loading image: $e');
+    }
+    return _defaultIcon();
+  }
+
+  Widget _defaultIcon() {
+    return Container(
+      color: Colors.grey,
+      child: const Icon(
+        Icons.account_circle,
+        size: 75,
+        color: Colors.white,
       ),
     );
   }

@@ -11,9 +11,7 @@ class LikeScreen extends StatefulWidget {
   _LikeScreenState createState() => _LikeScreenState();
 }
 
-
 class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateMixin {
-
   bool _isSearchVisible = false; // Indicador de visibilidad de la barra de búsqueda
   List<PropertyCard> _favoritePropertyCards = []; // Lista de tarjetas de propiedades favoritas
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
@@ -133,7 +131,6 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // Lista de propiedades favoritas
   Widget _buildPropertyList() {
     return Expanded(
       child: Padding(
@@ -165,13 +162,35 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
           price: propertyCard.price,
           status: propertyCard.status,
           imageUrl: propertyCard.imageUrl,
-          isFavorites: true, // Se muestra como favorito
+          isFavorites: true, 
+          onFavorite: _toggleFavorite, // Cambié de toog a _toggleFavorite
         ),
       ),
     );
   }
 
-  // Cargar propiedades favoritas desde un servicio
+  Future<void> _toggleFavorite(int idPropiedad) async {
+    try {
+      // Llama al método del controlador para agregar/quitar de favoritos
+      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
+
+      if (response == 200) {
+        setState(() {
+          for (var i = 0; i < _favoritePropertyCards.length; i++) {
+            if (_favoritePropertyCards[i].idPropiedad == idPropiedad) {
+              _favoritePropertyCards[i] = _favoritePropertyCards[i].copyWith(
+                isFavorites: !_favoritePropertyCards[i].isFavorites,
+              );
+              break;
+            }
+          }
+        });
+      }
+    } catch (e) {
+      print('Error gestionando favoritos: $e');
+    }
+  }
+
   Future<void> _loadFavoriteProperties() async {
     setState(() {
       _isLoading = true;
@@ -193,6 +212,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: true,
+          onFavorite: _toggleFavorite, // Añadido aquí también
         );
       }).toList();
 
@@ -213,7 +233,6 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     }
   }
 
-  // Método para alternar la visibilidad de la barra de búsqueda
   void _toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;

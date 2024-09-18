@@ -95,41 +95,76 @@ class PropertiesService {
     }
   }
 
-Future<List<PropertiesResponse>> getPropertiesFavorites() async {
-  try {
-    // Obtiene el ID del cliente desde el servicio de almacenamiento
-    final idCliente = await StorageService.getClientId();
-    
-    if (idCliente == null) {
-      throw Exception('Client ID is null');
-    }
+  Future<List<PropertiesResponse>> getPropertiesFavorites() async {
+    try {
+      // Obtiene el ID del cliente desde el servicio de almacenamiento
+      final idCliente = await StorageService.getClientId();
 
-    // Define el payload del mensaje
-    final formData = {'id_cliente': idCliente};
-
-    // Envía los datos a la API usando POST
-    final response = await ApiService.sendData(
-      '/propiedades/movilFavoritos',
-      'POST',  // Cambia a POST
-      formData, // Envía el cuerpo de la solicitud
-    );
-
-    // Verifica que la respuesta tenga la estructura esperada
-    final innerData = response['data'];
-    if (innerData is Map<String, dynamic>) {
-      final data = innerData['data'];
-      if (data is List<dynamic>) {
-        return PropertiesResponse.fromJsonList(data);
-      } else {
-        throw Exception('Unexpected data format in response');
+      if (idCliente == null) {
+        throw Exception('Client ID is null');
       }
-    } else {
-      throw Exception('Unexpected response structure');
-    }
-  } catch (error) {
-    print('Error loading properties favorites: $error');
-    throw Exception('Error loading properties favorites: $error');
-  }
-}
 
+      // Define el payload del mensaje
+      final formData = {'id_cliente': idCliente};
+
+      // Envía los datos a la API usando POST
+      final response = await ApiService.sendData(
+        '/propiedades/movilFavoritos',
+        'POST', // Cambia a POST
+        formData, // Envía el cuerpo de la solicitud
+      );
+
+      // Verifica que la respuesta tenga la estructura esperada
+      final innerData = response['data'];
+      if (innerData is Map<String, dynamic>) {
+        final data = innerData['data'];
+        if (data is List<dynamic>) {
+          return PropertiesResponse.fromJsonList(data);
+        } else {
+          throw Exception('Unexpected data format in response');
+        }
+      } else {
+        throw Exception('Unexpected response structure');
+      }
+    } catch (error) {
+      print('Error loading properties favorites: $error');
+      throw Exception('Error loading properties favorites: $error');
+    }
+  }
+
+  Future<int> addPropertyToFavorites(int idPropiedad) async {
+    try {
+      // Obtiene el ID del cliente desde el servicio de almacenamiento
+      final idCliente = await StorageService.getClientId();
+
+      if (idCliente == null) {
+        throw Exception('Client ID is null');
+      }
+
+      // Define el payload del mensaje
+      final formData = {
+        'id_cliente': idCliente,
+        'id_propiedad': idPropiedad,
+      };
+
+      // Envía los datos a la API usando POST
+      final response = await ApiService.sendData(
+        '/propiedades/agregarFavorito',
+        'POST', // Cambia a POST
+        formData, // Envía el cuerpo de la solicitud
+      );
+
+      // Verifica que la respuesta tenga la estructura esperada
+      final innerData = response['data'];
+      if (innerData is Map<String, dynamic>) {
+        final status = innerData['status'];
+        return status;
+      } else {
+        throw Exception('Unexpected response structure');
+      }
+    } catch (error) {
+      print('Error adding property to favorites: $error');
+      throw Exception('Error adding property to favorites: $error');
+    }
+  }
 }

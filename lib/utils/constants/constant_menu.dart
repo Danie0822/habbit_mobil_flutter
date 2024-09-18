@@ -4,7 +4,6 @@ import 'package:habbit_mobil_flutter/screens/home_screen.dart';
 import 'package:habbit_mobil_flutter/screens/like_screen.dart';
 import 'package:rive/rive.dart';
 import 'package:habbit_mobil_flutter/screens/home_page.dart';
-import 'package:habbit_mobil_flutter/screens/edit_preferences.dart';
 
 // Clase que representa un ítem del menú con animaciones Rive
 class RiveAsset {
@@ -55,11 +54,5 @@ List<RiveAsset> sideMenu = [
     title: 'Eventos',
     screen: VisitScreen(),
   ),
-  RiveAsset(
-    'assets/rive/icons.riv',
-    artboard: 'USER',
-    stateMachineName: 'USER_Interactivity',
-    title: 'Editar perfil',
-    screen: EditPreferences(),
-  )
+
 ];

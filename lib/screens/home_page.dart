@@ -19,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool _isLoading = false;
 
+  
+
   @override
   void initState() {
     super.initState();
@@ -106,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildPropertyItem(PropertyCard propertyCard, Animation<double> animation) {
+  Widget _buildPropertyItem(
+      PropertyCard propertyCard, Animation<double> animation) {
     return SizeTransition(
       sizeFactor: animation,
       child: Hero(
@@ -120,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           status: propertyCard.status,
           imageUrl: propertyCard.imageUrl,
           isFavorites: propertyCard.isFavorites,
+          onFavorite: _toggleFavorite, // Aquí se usa el método
         ),
       ),
     );
@@ -179,47 +183,71 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _loadPropertiesPreferences() async {
-    setState(() {
-      _isLoading = true;
-    });
+ Future<void> _loadPropertiesPreferences() async {
+  setState(() {
+    _isLoading = true;
+  });
 
+  try {
+    final properties = await PropertiesService().getProperties();
+
+    List<PropertyCard> newPropertyCards = properties.map((property) {
+      return PropertyCard(
+        idPropiedad: property.idPropiedad ?? 0,
+        title: property.title ?? 'Propiedad no encontrada',
+        type: property.type ?? 'Error de datos',
+        status: property.status ?? 'Error de datos',
+        direction: property.direction ?? 'Error de datos',
+        price: property.price ?? 0.0,
+        imageUrl: property.imageUrl != null
+            ? '${Config.imagen}${property.imageUrl}'
+            : '',
+        isFavorites: property.isFavorite ?? false, // Aquí cargamos el estado de favorito
+        onFavorite: _toggleFavorite,
+      );
+    }).toList();
+
+    if (mounted) {
+      setState(() {
+        _propertyCards.clear();
+        _propertyCards.addAll(newPropertyCards);
+
+        for (int i = 0; i < newPropertyCards.length; i++) {
+          _listKey.currentState?.insertItem(i);
+        }
+      });
+    }
+  } catch (e) {
+    print('Error cargando propiedades: $e');
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+}
+
+
+  Future<void> _toggleFavorite(int idPropiedad) async {
     try {
-      final properties = await PropertiesService().getProperties();
+      // Llama al método del controlador para agregar/quitar de favoritos
+      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
 
-      List<PropertyCard> newPropertyCards = properties.map((property) {
-        return PropertyCard(
-          idPropiedad: property.idPropiedad ?? 0,
-          title: property.title ?? 'Propiedad no encontrada',
-          type: property.type ?? 'Error de datos',
-          status: property.status ?? 'Error de datos',
-          direction: property.direction ?? 'Error de datos',
-          price: property.price ?? 0.0,
-          imageUrl: property.imageUrl != null
-              ? '${Config.imagen}${property.imageUrl}'
-              : '',
-          isFavorites: false,
-        );
-      }).toList();
-
-      if (mounted) {
+      if (response == 200) {
         setState(() {
-          _propertyCards.clear();
-          _propertyCards.addAll(newPropertyCards);
-
-          for (int i = 0; i < newPropertyCards.length; i++) {
-            _listKey.currentState?.insertItem(i);
+          for (var i = 0; i < _propertyCards.length; i++) {
+            if (_propertyCards[i].idPropiedad == idPropiedad) {
+              _propertyCards[i] = _propertyCards[i].copyWith(
+                isFavorites: !_propertyCards[i].isFavorites,
+              );
+              break;
+            }
           }
         });
       }
     } catch (e) {
-      print('Error cargando propiedades: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      print('Error gestionando favoritos: $e');
     }
   }
 
@@ -243,6 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
+          onFavorite: _toggleFavorite,
         );
       }).toList();
 
@@ -287,6 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
+          onFavorite: _toggleFavorite,
         );
       }).toList();
 
@@ -311,13 +341,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _onFilterApplied(int category, int zone, double min, double max) async {
+  void _onFilterApplied(
+      int category, int zone, double minPrice, double maxPrice) {
+    setState(() {
+      selectedFilter = '';
+    });
+
+    _clearPropertyList();
+    _loadPropertiesFiltered(category, zone, minPrice, maxPrice);
+  }
+
+  Future<void> _loadPropertiesFiltered(
+      int category, int zone, double minPrice, double maxPrice) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final properties = await PropertiesService().getPropertiesFilters(category, zone, min, max);
+      final properties = await PropertiesService().getPropertiesFilters(
+          category, zone, minPrice, maxPrice);
 
       List<PropertyCard> newPropertyCards = properties.map((property) {
         return PropertyCard(
@@ -331,13 +373,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
+          onFavorite: _toggleFavorite,
         );
       }).toList();
 
-      _clearPropertyList();
-
       if (mounted) {
         setState(() {
+          _propertyCards.clear();
           _propertyCards.addAll(newPropertyCards);
 
           for (int i = 0; i < newPropertyCards.length; i++) {
@@ -346,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     } catch (e) {
-      print('Error cargando propiedades filtradas: $e');
+      print('Error aplicando filtros: $e');
     } finally {
       if (mounted) {
         setState(() {
