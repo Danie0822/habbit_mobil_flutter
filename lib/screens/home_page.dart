@@ -202,20 +202,24 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }).toList();
 
-      setState(() {
-        _propertyCards.clear();
-        _propertyCards.addAll(newPropertyCards);
+      if (mounted) {
+        setState(() {
+          _propertyCards.clear();
+          _propertyCards.addAll(newPropertyCards);
 
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
+          for (int i = 0; i < newPropertyCards.length; i++) {
+            _listKey.currentState?.insertItem(i);
+          }
+        });
+      }
     } catch (e) {
       print('Error cargando propiedades: $e');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -242,20 +246,24 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }).toList();
 
-      setState(() {
-        _propertyCards.clear();
-        _propertyCards.addAll(newPropertyCards);
+      if (mounted) {
+        setState(() {
+          _propertyCards.clear();
+          _propertyCards.addAll(newPropertyCards);
 
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
+          for (int i = 0; i < newPropertyCards.length; i++) {
+            _listKey.currentState?.insertItem(i);
+          }
+        });
+      }
     } catch (e) {
       print('Error cargando inmuebles: $e');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -282,20 +290,24 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }).toList();
 
-      setState(() {
-        _propertyCards.clear();
-        _propertyCards.addAll(newPropertyCards);
+      if (mounted) {
+        setState(() {
+          _propertyCards.clear();
+          _propertyCards.addAll(newPropertyCards);
 
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
+          for (int i = 0; i < newPropertyCards.length; i++) {
+            _listKey.currentState?.insertItem(i);
+          }
+        });
+      }
     } catch (e) {
       print('Error cargando proyectos: $e');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -324,19 +336,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
       _clearPropertyList();
 
-      setState(() {
-        _propertyCards.addAll(newPropertyCards);
+      if (mounted) {
+        setState(() {
+          _propertyCards.addAll(newPropertyCards);
 
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
+          for (int i = 0; i < newPropertyCards.length; i++) {
+            _listKey.currentState?.insertItem(i);
+          }
+        });
+      }
     } catch (e) {
       print('Error cargando propiedades filtradas: $e');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 }

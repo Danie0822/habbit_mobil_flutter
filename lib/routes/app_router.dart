@@ -163,6 +163,11 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const ThanksRegister(), state),
     ),
+     GoRoute(
+      path: '/likes',
+      pageBuilder: (context, state) =>
+          _buildPageWithFuturisticTransition(LikeScreen(), state),
+    ),
     GoRoute(
       path: '/zone_update',
       pageBuilder: (context, state) =>
