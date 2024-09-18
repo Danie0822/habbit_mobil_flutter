@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
+// Campo de texto personalizado
 class MyTextField extends StatelessWidget {
   const MyTextField({
     Key? key,
@@ -16,7 +17,7 @@ class MyTextField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
   }) : super(key: key);
-
+  // Campos de texto
   final String hint;
   final bool isPassword;
   final IconData icon;
@@ -59,7 +60,8 @@ class MyTextField extends StatelessWidget {
         keyboardType: keyboardType,
         maxLines: 1, // Limitar a una sola línea
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,

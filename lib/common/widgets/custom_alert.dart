@@ -3,13 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
-
+// Alerta personalizada
 class CustomAlertDialog extends StatelessWidget {
   final String title;
   final String message;
   final int type;
   final void Function() onPressed;
-
+  // Constructor de la alerta
   const CustomAlertDialog({
     required this.title,
     required this.message,
@@ -17,7 +17,7 @@ class CustomAlertDialog extends StatelessWidget {
     required this.onPressed,
     super.key,
   });
-
+  // Icono de la alerta
   IconData _getIcon() {
     switch (type) {
       case 1:
@@ -30,7 +30,7 @@ class CustomAlertDialog extends StatelessWidget {
         return Icons.info_outline_rounded;
     }
   }
-
+  // Color de la alerta
   Color _getColor() {
     switch (type) {
       case 1:
@@ -43,7 +43,7 @@ class CustomAlertDialog extends StatelessWidget {
         return Colors.blue;
     }
   }
-
+  // Diseño de la alerta
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = ThemeUtils.getColorBasedOnBrightness(
@@ -153,7 +153,7 @@ class CustomAlertDialog extends StatelessWidget {
     );
   }
 }
-
+// Muestra la alerta en pantalla el btn con regresar
 void showAlertDialog(
     String title, String message, int type, BuildContext context) {
   showDialog(
@@ -170,7 +170,7 @@ void showAlertDialog(
     },
   );
 }
-
+// Muestra la alerta en pantalla con el botón personalizado
 void showAlertDialogScreen(String title, String message, int type,
     BuildContext context, void Function() onPressed  ) {
   showDialog(

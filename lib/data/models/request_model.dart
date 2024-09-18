@@ -1,3 +1,4 @@
+// Contiene la clase RequestModel que es un modelo de datos de una solicitud de un cliente
 class RequestModel {
   final int idSolicitud;
   final String tituloSolicitud;
@@ -36,7 +37,7 @@ class RequestModel {
     this.idAdministrador,
     required this.nombreAdministrador,
   });
-
+  // Método de fábrica para convertir un mapa en un objeto de tipo RequestModel
   factory RequestModel.fromJson(Map<String, dynamic> json) {
     return RequestModel(
       idSolicitud: json['id_solicitud'],
@@ -58,7 +59,7 @@ class RequestModel {
       nombreAdministrador: json['nombre_administrador'],
     );
   }
-
+  // Método de fábrica para convertir una lista de mapas en una lista de objetos de tipo RequestModel
   static List<RequestModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList
         .map((json) => RequestModel.fromJson(json as Map<String, dynamic>))

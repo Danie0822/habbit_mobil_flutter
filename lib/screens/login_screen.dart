@@ -8,23 +8,25 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
-
+// Pantalla de inicio de sesión
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
   _LoginState createState() => _LoginState();
 }
-
+// Estado de la pantalla de inicio de sesión
 class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
+  // Clave global para el formulario
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
+  // Controlador de autenticación
   final AuthService _authService = AuthService();
   late AnimationController _fadeInController;
   late AnimationController _buttonController;
   late Animation<double> _fadeInAnimation;
   late Animation<double> _buttonScaleAnimation;
-
+  // Controladores para los campos de texto
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   @override
@@ -51,7 +53,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       CurvedAnimation(parent: _buttonController, curve: Curves.easeInOut),
     );
   }
-
+  // Liberar recursos
   @override
   void dispose() {
     _fadeInController.dispose();

@@ -10,6 +10,7 @@ import 'package:habbit_mobil_flutter/utils/constants/crypto.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:lottie/lottie.dart';
 
+// Vista de confirmación de contraseña
 class ConfirmView extends StatefulWidget {
   final ConfirmViewArguments arguments;
   const ConfirmView({Key? key, required this.arguments}) : super(key: key);
@@ -18,27 +19,33 @@ class ConfirmView extends StatefulWidget {
   State<ConfirmView> createState() => _ConfirmViewState();
 }
 
+// Argumentos de la vista de confirmación
 class _ConfirmViewState extends State<ConfirmView> {
   final RecoveryController _recoveryController = RecoveryController();
   late ConfirmViewArguments arguments;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  // Inicializar los argumentos
   @override
   void initState() {
     super.initState();
     arguments = widget.arguments;
   }
 
+  // Método para cambiar la contraseña
   void _forgotPassword() async {
+    // Validar los campos
     if (_formKey.currentState?.validate() ?? false) {
+      // Obtener la clave y confirmarla
       final clave = _passwordController.text;
       final confirm = _confirmController.text;
       final hashedPassword = hashPassword(clave);
       if (clave == confirm) {
+        // Enviar la solicitud de cambio de contraseña
         final result = await _recoveryController.sendRequest(
             arguments.idUsuario, arguments.codigo, hashedPassword, 'clave');
+        // Mostrar el resultado
         if (result == 1) {
           showAlertDialogScreen(
             'Éxito',
@@ -60,13 +67,14 @@ class _ConfirmViewState extends State<ConfirmView> {
     }
   }
 
+  // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final horizontalPadding = screenWidth < 600 ? 16.0 : 32.0;
     final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
     final headingFontSize = screenWidth < 600 ? 25.0 : 30.0;
-
+    // Tamaño de los campos de entrada
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -88,12 +96,12 @@ class _ConfirmViewState extends State<ConfirmView> {
                 width: screenWidth * 0.6,
                 height: screenWidth * 0.6,
                 child: Lottie.network(
-                  "https://lottie.host/e9aa8268-3e70-4865-a5d0-79a44f310d0d/WIp8LUl9TY.json",
+                  "https://lottie.host/e9aa8268-3e70-4865-a5d0-79a44f310d0d/WIp8LUl9TY.json", // Animación de contraseña
                 ),
               ),
               const SizedBox(height: 20.0),
               Text(
-                'Ingrese su nueva contraseña',
+                'Ingrese su nueva contraseña', // Título
                 style: TextStyle(
                   fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
@@ -102,7 +110,7 @@ class _ConfirmViewState extends State<ConfirmView> {
               ),
               const SizedBox(height: 20.0),
               Text(
-                'Para restablecer su acceso, por favor ingrese su nueva contraseña en los campos a continuación.',
+                'Para restablecer su acceso, por favor ingrese su nueva contraseña en los campos a continuación.', // Descripción
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: textFontSize,
@@ -110,6 +118,7 @@ class _ConfirmViewState extends State<ConfirmView> {
                 ),
               ),
               const SizedBox(height: 20.0),
+              // Campos de contraseña
               MyTextField(
                 context: context,
                 hint: "Contraseña nueva",
@@ -120,6 +129,7 @@ class _ConfirmViewState extends State<ConfirmView> {
                 key: const Key('password'),
               ),
               const SizedBox(height: 20.0),
+              // Campos de confirmación de contraseña
               MyTextField(
                 context: context,
                 hint: "Confirma la contraseña",

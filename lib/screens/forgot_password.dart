@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
@@ -9,19 +8,19 @@ import 'package:habbit_mobil_flutter/data/controlers/forgot_password.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:lottie/lottie.dart';
-
+// Vista de olvido de contraseña
 class ForgotView extends StatefulWidget {
   const ForgotView({super.key});
 
   @override
   State<ForgotView> createState() => _ForgotViewState();
 }
-
+// Estado de la vista de olvido de contraseña
 class _ForgotViewState extends State<ForgotView> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final ForgotPasswordController _forgotPassword = ForgotPasswordController();
-
+  // Método para liberar los recursos
   @override
   void dispose() {
     _emailController.dispose();

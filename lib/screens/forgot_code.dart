@@ -7,7 +7,7 @@ import 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/services.dart';
-
+// Vista de código de verificación
 class CodeView extends StatefulWidget {
   final int idUsuario;
   const CodeView({super.key, required this.idUsuario});
@@ -15,7 +15,7 @@ class CodeView extends StatefulWidget {
   @override
   _CodeViewState createState() => _CodeViewState();
 }
-
+// Estado de la vista de código
 class _CodeViewState extends State<CodeView> {
   final RecoveryController _recoveryController = RecoveryController();
   int _idUsuario = 0;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
-
+// ComboBox personalizado
 class MyComboBox<T> extends StatelessWidget {
   const MyComboBox({
     Key? key,
@@ -21,7 +21,7 @@ class MyComboBox<T> extends StatelessWidget {
   final IconData? icon;
   final FormFieldValidator<T>? validator;
   final Color? iconColor;
-
+  // Colores de los campos de texto
   @override
   Widget build(BuildContext context) {
     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
@@ -33,7 +33,7 @@ class MyComboBox<T> extends StatelessWidget {
 
     // Si no hay valor seleccionado, selecciona el primer ítem de la lista.
     T? selectedValue = value ?? (items.isNotEmpty ? items.first.value : null);
-
+    // Contenedor de ComboBox
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Center(
@@ -51,9 +51,11 @@ class MyComboBox<T> extends StatelessWidget {
               ),
             ],
           ),
+          // ComboBox 
           child: DropdownButtonFormField<T>(
+            // Valor seleccionado
             value: selectedValue,
-            items: items,
+            items: items, // Ítems de la lista
             onChanged: onChanged,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 16),

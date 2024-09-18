@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/header_about.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
-
+// Acerca de la empresa
 class AboutCompany extends StatelessWidget {
   const AboutCompany({Key? key}) : super(key: key);
-
+  // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
+      body: CustomScrollView( // Scroll personalizado
         slivers: <Widget>[
           const HeaderObout(),
           SliverToBoxAdapter(
@@ -17,17 +17,17 @@ class AboutCompany extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildTitle(context, 'Conoce a Habit Inmobiliaria'),
+                  _buildTitle(context, 'Conoce a Habit Inmobiliaria'), // Título
                   const SizedBox(height: 16.0),
-                  _buildTagline(context),
+                  _buildTagline(context),// Lema
                   const SizedBox(height: 24.0),
-                  _buildInfoSection(context),
+                  _buildInfoSection(context),// Sección de información
                   const SizedBox(height: 24.0),
-                  _buildMissionSection(context),
+                  _buildMissionSection(context),// Sección de misión
                   const SizedBox(height: 24.0),
-                  _buildValuesSection(context),
+                  _buildValuesSection(context),// Sección de valores
                   const SizedBox(height: 24.0),
-                  _buildVisionSection(context),
+                  _buildVisionSection(context),// Sección de visión
                 ],
               ),
             ),
@@ -36,7 +36,7 @@ class AboutCompany extends StatelessWidget {
       ),
     );
   }
-
+  // Diseño de titulo
   Widget _buildTitle(BuildContext context, String title) {
     return Center(
       child: Text(
@@ -48,7 +48,7 @@ class AboutCompany extends StatelessWidget {
       ),
     );
   }
-
+  // Diseño de lema
   Widget _buildTagline(BuildContext context) {
     return Center(
       child: Text(
@@ -60,7 +60,7 @@ class AboutCompany extends StatelessWidget {
       ),
     );
   }
-
+  // Diseño de sección de información
   Widget _buildInfoSection(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,7 +70,7 @@ class AboutCompany extends StatelessWidget {
       ],
     );
   }
-
+  // Diseño de información de ubicación
   Widget _buildLocationInfo(BuildContext context, String title, String imagePath) {
     return Row(
       children: [
@@ -93,7 +93,7 @@ class AboutCompany extends StatelessWidget {
       ],
     );
   }
-
+  // Diseño de información de icono
   Widget _buildIconInfo(BuildContext context, IconData icon, String label) {
     return Row(
       children: [
@@ -119,7 +119,7 @@ class AboutCompany extends StatelessWidget {
       ],
     );
   }
-
+  // Diseño de sección de misión
   Widget _buildMissionSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,21 +133,21 @@ class AboutCompany extends StatelessWidget {
       ],
     );
   }
-
+  // Diseño de sección de valores
   Widget _buildValuesSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionTitle(context, 'Nuestros Valores'),
         const SizedBox(height: 8.0),
-        _buildValueItem(context, 'Amor y bondad'),
-        _buildValueItem(context, 'Educación integral'),
-        _buildValueItem(context, 'Optimismo y alegría'),
-        _buildValueItem(context, 'Familia y comunidad'),
+        _buildValueItem(context, 'Transparencia'),
+        _buildValueItem(context, 'Integridad'),
+        _buildValueItem(context, 'Responsabilidad'),
+        _buildValueItem(context, 'Calidad'),
       ],
     );
   }
-
+  // Diseño de sección de visión
   Widget _buildVisionSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class AboutCompany extends StatelessWidget {
       ],
     );
   }
-
+  // Diseño de título de sección
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
@@ -175,7 +175,7 @@ class AboutCompany extends StatelessWidget {
           ),
     );
   }
-
+  // Diseño de item de valor
   Widget _buildValueItem(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),

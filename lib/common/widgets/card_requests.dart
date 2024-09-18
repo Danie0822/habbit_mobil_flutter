@@ -46,8 +46,10 @@ class RequestsCards extends StatelessWidget {
     }
     // Diseño de la cards 
     return Container(
+      // margen de 8 pixeles en la parte inferior
       margin: const EdgeInsets.only(bottom: 8.0),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      // decoración de la cards
       decoration: BoxDecoration(
         color: container,
         borderRadius: BorderRadius.circular(8),
@@ -59,7 +61,8 @@ class RequestsCards extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
         ],
-      ),
+      ), 
+      // fila de icono y texto
       child: Row(
         children: [
           Container(

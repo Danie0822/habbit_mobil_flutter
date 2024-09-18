@@ -16,7 +16,7 @@ class HeaderObout extends StatelessWidget {
       contenedorMensajeLight, 
       contenedorMensajeDark
     );
-
+    // Diseño de la AppBar
     return SliverAppBar(
       systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
         statusBarBrightness: Brightness.dark,

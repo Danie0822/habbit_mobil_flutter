@@ -8,26 +8,28 @@ import 'package:habbit_mobil_flutter/data/controlers/request_controlers.dart';
 import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
-
+// Pantalla de solicitudes
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
 
   @override
   State<RequestsScreen> createState() => _RequestsScreenState();
 }
-
+// Estado de la pantalla de solicitudes
 class _RequestsScreenState extends State<RequestsScreen>
     with SingleTickerProviderStateMixin {
+  // Lista de solicitudes
   List<RequestModel> requestsData = [];
   List<RequestModel> filteredRequests = [];
+  // Variables de estado
   bool isLoading = true;
   String? errorMessage;
   bool isSearchVisible = false;
   String searchQuery = '';
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
-
-  @override
+  // Cargar las solicitudes
+  @override 
   void initState() {
     super.initState();
     _loadRequests();
@@ -43,12 +45,14 @@ class _RequestsScreenState extends State<RequestsScreen>
       curve: Curves.easeInOut,
     ));
   }
-
+  // Método para cargar las solicitudes
   Future<void> _loadRequests() async {
     try {
+      // Cambiar el estado de carga
       setState(() {
         isLoading = true;
       });
+      // Cargar las solicitudes
       final loadedRequests = await RequestService().cargarRequest();
       setState(() {
         requestsData = loadedRequests;
@@ -62,7 +66,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       });
     }
   }
-
+  // Método para mostrar/ocultar la barra de búsqueda
   void _toggleSearch() {
     setState(() {
       isSearchVisible = !isSearchVisible;
@@ -76,7 +80,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       }
     });
   }
-
+  // Método para cambiar la búsqueda
   void _onSearchChanged(String query) {
     setState(() {
       searchQuery = query;
@@ -87,12 +91,12 @@ class _RequestsScreenState extends State<RequestsScreen>
           .toList();
     });
   }
-
+  // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
-
+  
     return Scaffold(
       backgroundColor: colorBackGroundMessage,
       body: Column(
@@ -103,9 +107,10 @@ class _RequestsScreenState extends State<RequestsScreen>
             onSearchToggle: _toggleSearch,
             offsetAnimation: _offsetAnimation,
             onSearchChanged: _onSearchChanged,
-            hintTextt: 'Buscar solicitudes...',
+            hintTextt: 'Buscar solicitudes...', // Texto de ayuda para la búsqueda
             titleHeader: 'Solicitudes',
           ),
+          // Contenedor de la lista de solicitudes
           Expanded(
             child: Container(
               width: double.infinity,
@@ -165,7 +170,7 @@ class _RequestsScreenState extends State<RequestsScreen>
     super.dispose();
   }
 }
-
+// Widget de la lista de solicitudes
 class ListRequest extends StatelessWidget {
   const ListRequest({super.key, required this.requestsData});
 
@@ -236,7 +241,7 @@ class ListRequest extends StatelessWidget {
       },
     );
   }
-
+  // Método para eliminar una solicitud
   void _deleteRequest(int idSolicitud, BuildContext context) {
     RequestService().requestDelete(idSolicitud).then((value) {
       if (value == 1) {

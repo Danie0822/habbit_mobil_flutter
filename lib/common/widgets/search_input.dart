@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
-
+// Entrada de búsqueda
 class SearchInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final String? hintText;
@@ -15,7 +15,7 @@ class SearchInput extends StatelessWidget {
         context, colorTextField, colorTextFieldDark);
     Color iconColor = ThemeUtils.getColorBasedOnBrightness(
         context, iconLightColor, iconDarkColor);
-
+    // Diseño de la entrada de búsqueda
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: TextField(
