@@ -139,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return Container(
           height: MediaQuery.of(context).size.height * 0.5,
           child: Filter(
-            onApplyFilters: (String category, String zone) {
-              _onFilterApplied(category, zone);
+            onApplyFilters: (int category, int zone, double min, double max) {
+              _onFilterApplied(category, zone, min, max);
             },
           ),
         );
@@ -299,13 +299,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _onFilterApplied(String category, String zone) async {
+  Future<void> _onFilterApplied(int category, int zone, double min, double max) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final properties = await PropertiesService().getPropertiesFilters(category, zone);
+      final properties = await PropertiesService().getPropertiesFilters(category, zone, min, max);
 
       List<PropertyCard> newPropertyCards = properties.map((property) {
         return PropertyCard(
