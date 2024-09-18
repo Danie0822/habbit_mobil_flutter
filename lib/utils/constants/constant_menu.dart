@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/screens/agenda_screen.dart';
 import 'package:habbit_mobil_flutter/screens/home_screen.dart';
+import 'package:habbit_mobil_flutter/screens/like_screen.dart';
 import 'package:rive/rive.dart';
 import 'package:habbit_mobil_flutter/screens/home_page.dart';
 import 'package:habbit_mobil_flutter/screens/edit_preferences.dart';
@@ -45,7 +46,7 @@ List<RiveAsset> sideMenu = [
     artboard: 'LIKE/STAR',
     stateMachineName: 'STAR_Interactivity',
     title: 'Likes',
-    screen: HomeScreen(),
+    screen: LikeScreen(),
   ),
   RiveAsset(
     'assets/rive/icons.riv',
