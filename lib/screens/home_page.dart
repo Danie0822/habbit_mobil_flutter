@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/buildFilter.dart';
 import 'package:habbit_mobil_flutter/common/widgets/cards_property.dart';
 import 'package:habbit_mobil_flutter/common/widgets/filters.dart';
-import 'package:habbit_mobil_flutter/common/widgets/text_field_search.dart';
 import 'package:habbit_mobil_flutter/data/controlers/properties.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
@@ -41,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 45),
           _buildSearchBar(),
           _buildFilterOptions(),
           _buildPropertyList(),
@@ -106,44 +106,38 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildPropertyList() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : AnimatedList(
-                key: _listKey,
-                initialItemCount: _propertyCards.length,
-                padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
-                itemBuilder: (context, index, animation) {
-                  return _buildPropertyItem(_propertyCards[index], animation);
-                },
-              ),
-      ),
-    );
-  }
+Widget _buildPropertyList() {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      child: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
+              itemCount: _propertyCards.length,
+              itemBuilder: (context, index) {
+                return _buildPropertyItem(_propertyCards[index]);
+              },
+            ),
+    ),
+  );
+}
 
-  Widget _buildPropertyItem(
-      PropertyCard propertyCard, Animation<double> animation) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: Hero(
-        tag: propertyCard.imageUrl,
-        child: PropertyCard(
-          idPropiedad: propertyCard.idPropiedad,
-          title: propertyCard.title,
-          type: propertyCard.type,
-          direction: propertyCard.direction,
-          price: propertyCard.price,
-          status: propertyCard.status,
-          imageUrl: propertyCard.imageUrl,
-          isFavorites: propertyCard.isFavorites,
-          onFavorite: _toggleFavorite,
-        ),
-      ),
-    );
-  }
+Widget _buildPropertyItem(PropertyCard propertyCard) {
+  return Hero(
+    tag: propertyCard.imageUrl,
+    child: PropertyCard(
+      idPropiedad: propertyCard.idPropiedad,
+      title: propertyCard.title,
+      type: propertyCard.type,
+      direction: propertyCard.direction,
+      price: propertyCard.price,
+      status: propertyCard.status,
+      imageUrl: propertyCard.imageUrl,
+      isFavorites: propertyCard.isFavorites,
+    ),
+  );
+}
 
   void _showBottomSheet() {
     showModalBottomSheet(
@@ -193,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
       PropertyCard removedCard = _propertyCards.removeAt(i);
       _listKey.currentState?.removeItem(
         i,
-        (context, animation) => _buildPropertyItem(removedCard, animation),
+        (context, animation) => _buildPropertyItem(removedCard),
         duration: const Duration(milliseconds: 300),
       );
     }
@@ -219,8 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
           imageUrl: property.imageUrl != null
               ? '${Config.imagen}${property.imageUrl}'
               : '',
-          isFavorites: property.isFavorite ?? false,
-          onFavorite: _toggleFavorite,
+          isFavorites:  false
         );
       }).toList());
 
@@ -299,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
-          onFavorite: _toggleFavorite,
         );
       }).toList());
 
@@ -337,7 +329,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
-          onFavorite: _toggleFavorite,
         );
       }).toList());
 

@@ -93,7 +93,7 @@ class SliderCard extends StatelessWidget {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
-                          context.push(navegation);
+                          context.push(navegation, extra: 1);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
