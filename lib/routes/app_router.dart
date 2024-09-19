@@ -102,7 +102,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final int initialIndex = state.extra as int;
         return _buildPageWithFuturisticTransition(
-            MainScreen(initialIndex: initialIndex), state);
+            MainScreen(initialIndex: initialIndex, reload: true), state);
       },
     ),
     GoRoute(
@@ -163,7 +163,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const ThanksRegister(), state),
     ),
-     GoRoute(
+    GoRoute(
       path: '/likes',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(LikeScreen(), state),
@@ -226,7 +226,7 @@ final GoRouter router = GoRouter(
             BlogDetail(blogsResponse: blogsData), state);
       },
     ),
-      GoRoute(
+    GoRoute(
       path: '/blogMain',
       pageBuilder: (context, state) =>
           _buildPageWithFuturisticTransition(const blogMain(), state),

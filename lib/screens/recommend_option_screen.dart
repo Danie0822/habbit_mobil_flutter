@@ -175,10 +175,12 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         context.push('/slider',
             extra: cardList); // Asegúrate de que cardList no sea null o vacío
       } else {
-      // Si la lista está vacía, muestra un mensaje en un modal
-      _showModal(context, 'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo.');
-        // Manejar si la lista está vacía
-        print('La lista de tarjetas está vacía.');
+      showAlertDialog(
+        'Advertencia',
+        'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.',
+        1,
+        context,
+      );
       }
     }).catchError((error) {
       // Si la lista está vacía, muestra un mensaje en un modal
