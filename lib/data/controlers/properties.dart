@@ -10,7 +10,6 @@ class PropertiesService {
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
-        print(data);
         if (data is List<dynamic>) {
           return PropertiesResponse.fromJsonList(data);
         } else {
@@ -31,7 +30,6 @@ class PropertiesService {
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
-        print(data);
         if (data is List<dynamic>) {
           return PropertiesResponse.fromJsonList(data);
         } else {
