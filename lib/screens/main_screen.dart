@@ -16,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
   bool _isMenuOpen = false; // Variable para controlar la visibilidad del menú
   int _currentIndex = 0; // Variable para almacenar el índice actual
+  bool _isPageLoading = false; // Variable para controlar el estado de carga de la página
 
   // Lista de pantallas con callback para actualizar el estado del menú
   late List<Widget> _screens;
@@ -47,9 +48,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _navigateToPage(int index) {
-    _pageController.jumpToPage(index);
+    if (!_isPageLoading) { // Solo permite navegar si la página no está cargando
+      _pageController.jumpToPage(index);
+      setState(() {
+        _currentIndex = index; // Actualiza el índice actual
+      });
+    }
+  }
+
+  void _onPageChanged(int index) {
     setState(() {
       _currentIndex = index; // Actualiza el índice actual
+    });
+  }
+
+  void _onPageLoading(bool isLoading) {
+    setState(() {
+      _isPageLoading = isLoading; // Actualiza el estado de carga
     });
   }
 
@@ -59,9 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index; // Actualiza el índice actual
-          });
+          _onPageChanged(index);
         },
         children: _screens.map((screen) {
           return PageTransitionSwitcher(

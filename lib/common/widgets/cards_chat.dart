@@ -26,32 +26,28 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Tamaños responsivos basados en el ancho de la pantalla
     double screenWidth = MediaQuery.of(context).size.width;
-    double titleFontSize = screenWidth * 0.05; // Ajuste dinámico para el título
-    double messageFontSize = screenWidth * 0.035; // Ajuste para el mensaje
-    double nameFontSize = screenWidth * 0.04; // Ajuste para el nombre
-    double timeFontSize = screenWidth * 0.03; // Ajuste para la hora
+    double titleFontSize = screenWidth * 0.05;
+    double messageFontSize = screenWidth * 0.035;
+    double nameFontSize = screenWidth * 0.04;
+    double timeFontSize = screenWidth * 0.03;
 
-    // Colores dinámicos basados en el tema
     final Color containerMessage = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
     final Color textName = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
 
-    // Formatear la fecha
     String formattedDate = 'Fecha inválida';
     try {
       if (time.isNotEmpty) {
         DateTime parsedDate = DateTime.parse(time);
         formattedDate =
-            '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
+            '${parsedDate.day.toString().padLeft(2, '0')}/${parsedDate.month.toString().padLeft(2, '0')}/${parsedDate.year}';
       }
     } catch (e) {
       print('Error parsing date: $e');
     }
 
-    // Truncar título y mensaje
     String truncatedTitle =
         title.length > 18 ? '${title.substring(0, 18)}...' : title;
     String truncatedMessage =
@@ -81,6 +77,7 @@ class ChatCard extends StatelessWidget {
             ],
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -94,19 +91,27 @@ class ChatCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          truncatedTitle,
-                          style: TextStyle(
-                            color: textName,
-                            fontSize: titleFontSize,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            truncatedTitle,
+                            style: TextStyle(
+                              color: textName,
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text(
-                          formattedDate,
-                          style: TextStyle(
-                            color: textName,
-                            fontSize: timeFontSize,
+                        SizedBox(
+                          width: screenWidth * 0.3, // Adjust width as needed
+                          child: Text(
+                            formattedDate,
+                            style: TextStyle(
+                              color: textName,
+                              fontSize: timeFontSize,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.right,
                           ),
                         ),
                       ],
@@ -121,6 +126,7 @@ class ChatCard extends StatelessWidget {
                             ? FontWeight.bold
                             : FontWeight.normal,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 5),
                     Row(
@@ -135,6 +141,7 @@ class ChatCard extends StatelessWidget {
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         const SizedBox(width: 5),
