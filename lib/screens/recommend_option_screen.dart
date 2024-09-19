@@ -175,13 +175,37 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         context.push('/slider',
             extra: cardList); // Asegúrate de que cardList no sea null o vacío
       } else {
+      // Si la lista está vacía, muestra un mensaje en un modal
+      _showModal(context, 'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo.');
         // Manejar si la lista está vacía
         print('La lista de tarjetas está vacía.');
       }
     }).catchError((error) {
+      // Si la lista está vacía, muestra un mensaje en un modal
+      _showModal(context, 'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.');
       print('Error cargando las tarjetas: $error');
     });
   }
+
+  void _showModal(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Mensaje'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Aceptar'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Widget buildToggleButton(
       String label, int value, int groupValue, Function(int) onChanged) {
