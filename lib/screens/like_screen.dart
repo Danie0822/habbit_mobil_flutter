@@ -12,12 +12,13 @@ class LikeScreen extends StatefulWidget {
 }
 
 class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateMixin {
-  bool _isSearchVisible = false; // Indicador de visibilidad de la barra de búsqueda
-  List<PropertyCard> _favoritePropertyCards = []; // Lista de tarjetas de propiedades favoritas
+  bool _isSearchVisible = false;
+  List<PropertyCard> _favoritePropertyCards = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  bool _isLoading = false; // Indicador de estado de carga
-  late AnimationController _controller; 
+  bool _isLoading = false;
+  late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -27,13 +28,13 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
       vsync: this,
     );
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -1), 
-      end: const Offset(0, 0), 
+      begin: const Offset(0, -1),
+      end: const Offset(0, 0),
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeInOut, 
+      curve: Curves.easeInOut,
     ));
-    _loadFavoriteProperties(); // Cargar propiedades favoritas al iniciar
+    _loadFavoriteProperties();
   }
 
   @override
@@ -42,19 +43,74 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  Future<void> _loadFavoriteProperties() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final properties = await PropertiesService().getPropertiesFavorites();
+      setState(() {
+        _favoritePropertyCards = properties.map((property) => PropertyCard(
+          idPropiedad: property.idPropiedad ?? 0,
+          title: property.title ?? 'Propiedad no encontrada',
+          type: property.type ?? 'Error de datos',
+          status: property.status ?? 'Error de datos',
+          direction: property.direction ?? 'Error de datos',
+          price: property.price ?? 0.0,
+          imageUrl: property.imageUrl != null
+              ? '${Config.imagen}${property.imageUrl}'
+              : '',
+          isFavorites: true,
+        )).toList();
+      });
+      for (int i = 0; i < _favoritePropertyCards.length; i++) {
+        _listKey.currentState?.insertItem(i);
+      }
+    } catch (e) {
+      print('Error al cargar propiedades favoritas: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    await _loadFavoriteProperties();
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearchVisible = !_isSearchVisible;
+      if (_isSearchVisible) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+        _searchQuery = '';
+      }
+    });
+  }
+
+  void _filterProperties(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
 
     return Scaffold(
-      backgroundColor: colorBackGroundMessage, 
+      backgroundColor: colorBackGroundMessage,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
             const SizedBox(height: 20.0),
+            _buildHeader(),
+            const SizedBox(height: 10.0),
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -73,7 +129,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
                   child: Column(
                     children: [
                       const SizedBox(height: 20.0),
-                      _buildPropertyList(), 
+                      _buildPropertyList(),
                     ],
                   ),
                 ),
@@ -124,7 +180,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
           if (_isSearchVisible)
             SlideTransition(
               position: _offsetAnimation,
-              child: const SearchInput(),
+              child: SearchInput(onChanged: _filterProperties, hintText: 'Buscador por medio de título propiedades...'),
             ),
         ],
       ),
@@ -137,16 +193,27 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : AnimatedList(
-                key: _listKey,
-                initialItemCount: _favoritePropertyCards.length,
-                padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
-                itemBuilder: (context, index, animation) {
-                  return _buildPropertyItem(_favoritePropertyCards[index], animation);
-                },
+            : RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: AnimatedList(
+                  key: _listKey,
+                  initialItemCount: _favoritePropertyCards.length,
+                  padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
+                  itemBuilder: (context, index, animation) {
+                    return _buildFilteredItem(index, animation);
+                  },
+                ),
               ),
       ),
     );
+  }
+
+  Widget _buildFilteredItem(int index, Animation<double> animation) {
+    if (_searchQuery.isEmpty || _favoritePropertyCards[index].title.toLowerCase().contains(_searchQuery)) {
+      return _buildPropertyItem(_favoritePropertyCards[index], animation);
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildPropertyItem(PropertyCard propertyCard, Animation<double> animation) {
@@ -166,79 +233,5 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
         ),
       ),
     );
-  }
-
-  Future<void> _toggleFavorite(int idPropiedad) async {
-    try {
-      // Llama al método del controlador para agregar/quitar de favoritos
-      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
-
-      if (response == 200) {
-        setState(() {
-          for (var i = 0; i < _favoritePropertyCards.length; i++) {
-            if (_favoritePropertyCards[i].idPropiedad == idPropiedad) {
-              _favoritePropertyCards[i] = _favoritePropertyCards[i].copyWith(
-                isFavorites: !_favoritePropertyCards[i].isFavorites,
-              );
-              break;
-            }
-          }
-        });
-      }
-    } catch (e) {
-      print('Error gestionando favoritos: $e');
-    }
-  }
-
-  Future<void> _loadFavoriteProperties() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Llamar al servicio para obtener propiedades favoritas
-      final properties = await PropertiesService().getPropertiesFavorites();
-
-      List<PropertyCard> newPropertyCards = properties.map((property) {
-        return PropertyCard(
-          idPropiedad: property.idPropiedad ?? 0,
-          title: property.title ?? 'Propiedad no encontrada',
-          type: property.type ?? 'Error de datos',
-          status: property.status ?? 'Error de datos',
-          direction: property.direction ?? 'Error de datos',
-          price: property.price ?? 0.0,
-          imageUrl: property.imageUrl != null
-              ? '${Config.imagen}${property.imageUrl}'
-              : '',
-          isFavorites: true,
-        );
-      }).toList();
-
-      setState(() {
-        _favoritePropertyCards.clear();
-        _favoritePropertyCards.addAll(newPropertyCards);
-
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
-    } catch (e) {
-      print('Error cargando propiedades favoritas: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _toggleSearch() {
-    setState(() {
-      _isSearchVisible = !_isSearchVisible;
-      if (_isSearchVisible) {
-        _controller.forward(); 
-      } else {
-        _controller.reverse(); 
-      }
-    });
   }
 }
