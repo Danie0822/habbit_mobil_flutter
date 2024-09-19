@@ -16,15 +16,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String selectedFilter = 'Tus preferencias';
   final List<PropertyCard> _propertyCards = [];
+  final List<PropertyCard> _allProperties = []; // Lista completa de propiedades
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool _isLoading = false;
-
-  
+  late TextEditingController _searchController; // Controlador de búsqueda
 
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
+    _searchController.addListener(_filterProperties);
     _loadPropertiesPreferences();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 80),
+          _buildSearchBar(),
           _buildFilterOptions(),
           _buildPropertyList(),
         ],
@@ -41,7 +49,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
- 
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 10),
+      child: TextField(
+        controller: _searchController,
+        decoration: InputDecoration(
+          hintText: 'Buscar por título...',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildFilterOptions() {
     return Padding(
@@ -118,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
           status: propertyCard.status,
           imageUrl: propertyCard.imageUrl,
           isFavorites: propertyCard.isFavorites,
+          onFavorite: _toggleFavorite,
         ),
       ),
     );
@@ -177,60 +199,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
- Future<void> _loadPropertiesPreferences() async {
-  setState(() {
-    _isLoading = true;
-  });
-
-  try {
-    final properties = await PropertiesService().getProperties();
-
-    List<PropertyCard> newPropertyCards = properties.map((property) {
-      return PropertyCard(
-        idPropiedad: property.idPropiedad ?? 0,
-        title: property.title ?? 'Propiedad no encontrada',
-        type: property.type ?? 'Error de datos',
-        status: property.status ?? 'Error de datos',
-        direction: property.direction ?? 'Error de datos',
-        price: property.price ?? 0.0,
-        imageUrl: property.imageUrl != null
-            ? '${Config.imagen}${property.imageUrl}'
-            : '',
-        isFavorites: false,
-
-      );
-    }).toList();
-
-    if (mounted) {
-      setState(() {
-        _propertyCards.clear();
-        _propertyCards.addAll(newPropertyCards);
-
-        for (int i = 0; i < newPropertyCards.length; i++) {
-          _listKey.currentState?.insertItem(i);
-        }
-      });
-    }
-  } catch (e) {
-    print('Error cargando propiedades: $e');
-  } finally {
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-}
-
-  Future<void> _loadPropertiesIn() async {
+  Future<void> _loadPropertiesPreferences() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final properties = await PropertiesService().getPropertiesInm();
+      final properties = await PropertiesService().getProperties();
 
-      List<PropertyCard> newPropertyCards = properties.map((property) {
+      _allProperties.clear();
+      _allProperties.addAll(properties.map((property) {
         return PropertyCard(
           idPropiedad: property.idPropiedad ?? 0,
           title: property.title ?? 'Propiedad no encontrada',
@@ -241,20 +219,92 @@ class _HomeScreenState extends State<HomeScreen> {
           imageUrl: property.imageUrl != null
               ? '${Config.imagen}${property.imageUrl}'
               : '',
-          isFavorites: false
+          isFavorites: property.isFavorite ?? false,
+          onFavorite: _toggleFavorite,
         );
-      }).toList();
+      }).toList());
 
+      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
+
+    } catch (e) {
+      print('Error cargando propiedades: $e');
+    } finally {
       if (mounted) {
         setState(() {
-          _propertyCards.clear();
-          _propertyCards.addAll(newPropertyCards);
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
-          for (int i = 0; i < newPropertyCards.length; i++) {
-            _listKey.currentState?.insertItem(i);
+  void _filterProperties() {
+    final query = _searchController.text.toLowerCase();
+    final filteredProperties = _allProperties.where((property) {
+      return property.title.toLowerCase().contains(query);
+    }).toList();
+
+    _clearPropertyList();
+
+    if (mounted) {
+      setState(() {
+        _propertyCards.clear();
+        _propertyCards.addAll(filteredProperties);
+
+        for (int i = 0; i < filteredProperties.length; i++) {
+          _listKey.currentState?.insertItem(i);
+        }
+      });
+    }
+  }
+
+  Future<void> _toggleFavorite(int idPropiedad) async {
+    try {
+      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
+
+      if (response == 200) {
+        setState(() {
+          for (var i = 0; i < _propertyCards.length; i++) {
+            if (_propertyCards[i].idPropiedad == idPropiedad) {
+              _propertyCards[i] = _propertyCards[i].copyWith(
+                isFavorites: !_propertyCards[i].isFavorites,
+              );
+              break;
+            }
           }
         });
       }
+    } catch (e) {
+      print('Error gestionando favoritos: $e');
+    }
+  }
+
+  Future<void> _loadPropertiesIn() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final properties = await PropertiesService().getPropertiesInm();
+
+      _allProperties.clear();
+      _allProperties.addAll(properties.map((property) {
+        return PropertyCard(
+          idPropiedad: property.idPropiedad ?? 0,
+          title: property.title ?? 'Propiedad no encontrada',
+          type: property.type ?? 'Error de datos',
+          status: property.status ?? 'Error de datos',
+          direction: property.direction ?? 'Error de datos',
+          price: property.price ?? 0.0,
+          imageUrl: property.imageUrl != null
+              ? '${Config.imagen}${property.imageUrl}'
+              : '',
+          isFavorites: false,
+          onFavorite: _toggleFavorite,
+        );
+      }).toList());
+
+      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
+
     } catch (e) {
       print('Error cargando inmuebles: $e');
     } finally {
@@ -274,63 +324,8 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final properties = await PropertiesService().getPropertiesProyects();
 
-      List<PropertyCard> newPropertyCards = properties.map((property) {
-        return PropertyCard(
-          idPropiedad: property.idPropiedad ?? 0,
-          title: property.title ?? 'Propiedad no encontrada',
-          type: property.type ?? 'Error de datos',
-          status: property.status ?? 'Error de datos',
-          direction: property.direction ?? 'Error de datos',
-          price: property.price ?? 0.0,
-          imageUrl: property.imageUrl != null
-              ? '${Config.imagen}${property.imageUrl}'
-              : '',
-          isFavorites: false
-        );
-      }).toList();
-
-      if (mounted) {
-        setState(() {
-          _propertyCards.clear();
-          _propertyCards.addAll(newPropertyCards);
-
-          for (int i = 0; i < newPropertyCards.length; i++) {
-            _listKey.currentState?.insertItem(i);
-          }
-        });
-      }
-    } catch (e) {
-      print('Error cargando proyectos: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  void _onFilterApplied(
-      int category, int zone, double minPrice, double maxPrice) {
-    setState(() {
-      selectedFilter = '';
-    });
-
-    _clearPropertyList();
-    _loadPropertiesFiltered(category, zone, minPrice, maxPrice);
-  }
-
-  Future<void> _loadPropertiesFiltered(
-      int category, int zone, double minPrice, double maxPrice) async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final properties = await PropertiesService().getPropertiesFilters(
-          category, zone, minPrice, maxPrice);
-
-      List<PropertyCard> newPropertyCards = properties.map((property) {
+      _allProperties.clear();
+      _allProperties.addAll(properties.map((property) {
         return PropertyCard(
           idPropiedad: property.idPropiedad ?? 0,
           title: property.title ?? 'Propiedad no encontrada',
@@ -342,21 +337,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
+          onFavorite: _toggleFavorite,
         );
-      }).toList();
+      }).toList());
 
-      if (mounted) {
-        setState(() {
-          _propertyCards.clear();
-          _propertyCards.addAll(newPropertyCards);
+      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
 
-          for (int i = 0; i < newPropertyCards.length; i++) {
-            _listKey.currentState?.insertItem(i);
-          }
-        });
-      }
     } catch (e) {
-      print('Error aplicando filtros: $e');
+      print('Error cargando proyectos: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -364,5 +352,12 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     }
+  }
+
+  void _onFilterApplied(int category, int zone, double min, double max) {
+    setState(() {
+      // Implementa la lógica de filtrado según la categoría, zona, y rangos
+      // Actualiza la lista de propiedades y refresca la vista
+    });
   }
 }
