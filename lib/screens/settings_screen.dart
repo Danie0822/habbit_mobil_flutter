@@ -13,9 +13,9 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   int _currentPage = 0;
-  double _textSize = 20.0;
   final CarouselSliderController _carouselController =
       CarouselSliderController();
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         _currentPage = isDarkMode
             ? 0
-            : 1; // 0 para la configuración de tema, 1 para el tamaño de texto
+            : 1; // 0 para la configuración de tema, 1 para la página no usada
       });
     });
   }
@@ -34,8 +34,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
-  final themeProvider = Provider.of<ThemeProvider>(context);
-  bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -53,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           return Column(
             children: [
               Expanded(
-                // CarouselSlider para cambiar entre las páginas de configuración de tema y tamaño de texto
+                // CarouselSlider para cambiar entre la configuración de tema
                 child: CarouselSlider(
                   carouselController: _carouselController,
                   options: CarouselOptions(
@@ -69,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   items: [
                     _buildThemeSettingsPage(themeProvider, isDarkMode),
-                    _buildTextSizeSettingsPage(),
+                    // La página de tamaño de texto se ha eliminado
                   ],
                 ),
               ),
@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Páginas de configuración de tema y tamaño de texto
+  // Página de configuración de tema
   Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
     return Container(
       padding: const EdgeInsets.all(10.0),
@@ -116,79 +116,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 30),
           _buildToggleButtons(themeProvider),
-          const Spacer(flex: 2),
-        ],
-      ),
-    );
-  }
-
-  // Página de configuración de tamaño de texto
-  Widget _buildTextSizeSettingsPage() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(flex: 1),
-          Visibility(
-            visible: _currentPage == 1,
-            child: const Text(
-              'Tamaño del texto',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Visibility(
-            visible: _currentPage == 1,
-            child: const Text(
-              'Ajusta a tu preferencia el texto de la aplicación',
-              style: TextStyle(fontWeight: FontWeight.w100, fontSize: 28),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const Spacer(flex: 1),
-          Visibility(
-            visible: _currentPage == 1,
-            child: Row(
-              children: [
-                const Text(
-                  'A',
-                  style: TextStyle(fontSize: 15),
-                ),
-                Expanded(
-                  child: SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      activeTrackColor: Colors.black,
-                      inactiveTrackColor: Colors.black,
-                      trackHeight: 2.0,
-                      thumbColor: Colors.black,
-                      overlayColor: Colors.black.withOpacity(0.2),
-                      thumbShape:
-                          const RoundSliderThumbShape(enabledThumbRadius: 10.0),
-                      overlayShape:
-                          const RoundSliderOverlayShape(overlayRadius: 20.0),
-                    ),
-                    child: Slider(
-                      value: _textSize,
-                      min: 10,
-                      max: 30,
-                      divisions: 4,
-                      label: _textSize.round().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _textSize = value;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                const Text(
-                  'A',
-                  style: TextStyle(fontSize: 25),
-                ),
-              ],
-            ),
-          ),
           const Spacer(flex: 2),
         ],
       ),
@@ -254,13 +181,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Indicador de página inferior para cambiar entre las páginas de configuración de tema y tamaño de texto
+  // Indicador de página inferior para cambiar entre las páginas de configuración
   Widget _buildBottomSlider() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(2, (index) {
+        children: List.generate(1, (index) { // Solo 1 página ahora
           return GestureDetector(
             onTap: () {
               _carouselController.animateToPage(index);

@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
@@ -113,23 +111,23 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   }
 
   void toggleFavorite() async {
-   try{
-     // Llama al método del controlador para agregar/quitar de favoritos
-      final response = await PropertiesService().addPropertyToFavorites(widget.idPropiedad);
+    try {
+      // Llama al método del controlador para agregar/quitar de favoritos
+      final response =
+          await PropertiesService().addPropertyToFavorites(widget.idPropiedad);
       if (response) {
         setState(() {
           isFavorite = isFavorite == 0 ? 1 : 0;
         });
-      }
-      else {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Ocurrió un error, intente más tarde.'),
             backgroundColor: Colors.red,
           ),
         );
-      }}
-    catch (e) {
+      }
+    } catch (e) {
       print('Error al agregar/quitar de favoritos: $e');
     }
   }
@@ -158,6 +156,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       Color colorTexto, double horizontalPadding, double verticalPadding) {
     final property = _propertyDetails![
         0]; // Asume que siempre habrá al menos un detalle de propiedad
+String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No disponible');
 
     // Define el color basado en el tema (brillo de la pantalla)
     final Color colorTextoTitulo =
@@ -315,7 +314,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         ),
                         SizedBox(width: size.width * 0.01),
                         Text(
-                          property.direction ?? 'Sin dirección',
+                         truncatedDirection,
                           style: const TextStyle(
                             color: Color.fromARGB(255, 236, 227, 227),
                             fontSize: 16,
@@ -461,6 +460,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
               ),
             ),
     );
+  }
+
+  String cleanAndTruncateDirection(String direction) {
+    String cleanedDirection =
+        direction.length > 10 ? direction.substring(10) : direction;
+    return cleanedDirection.length > 40
+        ? '${cleanedDirection.substring(0, 40)}...'
+        : cleanedDirection;
   }
 
   Widget _buildPhoto(BuildContext context, String url) {
