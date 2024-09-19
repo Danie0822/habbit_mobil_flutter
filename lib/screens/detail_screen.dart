@@ -428,7 +428,8 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                               scrollDirection: Axis.horizontal,
                               itemCount: _propertyImages!.length,
                               itemBuilder: (context, index) {
-                                final image = _propertyImages![index];
+                                return null;
+                              
                               },
                             ),
                     ),

@@ -233,7 +233,6 @@ class SliderScreenState extends State<SliderScreen> {
 
   void showReloadDialog(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
 
     showDialog(
       context: context,
