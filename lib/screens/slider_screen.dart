@@ -50,7 +50,7 @@ class SliderScreenState extends State<SliderScreen> {
       return Scaffold(
         body: Center(
           child: Text('No se encontraron datos de tarjetas.',
-              style: TextStyle(color: textColorNegro)),
+              style: TextStyle(color: textColorNegro, fontSize: screenWidth * 0.05)),
         ),
       );
     }
@@ -63,11 +63,14 @@ class SliderScreenState extends State<SliderScreen> {
           children: [
             // Flecha y título
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.04,
+                vertical: screenHeight * 0.02,
+              ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back, color: textoTitle, size: 32),
+                    icon: Icon(Icons.arrow_back, color: textoTitle, size: screenWidth * 0.08),
                     onPressed: () {
                       GoRouter.of(context).pop();
                     },
@@ -79,7 +82,7 @@ class SliderScreenState extends State<SliderScreen> {
                       child: Text(
                         'Nuestras recomendaciones',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: screenWidth * 0.07, // Escalado para mantener proporción
                           fontWeight: FontWeight.bold,
                           color: textoTitle,
                         ),
@@ -108,8 +111,8 @@ class SliderScreenState extends State<SliderScreen> {
                   return true;
                 },
                 numberOfCardsDisplayed: 3,
-                backCardOffset: const Offset(40, 40),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                backCardOffset: Offset(screenWidth * 0.1, screenHeight * 0.05), // Responsivo
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                 cardBuilder: (context, index, horizontalThresholdPercentage,
                         verticalThresholdPercentage) =>
                     buildCard(cards[index], context),
@@ -118,11 +121,14 @@ class SliderScreenState extends State<SliderScreen> {
 
             // Descripción al final
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.04,
+                vertical: screenHeight * 0.02,
+              ),
               child: Text(
                 'Desliza para ver nuestras recomendaciones. Toca la tarjeta para ver más detalles.',
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: screenWidth * 0.04, // Escalado
                   color: Colors.grey[700],
                   fontWeight: FontWeight.bold,
                 ),
@@ -145,6 +151,10 @@ class SliderScreenState extends State<SliderScreen> {
     final Color texto =
         ThemeUtils.getColorBasedOnBrightness(context, whiteColor, whiteColor);
 
+    // Obtener el tamaño de la pantalla para responsividad
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () {
         context.push('/detalle', extra: {
@@ -152,12 +162,12 @@ class SliderScreenState extends State<SliderScreen> {
         });
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(screenWidth * 0.02),
         child: Card(
           color: primaryBackground,
           elevation: 8.0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(screenWidth * 0.04),
           ),
           child: Column(
             children: [
@@ -166,7 +176,7 @@ class SliderScreenState extends State<SliderScreen> {
                 flex: 3, // 75% del espacio
                 child: ClipRRect(
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(16.0)),
+                      BorderRadius.vertical(top: Radius.circular(screenWidth * 0.04)),
                   child: Image.network(
                     '${Config.imagen}${card.imageUrl}',
                     width: double.infinity,
@@ -175,39 +185,42 @@ class SliderScreenState extends State<SliderScreen> {
                 ),
               ),
               // La información de la propiedad ocupando el 25% del espacio restante
-              Expanded(
-                flex: 1, // 25% del espacio
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: boxStyle,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(16.0),
-                      bottomRight: Radius.circular(16.0),
+              SingleChildScrollView(
+                child: Expanded(
+                  flex: 1, // 25% del espacio
+                  child: Container(
+                    padding: EdgeInsets.all(screenWidth * 0.04),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: boxStyle,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(screenWidth * 0.04),
+                        bottomRight: Radius.circular(screenWidth * 0.04),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        card.propertyTitle ?? '',
-                        style: TextStyle(
-                            fontSize: 22.0, // Ajustado para mantener proporción
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          card.propertyTitle ?? '',
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.06, // Ajustado para mantener proporción
                             fontWeight: FontWeight.bold,
-                            color: texto),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        '${card.propertyType} - ${card.propertyState}',
-                        style: TextStyle(fontSize: 18.0, color: texto),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        '${card.distanceKm?.toStringAsFixed(2)} km',
-                        style: TextStyle(fontSize: 16.0, color: texto),
-                      ),
-                    ],
+                            color: texto,
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.01),
+                        Text(
+                          '${card.propertyType} - ${card.propertyState}',
+                          style: TextStyle(fontSize: screenWidth * 0.045, color: texto),
+                        ),
+                        SizedBox(height: screenHeight * 0.01),
+                        Text(
+                          '${card.distanceKm?.toStringAsFixed(2)} km',
+                          style: TextStyle(fontSize: screenWidth * 0.04, color: texto),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -219,22 +232,31 @@ class SliderScreenState extends State<SliderScreen> {
   }
 
   void showReloadDialog(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Recargar tarjetas"),
-          content: Text("¿Deseas recargar las tarjetas?"),
+          title: Text(
+            "Recargar tarjetas",
+            style: TextStyle(fontSize: screenWidth * 0.05),
+          ),
+          content: Text(
+            "¿Deseas recargar las tarjetas?",
+            style: TextStyle(fontSize: screenWidth * 0.045),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancelar"),
+              child: Text("Cancelar", style: TextStyle(fontSize: screenWidth * 0.045)),
               onPressed: () {
                 Navigator.of(context).pop();
                 context.push('/recommend_option');
               },
             ),
             TextButton(
-              child: Text("Recargar"),
+              child: Text("Recargar", style: TextStyle(fontSize: screenWidth * 0.045)),
               onPressed: () {
                 setState(() {
                   cards = List.from(originalCards); // Restablece las tarjetas

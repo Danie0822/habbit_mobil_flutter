@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSearchBar(),
+          const SizedBox(height: 80),
           _buildFilterOptions(),
           _buildPropertyList(),
         ],
@@ -41,12 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 10),
-      child: TextFieldSearch(),
-    );
-  }
+ 
 
   Widget _buildFilterOptions() {
     return Padding(
