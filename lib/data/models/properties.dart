@@ -14,7 +14,7 @@ class PropertiesResponse {
   final int? parkings;
   final String? imageUrl;
   final String? admin;
-  final bool isFavorite; // Campo agregado para isFavorite
+  final int isFavorite; // Campo agregado para isFavorite
 
   PropertiesResponse({
     required this.idPropiedad,
@@ -32,7 +32,7 @@ class PropertiesResponse {
     this.parkings,
     this.imageUrl,
     this.admin,
-    this.isFavorite = false, // Inicializamos isFavorite como false por defecto
+    this.isFavorite = 0, // Inicializamos isFavorite como false por defecto
   });
 
   factory PropertiesResponse.fromJson(Map<String, dynamic> json) {
@@ -54,7 +54,7 @@ class PropertiesResponse {
       parkings: json['estacionamientos_inmobiliario']  ?? 0,
       imageUrl: json['Imagen'] as String?,
       admin: json['nombre_admin'] as String?,
-      isFavorite: json['isFavorite'] as bool? ?? false, // Obtener isFavorite del JSON
+      isFavorite: json['isFavorite'] as int? ?? 0, // Obtener isFavorite del JSON
     );
   }
   

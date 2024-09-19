@@ -1,4 +1,5 @@
 import 'package:habbit_mobil_flutter/data/models/properties.dart';
+import 'package:habbit_mobil_flutter/data/models/send_chat.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 
@@ -130,7 +131,7 @@ class PropertiesService {
     }
   }
 
-  Future<int> addPropertyToFavorites(int idPropiedad) async {
+  Future<bool> addPropertyToFavorites(int idPropiedad) async {
     try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
       final idCliente = await StorageService.getClientId();
@@ -151,17 +152,14 @@ class PropertiesService {
         'POST', // Cambia a POST
         formData, // Envía el cuerpo de la solicitud
       );
-
-      // Verifica que la respuesta tenga la estructura esperada
-      final innerData = response['data'];
-      if (innerData is Map<String, dynamic>) {
-        final status = innerData['status'];
-        return status;
+      // Convertir la respuesta en el modelo
+      final loginResponse = SendChatResponse.fromJson(response);
+      if (loginResponse.success) {
+        return true;
       } else {
-        throw Exception('Unexpected response structure');
+        return false;
       }
     } catch (error) {
-      print('Error adding property to favorites: $error');
       throw Exception('Error adding property to favorites: $error');
     }
   }

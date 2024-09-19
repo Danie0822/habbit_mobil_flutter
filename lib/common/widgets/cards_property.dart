@@ -10,7 +10,6 @@ class PropertyCard extends StatefulWidget {
   final String status;
   final String direction;
   final String imageUrl;
-  final Function(int) onFavorite; // Cambié el tipo de función para aceptar un entero
 
   // Método copyWith que permite crear una copia del PropertyCard y modificar valores específicos
   PropertyCard copyWith({
@@ -22,7 +21,6 @@ class PropertyCard extends StatefulWidget {
     String? status,
     String? direction,
     String? imageUrl,
-    Function(int)? onFavorite,
   }) {
     return PropertyCard(
       idPropiedad: idPropiedad ?? this.idPropiedad,
@@ -33,7 +31,6 @@ class PropertyCard extends StatefulWidget {
       status: status ?? this.status,
       direction: direction ?? this.direction,
       imageUrl: imageUrl ?? this.imageUrl,
-      onFavorite: onFavorite ?? this.onFavorite,
     );
   }
 
@@ -47,7 +44,6 @@ class PropertyCard extends StatefulWidget {
     required this.status,
     required this.direction,
     required this.imageUrl,
-    required this.onFavorite,
   }) : super(key: key);
 
   @override
@@ -62,15 +58,6 @@ class _PropertyCardState extends State<PropertyCard> {
     super.initState();
     // Inicializamos el estado de favorito con el valor inicial del widget
     isFavorite = widget.isFavorites;
-  }
-
-  // Esta función invierte el estado de favorito localmente y llama al método del padre
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-    });
-    // Llamamos a la función proporcionada por el widget padre
-    widget.onFavorite(widget.idPropiedad);
   }
 
   @override
@@ -156,22 +143,7 @@ class _PropertyCardState extends State<PropertyCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: toggleFavorite, // Al hacer clic, cambia el favorito
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: isFavorite ? Colors.white : Colors.transparent,
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.redAccent : Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ),
+                      
                     ],
                   ),
                   const SizedBox(height: 8),

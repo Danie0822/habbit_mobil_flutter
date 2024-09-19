@@ -33,31 +33,38 @@ class _RatingModalState extends State<RatingModal> {
 void _updateInfo() async {
   try {
     final result = await _updateController.ratingSend(widget.idSolicitud, _userRating);
+    if (!mounted) return; // Verifica si el widget sigue montado
     if (result == 1) {
       showAlertDialog(
-          'Éxito', 'Se ha enviando la operación exitosamente', 3, context,
-          );
+        'Éxito', 'Se ha enviando la operación exitosamente', 3, context,
+      );
     } else if (result == 2) {
       showAlertDialog(
-          'Error',
-          'No se puede agregar la volariocion, ya que ya se ha realizado una valoracion',
-          2,
-          context);
+        'Error',
+        'No se puede agregar la valoración, ya que ya se ha realizado una valoración',
+        2,
+        context,
+      );
     } else {
       showAlertDialog(
-          'Error',
-          'Ocurrió un error al enviar la solicitud. Por favor, intenta de nuevo.',
-          2,
-          context);
+        'Error',
+        'Ocurrió un error al enviar la solicitud. Por favor, intenta de nuevo.',
+        2,
+        context,
+      );
     }
   } catch (e) {
-    showAlertDialog(
+    if (mounted) {
+      showAlertDialog(
         'Error',
         'Ocurrió un error inesperado: $e',
         2,
-        context);
+        context,
+      );
+    }
   }
 }
+
 
 
 
@@ -113,9 +120,9 @@ void _updateInfo() async {
                         _errorMessage = 'Por favor selecciona al menos una estrella';
                       });
                     } else {
-                      
+                       context.pop(); // Cerrar el modal y guardar la valoración
                       _updateInfo();
-                      context.pop(); // Cerrar el modal y guardar la valoración
+                     
                      
                     }
                   },

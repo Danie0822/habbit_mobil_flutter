@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/data/controlers/categorys.dart'; // Controlador para categorías
-import 'package:habbit_mobil_flutter/data/controlers/prices.dart';
+import 'package:habbit_mobil_flutter/data/controlers/prices.dart'; // Controlador para precios
 import 'package:habbit_mobil_flutter/data/controlers/zones.dart'; // Controlador para zonas
 import 'package:habbit_mobil_flutter/data/models/category.dart'; // Modelo de categorías
-import 'package:habbit_mobil_flutter/data/models/prices.dart';
-import 'package:habbit_mobil_flutter/data/models/zone.dart';
-import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; // Modelo de zonas
+import 'package:habbit_mobil_flutter/data/models/prices.dart'; // Modelo de precios
+import 'package:habbit_mobil_flutter/data/models/zone.dart'; // Modelo de zonas
+import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; // Constantes de colores
 
 class Filter extends StatefulWidget {
-  final void Function(int category, int zone, double min, double max)? onApplyFilters;
+  final void Function(int category, int zone, double min, double max)?
+      onApplyFilters;
 
   const Filter({Key? key, this.onApplyFilters}) : super(key: key);
 
@@ -28,7 +29,7 @@ class _FilterState extends State<Filter> {
   List<Zone> zones = [];
   bool isLoading = true; // Estado de carga
 
-  // Cargar categorías y zonas de la API
+  // Cargar categorías, zonas y precios de la API
   @override
   void initState() {
     super.initState();
@@ -37,21 +38,16 @@ class _FilterState extends State<Filter> {
 
   Future<void> _loadFiltersData() async {
     try {
-      // Llama a los controladores para cargar las categorías y zonas.
+      // Llama a los controladores para cargar las categorías, zonas y precios.
       List<Category> fetchedCategories =
           await CategorysService().getCategories();
       List<Zone> fetchedZones = await ZonesSerivce().getZones();
-      // Llama al controlador de precios para cargar el rango de precios.
       final PrecioRange range = await DataPrices().fetchPrecioRange();
-      minPrice = range.minimo;
-      maxPrice = range.maximo;
 
-      // Asegurarse de que el rango seleccionado esté dentro de los valores válidos.
       setState(() {
-        selectedRange = RangeValues(
-          range.minimo.toDouble(),
-          range.maximo.toDouble(),
-        );
+        minPrice = range.minimo.toDouble();
+        maxPrice = range.maximo.toDouble();
+        selectedRange = RangeValues(minPrice, maxPrice);
         categories = fetchedCategories;
         zones = fetchedZones;
         isLoading = false; // Cambiar el estado de carga
@@ -76,14 +72,10 @@ class _FilterState extends State<Filter> {
         margin: const EdgeInsets.only(right: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: selected
-              ? Theme.of(context).primaryColor
-              : Colors.transparent, // Fondo si está seleccionado
+          color: selected ? Theme.of(context).primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: selected
-                ? Theme.of(context).primaryColor
-                : Colors.grey, // Cambiar color del borde
+            color: selected ? Theme.of(context).primaryColor : Colors.grey,
             width: 1,
           ),
         ),
@@ -91,8 +83,7 @@ class _FilterState extends State<Filter> {
           child: Text(
             category.name,
             style: TextStyle(
-              color:
-                  selected ? Colors.white : null, // Cambiar el color del texto
+              color: selected ? Colors.white : null,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -115,14 +106,10 @@ class _FilterState extends State<Filter> {
         margin: const EdgeInsets.only(right: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: selected
-              ? Theme.of(context).primaryColor
-              : Colors.transparent, // Fondo si está seleccionado
+          color: selected ? Theme.of(context).primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: selected
-                ? Theme.of(context).primaryColor
-                : Colors.grey, // Cambiar color del borde
+            color: selected ? Theme.of(context).primaryColor : Colors.grey,
             width: 1,
           ),
         ),
@@ -130,8 +117,7 @@ class _FilterState extends State<Filter> {
           child: Text(
             zone.name,
             style: TextStyle(
-              color:
-                  selected ? Colors.white : null, // Cambiar el color del texto
+              color: selected ? Colors.white : null,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -141,17 +127,17 @@ class _FilterState extends State<Filter> {
     );
   }
 
-  // Aplica los filtros seleccionados
   void _applyFilters() {
     if (widget.onApplyFilters != null) {
-      widget.onApplyFilters!(selectedCategory, selectedZone, selectedRange.start, selectedRange.end);
+      widget.onApplyFilters!(selectedCategory, selectedZone,
+          selectedRange.start, selectedRange.end);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(child: CircularProgressIndicator()) // Indicador de carga
+        ? const Center(child: CircularProgressIndicator())
         : Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
@@ -165,35 +151,43 @@ class _FilterState extends State<Filter> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                RangeSlider(
-                  values: selectedRange,
-                  onChanged: (RangeValues newRange) {
-                    setState(() {
-                      selectedRange = newRange;
-                    });
-                  },
-                  min: minPrice,
-                  max: maxPrice,
-                  activeColor: Theme.of(context).primaryColor,
-                  inactiveColor: Colors.grey[300],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "\$${selectedRange.start.round()}",
-                      style: const TextStyle(
-                        fontSize: 14,
+                minPrice != 0 && maxPrice != 0
+                    ? Column(
+                        children: [
+                          RangeSlider(
+                            values: selectedRange,
+                            onChanged: (RangeValues newRange) {
+                              // Verificar que los valores estén dentro del rango
+                              if (newRange.start >= minPrice &&
+                                  newRange.end <= maxPrice) {
+                                setState(() {
+                                  selectedRange = newRange;
+                                });
+                              }
+                            },
+                            min: minPrice,
+                            max: maxPrice,
+                            activeColor: primaryColor,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "\$${selectedRange.start.round()}",
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                "\$${selectedRange.end.round()}",
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child:
+                            CircularProgressIndicator(), // Loader mientras carga precios
                       ),
-                    ),
-                    Text(
-                      "\$${selectedRange.end.round()}",
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 16),
                 const Text(
                   "Categorías",
@@ -239,17 +233,13 @@ class _FilterState extends State<Filter> {
                     backgroundColor: primaryColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12), // Puedes ajustar el padding si lo deseas
+                        horizontal: 24, vertical: 12),
                   ),
                   child: const Text(
                     "Aplicar Filtros",
-                    style: TextStyle(
-                      fontWeight:
-                          FontWeight.bold, // Texto en negrita si lo deseas
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                )
+                ),
               ],
             ),
           );

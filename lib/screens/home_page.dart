@@ -123,7 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
           status: propertyCard.status,
           imageUrl: propertyCard.imageUrl,
           isFavorites: propertyCard.isFavorites,
-          onFavorite: _toggleFavorite, // Aquí se usa el método
         ),
       ),
     );
@@ -202,8 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
         imageUrl: property.imageUrl != null
             ? '${Config.imagen}${property.imageUrl}'
             : '',
-        isFavorites: property.isFavorite ?? false, // Aquí cargamos el estado de favorito
-        onFavorite: _toggleFavorite,
+        isFavorites: false,
+
       );
     }).toList();
 
@@ -228,29 +227,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-  Future<void> _toggleFavorite(int idPropiedad) async {
-    try {
-      // Llama al método del controlador para agregar/quitar de favoritos
-      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
-
-      if (response == 200) {
-        setState(() {
-          for (var i = 0; i < _propertyCards.length; i++) {
-            if (_propertyCards[i].idPropiedad == idPropiedad) {
-              _propertyCards[i] = _propertyCards[i].copyWith(
-                isFavorites: !_propertyCards[i].isFavorites,
-              );
-              break;
-            }
-          }
-        });
-      }
-    } catch (e) {
-      print('Error gestionando favoritos: $e');
-    }
-  }
-
   Future<void> _loadPropertiesIn() async {
     setState(() {
       _isLoading = true;
@@ -270,8 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
           imageUrl: property.imageUrl != null
               ? '${Config.imagen}${property.imageUrl}'
               : '',
-          isFavorites: false,
-          onFavorite: _toggleFavorite,
+          isFavorites: false
         );
       }).toList();
 
@@ -315,8 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
           imageUrl: property.imageUrl != null
               ? '${Config.imagen}${property.imageUrl}'
               : '',
-          isFavorites: false,
-          onFavorite: _toggleFavorite,
+          isFavorites: false
         );
       }).toList();
 
@@ -373,7 +347,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: false,
-          onFavorite: _toggleFavorite,
         );
       }).toList();
 

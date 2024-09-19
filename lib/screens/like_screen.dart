@@ -162,8 +162,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
           price: propertyCard.price,
           status: propertyCard.status,
           imageUrl: propertyCard.imageUrl,
-          isFavorites: true, 
-          onFavorite: _toggleFavorite, // Cambié de toog a _toggleFavorite
+          isFavorites: true
         ),
       ),
     );
@@ -212,7 +211,6 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
               ? '${Config.imagen}${property.imageUrl}'
               : '',
           isFavorites: true,
-          onFavorite: _toggleFavorite, // Añadido aquí también
         );
       }).toList();
 

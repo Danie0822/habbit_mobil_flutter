@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/styles/text.dart';
+import 'package:habbit_mobil_flutter/data/controlers/properties.dart';
 import 'package:habbit_mobil_flutter/data/models/image.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
@@ -21,7 +22,7 @@ class PropertyDetailsScreen extends StatefulWidget {
 }
 
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
-  bool isFavorite = false;
+  int isFavorite = 0;
   List<PropertiesResponse>? _propertyDetails;
   List<ImageModel>? _propertyImages;
   bool _isLoading = true;
@@ -47,6 +48,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       setState(() {
         _propertyDetails = propertyDetails;
         _propertyImages = propertyImages;
+        isFavorite = _propertyDetails![0].isFavorite;
         _isLoading = false;
       });
     } catch (e) {
@@ -110,10 +112,26 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     }
   }
 
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-    });
+  void toggleFavorite() async {
+   try{
+     // Llama al método del controlador para agregar/quitar de favoritos
+      final response = await PropertiesService().addPropertyToFavorites(widget.idPropiedad);
+      if (response) {
+        setState(() {
+          isFavorite = isFavorite == 0 ? 1 : 0;
+        });
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Ocurrió un error, intente más tarde.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }}
+    catch (e) {
+      print('Error al agregar/quitar de favoritos: $e');
+    }
   }
 
   @override
@@ -260,12 +278,18 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         duration: const Duration(milliseconds: 300),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isFavorite ? Colors.white : Colors.transparent,
+                          color: (isFavorite == 1)
+                              ? Colors.white
+                              : Colors.transparent,
                         ),
                         padding: const EdgeInsets.all(10),
                         child: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.redAccent : Colors.white,
+                          (isFavorite == 1)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: (isFavorite == 1)
+                              ? Colors.redAccent
+                              : Colors.white,
                           size: 28,
                         ),
                       ),
