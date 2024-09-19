@@ -33,10 +33,16 @@ class _RatingModalState extends State<RatingModal> {
 void _updateInfo() async {
   try {
     final result = await _updateController.ratingSend(widget.idSolicitud, _userRating);
-    if (!mounted) return; // Verifica si el widget sigue montado
+
+    // Cerrar el modal de RatingModal antes de mostrar la alerta
+    Navigator.pop(context); 
+
     if (result == 1) {
       showAlertDialog(
-        'Éxito', 'Se ha enviando la operación exitosamente', 3, context,
+        'Éxito',
+        'Se ha enviado la operación exitosamente',
+        3,
+        context,
       );
     } else if (result == 2) {
       showAlertDialog(
@@ -54,19 +60,15 @@ void _updateInfo() async {
       );
     }
   } catch (e) {
-    if (mounted) {
-      showAlertDialog(
-        'Error',
-        'Ocurrió un error inesperado: $e',
-        2,
-        context,
-      );
-    }
+    Navigator.pop(context); // Cerrar el modal en caso de error
+    showAlertDialog(
+      'Error',
+      'Ocurrió un error inesperado: $e',
+      2,
+      context,
+    );
   }
 }
-
-
-
 
   // Método para construir la carta de selección de estrellas
   Widget _buildRatingCard(Size size, bool isDarkMode) {
@@ -120,7 +122,6 @@ void _updateInfo() async {
                         _errorMessage = 'Por favor selecciona al menos una estrella';
                       });
                     } else {
-                       context.pop(); // Cerrar el modal y guardar la valoración
                       _updateInfo();
                      
                      
