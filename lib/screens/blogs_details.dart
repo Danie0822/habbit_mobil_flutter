@@ -1,4 +1,3 @@
-import 'dart:ui'; // Importa esto para usar BackdropFilter
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/rating.dart';
 import 'package:habbit_mobil_flutter/data/models/blogs_main.dart';
@@ -46,7 +45,7 @@ class _BlogDetailState extends State<BlogDetail> {
           color: Colors.transparent,
           child: InkWell(
             splashColor: isDarkMode ? Colors.white30 : Colors.black26, // Efecto de splash
-            customBorder: CircleBorder(), // Forma circular
+            customBorder: const CircleBorder(), // Forma circular
             onTap: () {
               Navigator.pop(context); // Regresa a la pantalla anterior
             },
@@ -60,7 +59,7 @@ class _BlogDetailState extends State<BlogDetail> {
                   BoxShadow(
                     color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.4),
                     blurRadius: 8,
-                    offset: Offset(0, 4), // Sombra debajo
+                    offset: const Offset(0, 4), // Sombra debajo
                   ),
                 ],
               ),
@@ -80,7 +79,7 @@ class _BlogDetailState extends State<BlogDetail> {
             color: Colors.transparent,
             child: InkWell(
               splashColor: isDarkMode ? Colors.white30 : Colors.black26, // Efecto de splash
-              customBorder: CircleBorder(), // Forma circular
+              customBorder: const CircleBorder(), // Forma circular
               onTap: () {
                 // Mostrar el modal de valoración al hacer clic
                 _openRatingModal(context, id);
@@ -95,7 +94,7 @@ class _BlogDetailState extends State<BlogDetail> {
                     BoxShadow(
                       color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.4),
                       blurRadius: 8,
-                      offset: Offset(0, 4), // Sombra debajo
+                      offset: const Offset(0, 4), // Sombra debajo
                     ),
                   ],
                 ),
@@ -131,7 +130,7 @@ class _BlogDetailState extends State<BlogDetail> {
   Widget _buildImageBackground(Size size, String? imageUrl, bool isDarkMode) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: size.width,
           height: size.height * 0.5,
           child: FittedBox(
