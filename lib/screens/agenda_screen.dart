@@ -146,6 +146,7 @@ class _VisitScreenState extends State<VisitScreen>
                                   child: Text('No hay eventos disponibles.'))
                               : ListVisits(
                                   visitsData: filteredVisits,
+                                  parentContext: context,
                                 ),
                 ),
               ),
@@ -165,9 +166,10 @@ class _VisitScreenState extends State<VisitScreen>
 
 // Clase para mostrar la lista de visitas
 class ListVisits extends StatelessWidget {
-  const ListVisits({super.key, required this.visitsData});
+  const ListVisits({super.key, required this.visitsData, required this.parentContext});
 
   final List<VisitModel> visitsData;
+  final BuildContext parentContext;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +212,7 @@ class ListVisits extends StatelessWidget {
                       Navigator.of(context)
                           .pop(true); // Confirma la eliminación
                       _deleteVisit(visit.IdVisita,
-                          context); // Llama a la función de eliminación
+                          parentContext); // Llama a la función de eliminación
                     },
                     child: const Text('Eliminar'),
                   ),
@@ -235,16 +237,15 @@ class ListVisits extends StatelessWidget {
   }
 
   // Función para eliminar una visita
-  void _deleteVisit(int idVisita, BuildContext context) {
-    VisitControler().visitUpdate(idVisita).then((value) {
-      if (value == true) {
-        showAlertDialog(
-            'Éxito', 'Se ha eliminado el evento exitosamente', 3, context);
-      } else {
-        showAlertDialog(
-            'Error', 'No se ha podido eliminar el evento', 2, context);
-      }
-    });
+  void _deleteVisit(int idVisita, BuildContext parentContext) async {
+    final bool value = await VisitControler().visitDelete(idVisita);
+    if (value) {
+      showAlertDialog(
+          'Éxito', 'Se ha eliminado el evento exitosamente', 3, parentContext);
+    } else {
+      showAlertDialog(
+          'Error', 'No se ha podido eliminar el evento', 2, parentContext);
+    }
   }
 
   // Formatear la fecha
