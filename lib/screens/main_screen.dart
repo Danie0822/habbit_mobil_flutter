@@ -6,9 +6,7 @@ import 'package:habbit_mobil_flutter/screens/screens.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
-  final bool reload; // Nuevo parámetro para indicar si debe recargar los widgets
-
-  const MainScreen({Key? key, required this.initialIndex, this.reload = true}) : super(key: key);
+  const MainScreen({Key? key, required this.initialIndex}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -16,22 +14,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
-  bool _isMenuOpen = false;
-  int _currentIndex = 0;
-  bool _isPageLoading = false;
+  bool _isMenuOpen = false; // Variable para controlar la visibilidad del menú
+  int _currentIndex = 0; // Variable para almacenar el índice actual
+
+  // Lista de pantallas con callback para actualizar el estado del menú
   late List<Widget> _screens;
 
+  // Inicializa el controlador de la página y la lista de pantallas
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.initialIndex;
+    _currentIndex = widget.initialIndex; // Inicializa el índice actual
     _pageController = PageController(initialPage: widget.initialIndex);
-    _initializeScreens();
-  }
-
-  // Método para inicializar las pantallas
-  void _initializeScreens() {
     _screens = [
+      // Inicializa las pantallas con el callback para actualizar el estado del menú
       StartHome(onMenuStateChange: (isOpen) {
         setState(() {
           _isMenuOpen = isOpen;
@@ -43,19 +39,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
   }
 
-  @override
-  void didUpdateWidget(covariant MainScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Detecta si el parámetro 'reload' ha cambiado y recarga los widgets
-    if (widget.reload != oldWidget.reload) {
-      debugPrint('Recargando pantallas porque reload ha cambiado.');
-      _initializeScreens(); // Reinicializa las pantallas
-      setState(() {
-        // Fuerza la actualización del estado
-      });
-    }
-  }
-
+  // Libera los recursos del controlador de la página
   @override
   void dispose() {
     _pageController.dispose();
@@ -63,23 +47,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _navigateToPage(int index) {
-    if (!_isPageLoading) {
-      _pageController.jumpToPage(index);
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-  }
-
-  void _onPageChanged(int index) {
+    _pageController.jumpToPage(index);
     setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  void _onPageLoading(bool isLoading) {
-    setState(() {
-      _isPageLoading = isLoading;
+      _currentIndex = index; // Actualiza el índice actual
     });
   }
 
@@ -88,7 +58,11 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        onPageChanged: _onPageChanged,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index; // Actualiza el índice actual
+          });
+        },
         children: _screens.map((screen) {
           return PageTransitionSwitcher(
             duration: const Duration(milliseconds: 300),
@@ -104,11 +78,11 @@ class _MainScreenState extends State<MainScreen> {
         }).toList(),
       ),
       bottomNavigationBar: _isMenuOpen
-          ? null
-          : BottomNavBar(
-              currentIndex: _currentIndex,
-              onTap: _navigateToPage,
-            ),
+        ? null // Oculta la barra de navegación cuando el menú está abierto
+        : BottomNavBar(
+            currentIndex: _currentIndex, // Usa la variable de índice actual
+            onTap: _navigateToPage,
+          ),
     );
   }
 }

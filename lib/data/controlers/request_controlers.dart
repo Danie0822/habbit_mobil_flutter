@@ -103,7 +103,7 @@ class RequestService {
     }
   }
 
-  Future<int> requestDelete(idRequest) async {
+  Future<bool> requestDelete(idRequest) async {
     try {
       // Enviar la petición de eliminación al servidor
       final response = await ApiService.deleteData(
@@ -111,13 +111,14 @@ class RequestService {
       );
       // Convertir la respuesta en el modelo LoginResponse
       final loginResponse = SendChatResponse.fromJson(response);
+      print(loginResponse.status);
       if (loginResponse.status == 200) {
-        return 1;
+        return true;
       } else {
-        return 0;
+        return false;
       }
     } catch (error) {
-      return 0;
+      throw Exception('Error al eliminar la solicitud: $error');
     }
   }
 }

@@ -118,8 +118,8 @@ class CustomValidator {
     final regExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s,.;:$]+$');
     if (value == null || value.isEmpty) {
       return 'El campo no puede estar vacío';
-    } else if (value.length < 4 || value.length > maxLength) {
-      return 'El $fieldName debe tener al menos 4 caracteres y menos de $maxLength caracteres';
+    } else if (value.length < 6 || value.length > maxLength) {
+      return 'El $fieldName debe tener al menos 6 caracteres y menos de $maxLength caracteres';
     } else if (!regExp.hasMatch(value)) {
       return 'Solo se permiten letras, números, espacios, comas, puntos, punto y coma, dos puntos, y signo de dólar';
     }

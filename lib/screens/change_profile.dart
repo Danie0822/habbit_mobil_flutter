@@ -75,7 +75,7 @@ void _updateInfo() async {
     final result = await _updateInfoController.updateClient(id, name, email, phone);
     if (result) {
       showAlertDialogScreen('Éxito', 'Su información se ha actualizado correctamente', 3, context, () {
-        context.go("/main", extra: 3);
+        context.push("/main", extra: 3);
       });
     } else {
       showAlertDialog('Error', 'Este correo ya ha sido registrado en el programa por favor intente con otro', 2, context);

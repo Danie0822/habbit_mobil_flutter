@@ -100,7 +100,7 @@ class _NewRequestState extends State<NewRequest> {
         showAlertDialogScreen(
             'Éxito', 'Se ha enviando la operación exitosamente ', 3, context,
             () {
-          context.go("/main", extra: 2);
+          context.push("/main", extra: 2);
         });
       } else if (result == 2) {
         showAlertDialog(

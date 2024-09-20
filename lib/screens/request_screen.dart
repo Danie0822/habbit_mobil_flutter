@@ -8,6 +8,7 @@ import 'package:habbit_mobil_flutter/data/controlers/request_controlers.dart';
 import 'package:habbit_mobil_flutter/data/models/request_model.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+
 // Pantalla de solicitudes
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
@@ -15,21 +16,21 @@ class RequestsScreen extends StatefulWidget {
   @override
   State<RequestsScreen> createState() => _RequestsScreenState();
 }
+
 // Estado de la pantalla de solicitudes
 class _RequestsScreenState extends State<RequestsScreen>
     with SingleTickerProviderStateMixin {
   // Lista de solicitudes
   List<RequestModel> requestsData = [];
   List<RequestModel> filteredRequests = [];
-  // Variables de estado
   bool isLoading = true;
   String? errorMessage;
   bool isSearchVisible = false;
   String searchQuery = '';
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
-  // Cargar las solicitudes
-  @override 
+  // Método para inicializar el estado
+  @override
   void initState() {
     super.initState();
     _loadRequests();
@@ -48,11 +49,9 @@ class _RequestsScreenState extends State<RequestsScreen>
   // Método para cargar las solicitudes
   Future<void> _loadRequests() async {
     try {
-      // Cambiar el estado de carga
       setState(() {
         isLoading = true;
       });
-      // Cargar las solicitudes
       final loadedRequests = await RequestService().cargarRequest();
       setState(() {
         requestsData = loadedRequests;
@@ -66,7 +65,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       });
     }
   }
-  // Método para mostrar/ocultar la barra de búsqueda
+  // Método para alternar la visibilidad de la búsqueda
   void _toggleSearch() {
     setState(() {
       isSearchVisible = !isSearchVisible;
@@ -80,23 +79,22 @@ class _RequestsScreenState extends State<RequestsScreen>
       }
     });
   }
-  // Método para cambiar la búsqueda
+  // Método para cambiar la consulta de búsqueda
   void _onSearchChanged(String query) {
     setState(() {
       searchQuery = query;
       filteredRequests = requestsData
-          .where((request) => request.tituloSolicitud
-              .toLowerCase()
-              .contains(query.toLowerCase()))
+          .where((request) =>
+              request.tituloSolicitud.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
-  // Diseño de la pantalla
+  // Método para construir la pantalla
   @override
   Widget build(BuildContext context) {
     final Color containerMain = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageContainerLight, almostBlackColor);
-  
+    // Inicio de la construcción de la pantalla
     return Scaffold(
       backgroundColor: colorBackGroundMessage,
       body: Column(
@@ -107,10 +105,9 @@ class _RequestsScreenState extends State<RequestsScreen>
             onSearchToggle: _toggleSearch,
             offsetAnimation: _offsetAnimation,
             onSearchChanged: _onSearchChanged,
-            hintTextt: 'Buscar solicitudes...', // Texto de ayuda para la búsqueda
+            hintTextt: 'Buscar solicitudes...',
             titleHeader: 'Solicitudes',
           ),
-          // Contenedor de la lista de solicitudes
           Expanded(
             child: Container(
               width: double.infinity,
@@ -121,7 +118,6 @@ class _RequestsScreenState extends State<RequestsScreen>
                   topRight: Radius.circular(30),
                 ),
               ),
-
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -133,8 +129,7 @@ class _RequestsScreenState extends State<RequestsScreen>
                         ? Center(
                             child: Text(
                               errorMessage!,
-                              textAlign: TextAlign
-                                  .center, // Asegura que el texto esté centrado horizontalmente
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -143,13 +138,17 @@ class _RequestsScreenState extends State<RequestsScreen>
                           )
                         : RefreshIndicator(
                             onRefresh: _loadRequests,
-                            child: ListRequest(requestsData: filteredRequests),
+                            child: ListRequest(
+                              requestsData: filteredRequests,
+                              parentContext: context, // Pasar el context principal
+                            ),
                           ),
               ),
             ),
           ),
         ],
       ),
+      // Botón flotante para agregar una nueva solicitud
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.push('/newRequest');
@@ -163,19 +162,20 @@ class _RequestsScreenState extends State<RequestsScreen>
       ),
     );
   }
-
+  // Método para liberar recursos
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 }
-// Widget de la lista de solicitudes
+// Widget de lista de solicitudes
 class ListRequest extends StatelessWidget {
-  const ListRequest({super.key, required this.requestsData});
+  const ListRequest({super.key, required this.requestsData, required this.parentContext});
 
   final List<RequestModel> requestsData;
-
+  final BuildContext parentContext;
+  // Método para construir la lista de solicitudes
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -202,8 +202,7 @@ class ListRequest extends StatelessWidget {
               context: context,
               builder: (context) => AlertDialog(
                 title: const Text('Confirmar'),
-                content:
-                    const Text('¿Estás seguro de eliminar esta solicitud?'),
+                content: const Text('¿Estás seguro de eliminar esta solicitud?'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -214,7 +213,7 @@ class ListRequest extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      _deleteRequest(request.idSolicitud, context);
+                      _deleteRequest(request.idSolicitud, parentContext);
                     },
                     child: const Text('Eliminar'),
                   ),
@@ -242,15 +241,13 @@ class ListRequest extends StatelessWidget {
     );
   }
   // Método para eliminar una solicitud
-  void _deleteRequest(int idSolicitud, BuildContext context) {
-    RequestService().requestDelete(idSolicitud).then((value) {
-      if (value == 1) {
-        showAlertDialog(
-            'Éxito', 'Se ha eliminado la solicitud exitosamente', 3, context);
-      } else {
-        showAlertDialog(
-            'Error', 'No se ha podido eliminar la solicitud', 2, context);
-      }
-    });
+  void _deleteRequest(int idSolicitud, BuildContext parentContext) async {
+    final bool value = await RequestService().requestDelete(idSolicitud);
+
+    if (value) {
+      showAlertDialog('Éxito', 'Se ha eliminado la solicitud exitosamente', 3, parentContext);
+    } else {
+      showAlertDialog('Error', 'No se ha podido eliminar la solicitud', 2, parentContext);
+    }
   }
 }

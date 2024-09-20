@@ -102,7 +102,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final int initialIndex = state.extra as int;
         return _buildPageWithFuturisticTransition(
-            MainScreen(initialIndex: initialIndex, reload: true), state);
+            MainScreen(initialIndex: initialIndex), state);
       },
     ),
     GoRoute(
