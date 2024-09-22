@@ -297,6 +297,16 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         context, contenedorMensajeDark, colorBackGroundMessageWidget);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryBackground,
+        elevation: 0, // Elimina la sombra del AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: secondaryTextColor), // Ícono de regreso
+          onPressed: () {
+            Navigator.pop(context); // Navega hacia atrás
+          },
+        ),
+      ),
       backgroundColor: primaryBackground,
       body: SafeArea(
         child: SingleChildScrollView(

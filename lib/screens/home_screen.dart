@@ -205,19 +205,21 @@ class _HomeScreenState extends State<HomeScreenOne> {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     SectionCardWithImage(
-                      title: 'Lee',
+                      title: 'Descubre',
                       description:
-                          'Encuentra artículos interesantes y noticias de tu interés.',
+                          'Explora el mundo con nuestras recomendaciones de viajes.',
                       backgroundGradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Color(0xffFFBF3E), Color(0xffA17721)],
+                        colors: [Color(0xff4FCA37), Color(0xff27641B)],
                       ),
-                      buttonText: 'Aprovecha y lee',
-                      imagePath: 'blog.png',
-                      navegation: '/blogMain',
+                      buttonText: '¡Descubre!',
+                      imagePath: 'planet.png',
+                      navegation: '/map_screen',
                     ),
+                    
                     SizedBox(height: 16),
                     SectionCardWithImage(
                       title: 'Encuentra',
@@ -234,17 +236,17 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     ),
                     SizedBox(height: 16),
                     SectionCardWithImage(
-                      title: 'Descubre',
+                      title: 'Lee',
                       description:
-                          'Explora el mundo con nuestras recomendaciones de viajes.',
+                          'Encuentra artículos interesantes y noticias de tu interés.',
                       backgroundGradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Color(0xff4FCA37), Color(0xff27641B)],
+                        colors: [Color(0xffFFBF3E), Color(0xffA17721)],
                       ),
-                      buttonText: '¡Descubre!',
-                      imagePath: 'planet.png',
-                      navegation: '/map_screen',
+                      buttonText: 'Aprovecha y lee',
+                      imagePath: 'blog.png',
+                      navegation: '/blogMain',
                     ),
                   ],
                 ),

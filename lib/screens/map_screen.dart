@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
@@ -10,6 +12,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:habbit_mobil_flutter/data/controlers/map.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
+import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:go_router/go_router.dart';
 
 class MapScreen extends StatefulWidget {
@@ -54,7 +58,14 @@ class MapScreenState extends State<MapScreen> {
         final GoogleMapController controller = await _controller.future;
         controller.animateCamera(CameraUpdate.newLatLng(_currentPosition!));
       } else {
-        // El permiso fue denegado permanentemente o no se otorgó
+        showAlertDialog(
+          'Advertencia',
+          'Permiso de ubicación denegado.',
+          1,
+          context,
+        );
+        // El permiso fue denegado p
+        //ermanentemente o no se otorgó
         print("Permiso de ubicación denegado.");
         // Opcional: Mostrar un mensaje o abrir configuración de la app
       }
@@ -79,7 +90,7 @@ class MapScreenState extends State<MapScreen> {
 
   Future<void> _fetchProperties(LatLngBounds bounds) async {
     try {
-      final int markerSize = 150; // Tamaño fijo del marcador (puedes ajustarlo)
+      const int markerSize = 150; // Tamaño fijo del marcador (puedes ajustarlo)
       double borderWidth = 8.0; // Tamaño del borde
 
       List<MapResponse> properties = await MapService().cargarPropeidad(
@@ -131,7 +142,7 @@ class MapScreenState extends State<MapScreen> {
 
     // Dibujar círculo azul
     final Paint borderPaint = Paint()
-      ..color = primaryColor
+      ..color = primaryColorAzul
       ..style = PaintingStyle.fill;
 
     final double radius = size / 2;
@@ -158,137 +169,147 @@ class MapScreenState extends State<MapScreen> {
   }
 
   void _showPropertyDetails(MapResponse property) {
-  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-  final Color colorTexto = isDarkMode ? colorTextField : textColorNegro;
-  final Color colorFondoModal = isDarkMode ? Colors.grey[900]! : Colors.white;
-  final Color colorTextoButton = isDarkMode ? colorTextField : primaryColor;
-  
-  // Obteniendo el tamaño de la pantalla para un diseño más flexible
-  final double screenHeight = MediaQuery.of(context).size.height;
-  final double screenWidth = MediaQuery.of(context).size.width;
-  
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: colorFondoModal, 
-    builder: (context) {
-      return Container(
-        padding: const EdgeInsets.all(8),
-        height: screenHeight * 0.5, // Ajusta la altura dinámica según el tamaño de la pantalla
-        width: screenWidth, // Asegúrate de que el modal ocupe todo el ancho disponible
-        child: SingleChildScrollView( // Habilita desplazamiento para pantallas más pequeñas
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20), 
-                  topRight: Radius.circular(20),
-                ),
-                child: Image.network(
-                  '${Config.imagen}${property.imageUrl}',
-                  width: screenWidth,
-                  height: screenHeight * 0.25, // Ajusta la altura de la imagen según el tamaño de pantalla
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              Text(
-                property.title ?? 'Sin título',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.05, // Ajuste dinámico de tamaño de texto
-                  fontWeight: FontWeight.bold,
-                  color: colorTexto,
-                ),
-              ),
-              const SizedBox(height: 10),
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final Color colorTexto = isDarkMode ? colorTextField : textColorNegro;
+    final Color colorFondoModal = isDarkMode ? Colors.grey[900]! : Colors.white;
 
-              Text(
-                property.description ?? 'Sin descripción disponible',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04, // Ajuste dinámico de tamaño de texto
-                  color: colorTexto,
-                ),
-              ),
-              const SizedBox(height: 10),
+    // Obteniendo el tamaño de la pantalla para un diseño más flexible
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
-                  children: [
-                    const TextSpan(
-                      text: 'Dirección: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: property.address ?? 'No especificado',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
-                  children: [
-                    const TextSpan(
-                      text: 'Estado de la propiedad: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: property.statutsProperty ?? 'No especificado',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(fontSize: screenWidth * 0.04, color: colorTexto),
-                  children: [
-                    const TextSpan(
-                      text: 'Tipo de propiedad: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: property.type ?? 'No especificado',
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Botón "Ver más" centrado
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.push('/detalle', extra: {
-                      'id_propiedad': property.idProperty,
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: colorFondoModal,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(8),
+          height: screenHeight *
+              0.5, // Ajusta la altura dinámica según el tamaño de la pantalla
+          width:
+              screenWidth, // Asegúrate de que el modal ocupe todo el ancho disponible
+          child: SingleChildScrollView(
+            // Habilita desplazamiento para pantallas más pequeñas
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Text(
-                    'Ver más',
-                    style: TextStyle(fontSize: screenWidth * 0.045, color: colorTextoButton),
+                  child: Image.network(
+                    '${Config.imagen}${property.imageUrl}',
+                    width: screenWidth,
+                    height: screenHeight * 0.25,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+
+                Text(
+                  property.title ?? 'Sin título',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    fontWeight: FontWeight.bold,
+                    color: colorTexto,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                Text(
+                  property.description ?? 'Sin descripción disponible',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                    color: colorTexto,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        fontSize: screenWidth * 0.04, color: colorTexto),
+                    children: [
+                      const TextSpan(
+                        text: 'Dirección: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: property.address ?? 'No especificado',
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        fontSize: screenWidth * 0.04, color: colorTexto),
+                    children: [
+                      const TextSpan(
+                        text: 'Estado de la propiedad: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: property.statutsProperty ?? 'No especificado',
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        fontSize: screenWidth * 0.04, color: colorTexto),
+                    children: [
+                      const TextSpan(
+                        text: 'Tipo de propiedad: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: property.type ?? 'No especificado',
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Botón "Ver más"
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.push('/detalle', extra: {
+                        'id_propiedad': property.idProperty,
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColorAzul,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'Ver más',
+                      style: TextStyle(
+                          fontSize: screenWidth * 0.045, color: whiteColor),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
   Future<void> _printVisibleRegion() async {
     final GoogleMapController controller = await _controller.future;
@@ -305,7 +326,23 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryBackground = ThemeUtils.getColorBasedOnBrightness(
+        context, whiteColor, almostBlackColor);
+
+    final Color secondaryTextColor = ThemeUtils.getColorBasedOnBrightness(
+        context, almostBlackColor, lightTextColor);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryBackground,
+        elevation: 0, // Elimina la sombra del AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+              color: secondaryTextColor), // Ícono de regreso
+          onPressed: () {
+            Navigator.pop(context); // Navega hacia atrás
+          },
+        ),
+      ),
       body: Stack(
         children: [
           GoogleMap(
@@ -313,10 +350,10 @@ class MapScreenState extends State<MapScreen> {
             initialCameraPosition: _initialPosition,
             onMapCreated: (GoogleMapController controller) async {
               _controller.complete(controller);
-              await _printVisibleRegion(); // Imprimir las esquinas visibles al crear el mapa
+              await _printVisibleRegion();
             },
             onCameraIdle: () async {
-              await _printVisibleRegion(); // Imprimir las esquinas visibles cuando el movimiento de la cámara termina
+              await _printVisibleRegion();
             },
             markers: _currentLocationMarker != null
                 ? {..._propertyMarkers, _currentLocationMarker!}
@@ -325,11 +362,11 @@ class MapScreenState extends State<MapScreen> {
             myLocationButtonEnabled: false,
           ),
           Positioned(
-            top: 40,
+            top: 50,
             right: 20,
             child: FloatingActionButton(
               onPressed: _getCurrentLocation,
-              backgroundColor: primaryColor,
+              backgroundColor: primaryColorAzul,
               child: const Icon(Icons.my_location),
             ),
           ),
