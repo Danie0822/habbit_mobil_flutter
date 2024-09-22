@@ -345,10 +345,44 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
     }
   }
 
-  void _onFilterApplied(int category, int zone, double min, double max) {
+ Future<void> _onFilterApplied(int category, int zone, double min, double max) async {
     setState(() {
-      // Implementa la lógica de filtrado según la categoría, zona, y rangos
-      // Actualiza la lista de propiedades y refresca la vista
+      _isLoading = true;
     });
+
+    try {
+      final properties = await PropertiesService().getPropertiesFilters(category, zone, min, max);
+
+      List<PropertyCard> newPropertyCards = properties.map((property) {
+        return PropertyCard(
+          idPropiedad: property.idPropiedad ?? 0,
+          title: property.title ?? 'Propiedad no encontrada',
+          type: property.type ?? 'Error de datos',
+          status: property.status ?? 'Error de datos',
+          direction: property.direction ?? 'Error de datos',
+          price: property.price ?? 0.0,
+          imageUrl: property.imageUrl != null
+              ? '${Config.imagen}${property.imageUrl}'
+              : '',
+          isFavorites: false,
+        );
+      }).toList();
+
+      _clearPropertyList();
+
+      setState(() {
+        _propertyCards.addAll(newPropertyCards);
+
+        for (int i = 0; i < newPropertyCards.length; i++) {
+          _listKey.currentState?.insertItem(i);
+        }
+      });
+    } catch (e) {
+      print('Error cargando propiedades filtradas: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

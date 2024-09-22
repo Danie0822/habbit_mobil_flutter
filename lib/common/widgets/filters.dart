@@ -45,6 +45,9 @@ class _FilterState extends State<Filter> {
       final PrecioRange range = await DataPrices().fetchPrecioRange();
 
       setState(() {
+        // Añadir manualmente la categoría "Todo" con id 0
+        fetchedCategories.insert(0, Category(id: 0, name: "Todos"));
+        fetchedZones.insert(0, Zone(id: 0, name: "Todos"));
         minPrice = range.minimo.toDouble();
         maxPrice = range.maximo.toDouble();
         selectedRange = RangeValues(minPrice, maxPrice);
