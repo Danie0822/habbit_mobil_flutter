@@ -8,6 +8,7 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
+
 // Pantalla de inicio de sesión
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,11 +16,13 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
+
 // Estado de la pantalla de inicio de sesión
 class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   // Clave global para el formulario
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
+  bool isLoading = false; // Nuevo booleano para manejar el estado de carga
   // Controlador de autenticación
   final AuthService _authService = AuthService();
   late AnimationController _fadeInController;
@@ -53,6 +56,7 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       CurvedAnimation(parent: _buttonController, curve: Curves.easeInOut),
     );
   }
+
   // Liberar recursos
   @override
   void dispose() {
@@ -83,6 +87,10 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
   void _handleLogin() async {
     // Validar el formulario
     if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        isLoading = true; // Muestra el indicador de carga
+      });
+
       final email = _emailController.text;
       final password = _passwordController.text;
       // Petición de inicio de sesión
@@ -90,8 +98,15 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
       if (success) {
         context.go('/main', extra: 0);
       } else {
-        showAlertDialog('Error', 'Asegúrese que a ingresando las credenciales correctamente.', 1, context);
+        showAlertDialog(
+            'Error',
+            'Asegúrese que a ingresando las credenciales correctamente.',
+            1,
+            context);
       }
+      setState(() {
+        isLoading = false; // Oculta el indicador de carga
+      });
     }
   }
 
@@ -208,13 +223,15 @@ class _LoginState extends State<LoginScreen> with TickerProviderStateMixin {
                     const SizedBox(height: 10),
                     LoginWidgets.buildForgotPasswordButton(context, colorTexto),
                     const SizedBox(height: 20),
-                    LoginWidgets.buildLoginButton(
-                      context,
-                      _buttonScaleAnimation,
-                      _onTapDown,
-                      _onTapUp,
-                      _handleLogin,
-                    ),
+                    isLoading // Mostrar indicador de carga si está cargando
+                        ? const Center(child: CircularProgressIndicator())
+                        : LoginWidgets.buildLoginButton(
+                            context,
+                            _buttonScaleAnimation,
+                            _onTapDown,
+                            _onTapUp,
+                            _handleLogin,
+                          ),
                     const SizedBox(height: 20),
                     LoginWidgets.buildSignUpPrompt(context, colorTexto),
                   ],

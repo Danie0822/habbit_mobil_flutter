@@ -33,6 +33,8 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
   bool isLoading = true;
   int selectedEstadoPropiedad = 0; // 0: Ambos, 1: Venta, 2: Alquiler
   int selectedTipoPropiedad = 0; // 0: Ambos, 1: Proyecto, 2: Inmueble
+  bool isLoadingRequest =
+      false; // Nuevo booleano para manejar el estado de carga
 
   final DataPrices _dataPreferences = DataPrices();
   final SliderServices _sliderServices = SliderServices();
@@ -149,6 +151,9 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
   }
 
   void _handleConfirmar() {
+    setState(() {
+      isLoadingRequest = true; // Muestra el indicador de carga
+    });
     final int selectedCategoryId = _selectedCategory?.id ?? 0;
     final int selectedZoneId = _selectedZone?.id ?? 0;
     final double precioMin = selectedRange.start;
@@ -169,45 +174,49 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
       latitud,
       longitud,
     );
-    
+
     cards.then((cardList) {
       if (cardList.isNotEmpty) {
         context.push('/slider',
             extra: cardList); // Asegúrate de que cardList no sea null o vacío
       } else {
-      showAlertDialog(
-        'Advertencia',
-        'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.',
-        1,
-        context,
-      );
+        showAlertDialog(
+          'Advertencia',
+          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.',
+          1,
+          context,
+        );
       }
     }).catchError((error) {
       // Si la lista está vacía, muestra un mensaje en un modal
-      _showModal(context, 'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.');
+      _showModal(context,
+          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.');
       print('Error cargando las tarjetas: $error');
+    });
+    setState(() {
+      isLoadingRequest = false; // Oculta el indicador de carga
     });
   }
 
   void _showModal(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Mensaje'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
-      );
-    },
-  );
-}
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Mensaje'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget buildToggleButton(
       String label, int value, int groupValue, Function(int) onChanged) {
@@ -622,24 +631,27 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                         },
                       ),
                       const SizedBox(height: 36),
-
-                      // Botón de confirmación
-                      Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: sliderActiveColor,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 60,
-                              vertical: 15,
+                      isLoadingRequest // Mostrar indicador de carga si está cargando
+                          ? const Center(child: CircularProgressIndicator())
+                          :
+                          // Botón de confirmación
+                          Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: sliderActiveColor,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 60,
+                                    vertical: 15,
+                                  ),
+                                ),
+                                onPressed: _handleConfirmar,
+                                child: const Text(
+                                  '¡Descubrir!',
+                                  style: TextStyle(
+                                      color: normalText, fontSize: 18),
+                                ),
+                              ),
                             ),
-                          ),
-                          onPressed: _handleConfirmar,
-                          child: const Text(
-                            '¡Descubrir!',
-                            style: TextStyle(color: normalText, fontSize: 18),
-                          ),
-                        ),
-                      ),
 
                       const SizedBox(height: 20),
                     ],
