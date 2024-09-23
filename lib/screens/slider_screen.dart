@@ -152,11 +152,10 @@ class SliderScreenState extends State<SliderScreen> {
         : card.propertyTitle!;
 
     final primaryBackground = ThemeUtils.getColorBasedOnBrightness(
-        context, whiteColor, contenedorMensajeDark);
+        context, colorBackGroundMessageWidget, Colors.black);
 
     final boxStyle = ThemeUtils.getColorBasedOnBrightness(
-        context, colorBackGroundMessageWidget, Colors.black.withOpacity(0.6));
-
+        context, colorBackGroundMessageWidget, Colors.black);
     final Color texto =
         ThemeUtils.getColorBasedOnBrightness(context, whiteColor, whiteColor);
 
@@ -247,8 +246,8 @@ class SliderScreenState extends State<SliderScreen> {
                     SizedBox(height: screenHeight * 0.01),
                     Text(
                       '${card.distanceKm?.toStringAsFixed(2)} km',
-                      style: TextStyle(
-                          fontSize: screenWidth * 0.04, color: texto),
+                      style:
+                          TextStyle(fontSize: screenWidth * 0.04, color: texto),
                     ),
                   ],
                 ),

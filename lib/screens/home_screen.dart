@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     SectionCardWithImage(
                       title: 'Descubre',
                       description:
-                          'Explora el mundo con nuestras recomendaciones de viajes.',
+                          'Explora al alrededor para encontrar tu nuevo hogar o proyecto inmobiliario.',
                       backgroundGradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     SectionCardWithImage(
                       title: 'Encuentra',
                       description:
-                          'Descubre apartamentos de tu interés a través de nuestra app.',
+                          'Descubre proyecto o inmobiliario de tu interés a través de nuestra app.',
                       backgroundGradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     SectionCardWithImage(
                       title: 'Lee',
                       description:
-                          'Encuentra artículos interesantes y noticias de tu interés.',
+                          'Encuentra blogs de tu interés para ponerlo en práctica.',
                       backgroundGradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,

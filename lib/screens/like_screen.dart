@@ -69,6 +69,9 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
     } catch (e) {
       print('Error al cargar propiedades favoritas: $e');
     } finally {
+      if (!mounted) {
+        return; // Evitar llamar a setState si el widget no está montado
+      }
       setState(() {
         _isLoading = false;
       });

@@ -56,40 +56,42 @@ class SplashScreenState extends State<SplashScreen>
     _controller.dispose();
     super.dispose();
   }
+@override
+Widget build(BuildContext context) {
+  // Obtener el ancho de la pantalla
+  double screenWidth = MediaQuery.of(context).size.width;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: primaryColor,
-      body: Center(
-        child: FadeTransition(
-          opacity: _opacityAnimation,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/Logo.png',
-                    width: 90,
+  return Scaffold(
+    backgroundColor: primaryColor,
+    body: Center(
+      child: FadeTransition(
+        opacity: _opacityAnimation,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/Logo.png',
+                  width: screenWidth * 0.25, // Ajustar el ancho de la imagen al 25% del ancho de la pantalla
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Bienvenido',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.1, // Ajustar el tamaño de la fuente al 10% del ancho de la pantalla
                     color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Bienvenido',
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -68,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                   items: [
-                    _buildThemeSettingsPage(themeProvider, isDarkMode),
+                    _buildThemeSettingsPage(themeProvider, isDarkMode, context),
                     // La página de tamaño de texto se ha eliminado
                   ],
                 ),
@@ -80,11 +80,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
   // Página de configuración de tema
-  Widget _buildThemeSettingsPage(ThemeProvider themeProvider, bool isDarkMode) {
+  Widget _buildThemeSettingsPage(
+      ThemeProvider themeProvider, bool isDarkMode, BuildContext context) {
+    // Obtener el tamaño de la pantalla
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(screenWidth *
+          0.05), // Padding dinámico basado en el ancho de la pantalla
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -96,26 +101,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
             child: SizedBox(
               key: ValueKey<bool>(isDarkMode),
-              height: 200.0,
-              width: 250.0,
+              height: screenHeight *
+                  0.25, // Altura dinámica basada en la altura de la pantalla
+              width: screenWidth *
+                  0.6, // Ancho dinámico basado en el ancho de la pantalla
               child: Image.asset(
                 isDarkMode ? 'assets/images/Luna.png' : 'assets/images/Sol.png',
               ),
             ),
           ),
           const Spacer(flex: 1),
-          const Text(
+          Text(
             'Escoge un aspecto',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.08, // Tamaño de texto dinámico
+            ),
           ),
-          const SizedBox(height: 20),
-          const Text(
+          SizedBox(height: screenHeight * 0.02), // Espaciado dinámico
+          Text(
             'Escoge el estilo que más te guste.',
-            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 25),
+            style: TextStyle(
+              fontWeight: FontWeight.w100,
+              fontSize: screenWidth * 0.06, // Tamaño de texto dinámico
+            ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 30),
-          _buildToggleButtons(themeProvider),
+          SizedBox(height: screenHeight * 0.03), // Espaciado dinámico
+          _buildToggleButtons(
+              themeProvider), // Este método ya debe ser responsivo
           const Spacer(flex: 2),
         ],
       ),
@@ -187,7 +201,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(1, (index) { // Solo 1 página ahora
+        children: List.generate(1, (index) {
+          // Solo 1 página ahora
           return GestureDetector(
             onTap: () {
               _carouselController.animateToPage(index);
