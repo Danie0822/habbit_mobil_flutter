@@ -25,7 +25,7 @@ class SliderScreenState extends State<SliderScreen> {
     super.initState();
     controller = CardSwiperController();
     cards = widget.cards;
-    originalCards = List.from(widget.cards); // Guardar la lista original
+    originalCards = List.from(widget.cards);
   }
 
   @override
@@ -42,7 +42,6 @@ class SliderScreenState extends State<SliderScreen> {
     final Color textoTitle = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, whiteColor);
 
-    // Obtener el tamaño de la pantalla
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -62,7 +61,6 @@ class SliderScreenState extends State<SliderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Flecha y título
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: screenWidth * 0.04,
@@ -96,13 +94,10 @@ class SliderScreenState extends State<SliderScreen> {
                 ],
               ),
             ),
-
-            // Tarjetas dentro de un contenedor con altura fija
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  height:
-                      screenHeight * 0.75, // Controla la altura del CardSwiper
+                  height: screenHeight * 0.75,
                   child: CardSwiper(
                     controller: controller,
                     cardsCount: cards.length,
@@ -130,8 +125,6 @@ class SliderScreenState extends State<SliderScreen> {
                 ),
               ),
             ),
-
-            // Descripción al final
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: screenWidth * 0.04,
@@ -167,7 +160,6 @@ class SliderScreenState extends State<SliderScreen> {
     final Color texto =
         ThemeUtils.getColorBasedOnBrightness(context, whiteColor, whiteColor);
 
-    // Obtener el tamaño de la pantalla para responsividad
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -178,7 +170,7 @@ class SliderScreenState extends State<SliderScreen> {
         });
       },
       child: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.02),
+        padding: EdgeInsets.all(screenWidth * 0.01),
         child: Card(
           color: primaryBackground,
           elevation: 8.0,
@@ -187,82 +179,80 @@ class SliderScreenState extends State<SliderScreen> {
           ),
           child: Column(
             children: [
-              SizedBox(
-                height: screenHeight * 0.5669, // Ajusta la altura según tu diseño
+              AspectRatio(
+                aspectRatio: 3 / 4.1, // Ajustar la relación de aspecto aquí
                 child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(screenWidth * 0.04)),
-                    child: Image.network(
-                      '${Config.imagen}${card.imageUrl}',
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Container(
-                          color:
-                              Colors.grey[200], // Color de fondo para el error
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.broken_image,
-                                size: 50.0,
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(screenWidth * 0.04)),
+                  child: Image.network(
+                    '${Config.imagen}${card.imageUrl}',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Container(
+                        color: Colors.grey[200],
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.broken_image,
+                              size: 50.0,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Imagen no disponible',
+                              style: TextStyle(
                                 color: Colors.grey,
+                                fontSize: 16.0,
                               ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Imagen no disponible',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    )),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
               Container(
-                    padding: EdgeInsets.all(screenWidth * 0.04),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: boxStyle,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(screenWidth * 0.04),
-                        bottomRight: Radius.circular(screenWidth * 0.04),
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: boxStyle,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(screenWidth * 0.04),
+                    bottomRight: Radius.circular(screenWidth * 0.04),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      truncatedTitle,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.06,
+                        fontWeight: FontWeight.bold,
+                        color: texto,
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          truncatedTitle,
-                          style: TextStyle(
-                            fontSize: screenWidth *
-                                0.06, // Ajustado para mantener proporción
-                            fontWeight: FontWeight.bold,
-                            color: texto,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.01),
-                        Text(
-                          '${card.propertyType} - ${card.propertyState}',
-                          style: TextStyle(
-                              fontSize: screenWidth * 0.045, color: texto),
-                        ),
-                        SizedBox(height: screenHeight * 0.01),
-                        Text(
-                          '${card.distanceKm?.toStringAsFixed(2)} km',
-                          style: TextStyle(
-                              fontSize: screenWidth * 0.04, color: texto),
-                        ),
-                      ],
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      '${card.propertyType} - ${card.propertyState}',
+                      style: TextStyle(
+                          fontSize: screenWidth * 0.045, color: texto),
                     ),
-                  ),
-                
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      '${card.distanceKm?.toStringAsFixed(2)} km',
+                      style: TextStyle(
+                          fontSize: screenWidth * 0.04, color: texto),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -299,11 +289,10 @@ class SliderScreenState extends State<SliderScreen> {
                   style: TextStyle(fontSize: screenWidth * 0.045)),
               onPressed: () {
                 setState(() {
-                  cards = List.from(originalCards); // Restablece las tarjetas
-                  controller =
-                      CardSwiperController(); // Crea un nuevo controlador
+                  cards = List.from(originalCards);
+                  controller = CardSwiperController();
                 });
-                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pop();
               },
             ),
           ],

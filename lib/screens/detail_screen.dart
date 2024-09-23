@@ -204,7 +204,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: horizontalPadding,
-                    vertical: verticalPadding * 2),
+                    vertical: verticalPadding * 3),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -218,16 +218,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                         size: 24,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.near_me,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                      onPressed: () {
-                        // Acción de navegación
-                      },
-                    ),
+
                   ],
                 ),
               ),
