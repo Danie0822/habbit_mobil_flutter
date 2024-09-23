@@ -13,9 +13,11 @@ class MessagesScreen extends StatefulWidget {
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStateMixin {
+class _MessagesScreenState extends State<MessagesScreen>
+    with TickerProviderStateMixin {
   final List<ChatCard> _chatCards = []; // Lista de tarjetas de chat
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>(); // Clave para la lista animada
+  final GlobalKey<AnimatedListState> _listKey =
+      GlobalKey<AnimatedListState>(); // Clave para la lista animada
   bool _isSearchVisible = false; // Estado de visibilidad de la búsqueda
   bool _isLoading = true; // Estado de carga
   late final AnimationController _controller; // Controlador de animación
@@ -42,9 +44,11 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   // Método para cargar mensajes
   Future<void> _loadMessages() async {
     try {
-      final messages = await MessageService().cargarChats(); // Cargar mensajes desde el servicio
+      final messages = await MessageService()
+          .cargarChats(); // Cargar mensajes desde el servicio
       setState(() {
-        _chatCards.clear(); // Limpiar la lista de tarjetas antes de agregar nuevas
+        _chatCards
+            .clear(); // Limpiar la lista de tarjetas antes de agregar nuevas
       });
       if (messages.isNotEmpty) {
         for (var message in messages) {
@@ -54,18 +58,23 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
             name: message.adminName ?? 'Sin nombre',
             message: message.lastMessage ?? 'Sin mensaje',
             time: message.time ?? '15:00',
-            imageUrl: message.imageUrl != null ? '${Config.imagen}${message.imageUrl}' : '',
+            imageUrl: message.imageUrl != null
+                ? '${Config.imagen}${message.imageUrl}'
+                : '',
             isRead: message.readMessage ?? false,
             isAdmin: message.senderType == 'Administrador',
           ));
         }
         for (int i = 0; i < _chatCards.length; i++) {
-          _listKey.currentState?.insertItem(i); // Insertar elementos en la lista animada
+          _listKey.currentState
+              ?.insertItem(i); // Insertar elementos en la lista animada
         }
       }
     } catch (e) {
       print('Error cargando chats: $e'); // Manejo de errores
     } finally {
+      if (!mounted)
+        return; // Evitar llamar a setState si el widget no está montado
       setState(() {
         _isLoading = false; // Cambiar el estado de carga
       });
@@ -111,7 +120,8 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
           }),
         );
       }
-      await Future.wait(futures); // Esperar a que todas las tarjetas sean removidas
+      await Future.wait(
+          futures); // Esperar a que todas las tarjetas sean removidas
       setState(() {
         _chatCards.clear();
       });
@@ -167,17 +177,23 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
                       topRight: Radius.circular(30),
                     ),
                     child: RefreshIndicator(
-                      onRefresh: _refreshMessages, // Refrescar mensajes al arrastrar hacia abajo
+                      onRefresh:
+                          _refreshMessages, // Refrescar mensajes al arrastrar hacia abajo
                       child: _isLoading
-                          ? const Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
+                          ? const Center(
+                              child:
+                                  CircularProgressIndicator()) // Mostrar indicador de carga
                           : _chatCards.isEmpty
-                              ? const Center(child: Text('No has iniciado ninguna conversación todavía.')) // Mostrar mensaje si no hay conversaciones
+                              ? const Center(
+                                  child: Text(
+                                      'No has iniciado ninguna conversación todavía.')) // Mostrar mensaje si no hay conversaciones
                               : AnimatedList(
                                   key: _listKey,
                                   padding: const EdgeInsets.only(top: 35.0),
                                   initialItemCount: _chatCards.length,
                                   itemBuilder: (context, index, animation) {
-                                    return _buildFilteredItem(context, index, animation); // Construir elemento filtrado
+                                    return _buildFilteredItem(context, index,
+                                        animation); // Construir elemento filtrado
                                   },
                                 ),
                     ),
@@ -192,7 +208,8 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   }
 
   // Construir elemento animado
-  Widget _buildAnimatedItem(BuildContext context, int index, Animation<double> animation) {
+  Widget _buildAnimatedItem(
+      BuildContext context, int index, Animation<double> animation) {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
@@ -206,8 +223,10 @@ class _MessagesScreenState extends State<MessagesScreen> with TickerProviderStat
   }
 
   // Construir elemento filtrado
-  Widget _buildFilteredItem(BuildContext context, int index, Animation<double> animation) {
-    if (_searchQuery.isEmpty || _chatCards[index].title.toLowerCase().contains(_searchQuery)) {
+  Widget _buildFilteredItem(
+      BuildContext context, int index, Animation<double> animation) {
+    if (_searchQuery.isEmpty ||
+        _chatCards[index].title.toLowerCase().contains(_searchQuery)) {
       return _buildAnimatedItem(context, index, animation);
     } else {
       return Container();
