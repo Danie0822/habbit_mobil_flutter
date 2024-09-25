@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/card_visit.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert_cancel.dart';
 import 'package:habbit_mobil_flutter/common/widgets/detail_agenda.dart';
 import 'package:habbit_mobil_flutter/common/widgets/header_screen.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
@@ -166,7 +167,8 @@ class _VisitScreenState extends State<VisitScreen>
 
 // Clase para mostrar la lista de visitas
 class ListVisits extends StatelessWidget {
-  const ListVisits({super.key, required this.visitsData, required this.parentContext});
+  const ListVisits(
+      {super.key, required this.visitsData, required this.parentContext});
 
   final List<VisitModel> visitsData;
   final BuildContext parentContext;
@@ -194,30 +196,20 @@ class ListVisits extends StatelessWidget {
           ),
           onDismissed: (direction) {},
           confirmDismiss: (direction) async {
-            return await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Confirmar'),
-                content: const Text('¿Estás seguro de eliminar este evento?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop(false); // Cancela la eliminación
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop(true); // Confirma la eliminación
-                      _deleteVisit(visit.IdVisita,
-                          parentContext); // Llama a la función de eliminación
-                    },
-                    child: const Text('Eliminar'),
-                  ),
-                ],
-              ),
+            return showAlertDialogAcceptCancel(
+              'Eliminar solicitud',
+              '¿Estás seguro de que deseas eliminar este evento?',
+              1,
+              context,
+              () {
+                Navigator.of(context).pop(true); // Confirma la eliminación
+                _deleteVisit(visit.IdVisita,
+                    parentContext); // Llama a la función de eliminación
+              },
+              () {
+                Navigator.of(context)
+                    .pop(false); // Return false to cancel dismissal
+              },
             );
           },
           child: GestureDetector(

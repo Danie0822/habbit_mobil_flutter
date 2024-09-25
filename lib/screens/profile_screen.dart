@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert_cancel.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/constants/const.dart';
@@ -132,21 +133,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             fontSize: fontSize, onTap: () {
           context.push('/settings');
         }), // Elemento de la lista: Ajustes
-        _buildProfileListItem(context,
-            text: 'Editar preferencias',
-            icon: Icons.widgets,
-            fontSize: fontSize,
-            onTap: () {
-              context.push('/editPreferences');
-            },
-           ), // Elemento de la lista: Editar preferencias
-        _buildProfileListItem(context,
-            text: 'Cerrar sesión',
-            icon: Icons.logout,
-            fontSize: fontSize,
-            onTap: () {
-              _logout();
-            },), // Elemento de la lista: Cerrar sesión
+        _buildProfileListItem(
+          context,
+          text: 'Editar preferencias',
+          icon: Icons.widgets,
+          fontSize: fontSize,
+          onTap: () {
+            context.push('/editPreferences');
+          },
+        ), // Elemento de la lista: Editar preferencias
+        _buildProfileListItem(
+          context,
+          text: 'Cerrar sesión',
+          icon: Icons.logout,
+          fontSize: fontSize,
+          onTap: () {
+            showAlertDialogAcceptCancel(
+              'Cerrar sesión',
+              '¿Estás seguro de que deseas cerrar sesión?',
+              1,
+              context,
+              _logout,
+              context.pop,
+            );
+          },
+        ), // Elemento de la lista: Cerrar sesión
       ],
     );
   }

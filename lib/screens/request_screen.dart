@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habbit_mobil_flutter/common/widgets/card_requests.dart';
 import 'package:habbit_mobil_flutter/common/widgets/custom_alert.dart';
+import 'package:habbit_mobil_flutter/common/widgets/custom_alert_cancel.dart';
 import 'package:habbit_mobil_flutter/common/widgets/detail_request.dart';
 import 'package:habbit_mobil_flutter/common/widgets/header_screen.dart';
 import 'package:habbit_mobil_flutter/data/controlers/request_controlers.dart';
@@ -46,6 +47,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       curve: Curves.easeInOut,
     ));
   }
+
   // Método para cargar las solicitudes
   Future<void> _loadRequests() async {
     try {
@@ -65,6 +67,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       });
     }
   }
+
   // Método para alternar la visibilidad de la búsqueda
   void _toggleSearch() {
     setState(() {
@@ -79,16 +82,19 @@ class _RequestsScreenState extends State<RequestsScreen>
       }
     });
   }
+
   // Método para cambiar la consulta de búsqueda
   void _onSearchChanged(String query) {
     setState(() {
       searchQuery = query;
       filteredRequests = requestsData
-          .where((request) =>
-              request.tituloSolicitud.toLowerCase().contains(query.toLowerCase()))
+          .where((request) => request.tituloSolicitud
+              .toLowerCase()
+              .contains(query.toLowerCase()))
           .toList();
     });
   }
+
   // Método para construir la pantalla
   @override
   Widget build(BuildContext context) {
@@ -140,7 +146,8 @@ class _RequestsScreenState extends State<RequestsScreen>
                             onRefresh: _loadRequests,
                             child: ListRequest(
                               requestsData: filteredRequests,
-                              parentContext: context, // Pasar el context principal
+                              parentContext:
+                                  context, // Pasar el context principal
                             ),
                           ),
               ),
@@ -162,6 +169,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       ),
     );
   }
+
   // Método para liberar recursos
   @override
   void dispose() {
@@ -169,9 +177,11 @@ class _RequestsScreenState extends State<RequestsScreen>
     super.dispose();
   }
 }
+
 // Widget de lista de solicitudes
 class ListRequest extends StatelessWidget {
-  const ListRequest({super.key, required this.requestsData, required this.parentContext});
+  const ListRequest(
+      {super.key, required this.requestsData, required this.parentContext});
 
   final List<RequestModel> requestsData;
   final BuildContext parentContext;
@@ -198,27 +208,21 @@ class ListRequest extends StatelessWidget {
           ),
           onDismissed: (direction) {},
           confirmDismiss: (direction) async {
-            return await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Confirmar'),
-                content: const Text('¿Estás seguro de eliminar esta solicitud?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                      _deleteRequest(request.idSolicitud, parentContext);
-                    },
-                    child: const Text('Eliminar'),
-                  ),
-                ],
-              ),
+            return showAlertDialogAcceptCancel(
+              'Eliminar solicitud',
+              '¿Estás seguro de que deseas eliminar esta solicitud?',
+              1,
+              context,
+              () {
+                Navigator.of(context)
+                    .pop(true); // Return true to confirm dismissal
+                _deleteRequest(
+                    request.idSolicitud, parentContext); // Perform the deletion
+              },
+              () {
+                Navigator.of(context)
+                    .pop(false); // Return false to cancel dismissal
+              },
             );
           },
           child: GestureDetector(
@@ -240,14 +244,17 @@ class ListRequest extends StatelessWidget {
       },
     );
   }
+
   // Método para eliminar una solicitud
   void _deleteRequest(int idSolicitud, BuildContext parentContext) async {
     final bool value = await RequestService().requestDelete(idSolicitud);
 
     if (value) {
-      showAlertDialog('Éxito', 'Se ha eliminado la solicitud exitosamente', 3, parentContext);
+      showAlertDialog('Éxito', 'Se ha eliminado la solicitud exitosamente', 3,
+          parentContext);
     } else {
-      showAlertDialog('Error', 'No se ha podido eliminar la solicitud', 2, parentContext);
+      showAlertDialog(
+          'Error', 'No se ha podido eliminar la solicitud', 2, parentContext);
     }
   }
 }

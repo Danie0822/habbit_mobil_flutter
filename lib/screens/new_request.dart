@@ -65,7 +65,8 @@ class _NewRequestState extends State<NewRequest> {
           _selectedZone = _zones.first;
         }
       });
-    } catch (e) { // En caso de error, muestra un mensaje
+    } catch (e) {
+      // En caso de error, muestra un mensaje
       showAlertDialog(
         'Error',
         'Ocurrió un error al cargar zonas y categorías. Por favor, intenta de nuevo.',
@@ -95,7 +96,7 @@ class _NewRequestState extends State<NewRequest> {
           _selectedCategory?.id,
           _selectedZone?.id,
           _selectedOption);
-          // Mostrar un mensaje de éxito o error
+      // Mostrar un mensaje de éxito o error
       if (result == 1) {
         showAlertDialogScreen(
             'Éxito', 'Se ha enviando la operación exitosamente ', 3, context,
@@ -209,6 +210,7 @@ class _NewRequestState extends State<NewRequest> {
                 const SizedBox(height: 10),
                 // Combobox de exclusividad
                 MyComboBox<String>(
+                  title: 'Exclusividad',
                   hint: 'Selecciona una opción',
                   items: const [
                     DropdownMenuItem<String>(
@@ -232,6 +234,7 @@ class _NewRequestState extends State<NewRequest> {
                 _categories.isEmpty
                     ? const CircularProgressIndicator()
                     : MyComboBox<Category>(
+                        title: 'Categoría',
                         hint: 'Selecciona una categoría',
                         items: _categories.map((category) {
                           return DropdownMenuItem<Category>(
@@ -247,10 +250,11 @@ class _NewRequestState extends State<NewRequest> {
                         },
                       ),
                 const SizedBox(height: 10),
-                // Combobox de zonas
+
                 _zones.isEmpty
                     ? const CircularProgressIndicator()
                     : MyComboBox<Zone>(
+                        title: 'Zona',
                         hint: 'Selecciona una zona',
                         items: _zones.map((zone) {
                           return DropdownMenuItem<Zone>(
