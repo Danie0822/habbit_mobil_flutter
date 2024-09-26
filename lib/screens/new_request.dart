@@ -38,6 +38,8 @@ class _NewRequestState extends State<NewRequest> {
   Zone? _selectedZone;
   Category? _selectedCategory;
   String? _selectedOption;
+    // Variable para controlar el estado de carga
+  bool _isLoading = false;
 
   // Método para cargar categorías y zonas
   @override
@@ -80,6 +82,10 @@ class _NewRequestState extends State<NewRequest> {
   void _saveInfo() async {
     // Validar los campos
     if (_formKey.currentState?.validate() ?? false) {
+            setState(() {
+        _isLoading = true; // Inicia la carga
+      });
+
       // Obtener los valores de los campos
       final title = _titleController.text;
       final descripcion = _descriptionController.text;
@@ -96,6 +102,10 @@ class _NewRequestState extends State<NewRequest> {
           _selectedCategory?.id,
           _selectedZone?.id,
           _selectedOption);
+          
+      setState(() {
+        _isLoading = false; // Finaliza la carga
+      });
       // Mostrar un mensaje de éxito o error
       if (result == 1) {
         showAlertDialogScreen(
@@ -271,12 +281,14 @@ class _NewRequestState extends State<NewRequest> {
                       ),
                 const SizedBox(height: 20),
                 // Botón para agregar solicitud
-                Align(
+                 Align(
                   alignment: Alignment.center,
-                  child: CustomButton(
-                    onPressed: _saveInfo,
-                    text: "Agregar solicitud",
-                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : CustomButton(
+                          onPressed: _saveInfo,
+                          text: "Agregar solicitud",
+                        ),
                 ),
               ],
             ),
