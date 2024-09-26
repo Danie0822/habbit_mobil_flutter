@@ -22,6 +22,12 @@ El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, d
 - 📸 **Visualización de Imágenes**: Ampliación y desplazamiento de imágenes de alta calidad para una mejor visualización.
 - 📏 **Diseño Responsivo**: Adaptación perfecta a diferentes tamaños de pantalla y dispositivos.
 
+## Estilo de Código
+
+- 🐫 Se utiliza el estilo `camelCase` para los nombres de variables y métodos.
+- 🐍 Se emplea el formato `snake_case` para los nombres de archivos.
+
+
 ## Dependencias
 
 Este proyecto utiliza las siguientes dependencias de Flutter:
