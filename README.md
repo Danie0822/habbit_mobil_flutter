@@ -26,6 +26,7 @@ El **Sistema de Inmuebles** es una aplicación móvil desarrollada en Flutter, d
 
 - 🐫 Se utiliza el estilo `camelCase` para los nombres de variables y métodos.
 - 🐍 Se emplea el formato `snake_case` para los nombres de archivos.
+- 🏛️ Se utiliza el estilo `PascalCase` para los nombres de clases.
 
 
 ## Dependencias
