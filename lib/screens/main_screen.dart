@@ -33,9 +33,9 @@ class _MainScreenState extends State<MainScreen> {
           _isMenuOpen = isOpen;
         });
       }),
-      MessagesScreen(),
-      RequestsScreen(),
-      ProfileScreen(),
+      const MessagesScreen(),
+      const RequestsScreen(),
+      const ProfileScreen(),
     ];
   }
 
@@ -46,43 +46,76 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
+  // Método para navegar entre páginas, solo si el menú está cerrado
   void _navigateToPage(int index) {
-    _pageController.jumpToPage(index);
-    setState(() {
-      _currentIndex = index; // Actualiza el índice actual
-    });
+    if (!_isMenuOpen) { // Solo navega si el menú está cerrado
+      _pageController.jumpToPage(index);
+      setState(() {
+        _currentIndex = index; // Actualiza el índice actual
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
+      body: CustomPageView(
         controller: _pageController,
         onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index; // Actualiza el índice actual
-          });
+          if (!_isMenuOpen) { // Permite el cambio de página solo si el menú está cerrado
+            setState(() {
+              _currentIndex = index; // Actualiza el índice actual
+            });
+          }
         },
-        children: _screens.map((screen) {
-          return PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
-              return FadeThroughTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                child: child,
-              );
-            },
-            child: screen,
-          );
-        }).toList(),
+        isMenuOpen: _isMenuOpen,
+        screens: _screens,
       ),
       bottomNavigationBar: _isMenuOpen
-        ? null // Oculta la barra de navegación cuando el menú está abierto
-        : BottomNavBar(
-            currentIndex: _currentIndex, // Usa la variable de índice actual
-            onTap: _navigateToPage,
-          ),
+          ? null // Oculta la barra de navegación cuando el menú está abierto
+          : BottomNavBar(
+              currentIndex: _currentIndex, // Usa la variable de índice actual
+              onTap: _navigateToPage,
+            ),
+    );
+  }
+}
+// Custom PageView para controlar la animación de transición de página
+class CustomPageView extends StatelessWidget {
+  final PageController controller;
+  final ValueChanged<int> onPageChanged;
+  final bool isMenuOpen;
+  final List<Widget> screens;
+
+  const CustomPageView({
+    Key? key,
+    required this.controller,
+    required this.onPageChanged,
+    required this.isMenuOpen,
+    required this.screens,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: controller,
+      onPageChanged: onPageChanged,
+      physics: isMenuOpen ? const NeverScrollableScrollPhysics() : null, // Deshabilita el desplazamiento si el menú está abierto
+      children: screens.map((screen) {
+        return isMenuOpen
+            ? screen // Muestra la pantalla directamente sin animación
+            : PageTransitionSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
+                  return FadeThroughTransition(
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    child: child,
+                  );
+                },
+                child: screen,
+              );
+      }).toList(),
     );
   }
 }
