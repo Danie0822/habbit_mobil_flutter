@@ -1,4 +1,5 @@
 class OnboardignInfo { 
+  // Atributos de la clase
   final String title; 
   final String descripcion;
   final String lottieUrl; 

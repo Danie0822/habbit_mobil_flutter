@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class InformativeCard extends StatelessWidget {
+  // Icono
   final IconData icon;
+  // Etiqueta
   final String label;
+  // Cantidad
   final String count;
   final bool showNotification; // Bandera para mostrar notificacións
 
@@ -19,23 +22,24 @@ class InformativeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+    // Color del texto
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
         ? Colors.black.withOpacity(0.2)
         : contenedorMensajeDark;
-
+    // Color de fondo del contenedor
     final Color backgroundColor = Theme.of(context).brightness == Brightness.light
         ? colorTextField
         : contenedorMensajeDark;
-    
+    // Color del texto del título
     final Color colorTextoTitulo = Theme.of(context).brightness == Brightness.light
         ? const Color(0xFF06065E)
         : colorTextField;
-    
+    // Color del texto secundario
     final Color colorTextoSub = Theme.of(context).brightness == Brightness.light
         ? Colors.black54
         : contenedorMensajeLight;
 
+    // Diseño de la tarjeta
     return IntrinsicWidth(
       child: Container(
         padding: const EdgeInsets.all(12.0),

@@ -8,6 +8,7 @@ import 'package:habbit_mobil_flutter/data/models/zone.dart'; // Modelo de zonas
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart'; // Constantes de colores
 
 class Filter extends StatefulWidget {
+  // Función para aplicar los filtros
   final void Function(int category, int zone, double min, double max)?
       onApplyFilters;
 
@@ -18,10 +19,15 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
+  // Rango de precios seleccionado
   var selectedRange = const RangeValues(400, 1000);
+  // Categoría seleccionada
   int selectedCategory = 0;
+  // Zona seleccionada
   int selectedZone = 0;
+  // Precio mínimo
   double minPrice = 0;
+  // Precio máximo
   double maxPrice = 0;
 
   // Listas que almacenarán los datos de la API.
@@ -36,6 +42,7 @@ class _FilterState extends State<Filter> {
     _loadFiltersData();
   }
 
+  // Cargar categorías, zonas y precios de la API
   Future<void> _loadFiltersData() async {
     try {
       // Llama a los controladores para cargar las categorías, zonas y precios.
@@ -62,6 +69,7 @@ class _FilterState extends State<Filter> {
     }
   }
 
+  // Construir opción de categoría
   Widget buildCategoryOption(Category category) {
     bool selected = category.id == selectedCategory;
 
@@ -96,9 +104,10 @@ class _FilterState extends State<Filter> {
     );
   }
 
+  // Construir opción de zona
   Widget buildZoneOption(Zone zone) {
     bool selected = zone.id == selectedZone;
-
+    // Devuelve un GestureDetector con la opción de zona
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -130,6 +139,7 @@ class _FilterState extends State<Filter> {
     );
   }
 
+  // Aplicar filtros
   void _applyFilters() {
     if (widget.onApplyFilters != null) {
       widget.onApplyFilters!(selectedCategory, selectedZone,

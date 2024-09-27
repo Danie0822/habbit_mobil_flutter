@@ -1,4 +1,5 @@
 class MessageResponse {
+  // Atributos
   final bool success;
   final int? status;
   final int? conversacionId;

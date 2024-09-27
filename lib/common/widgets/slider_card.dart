@@ -2,14 +2,23 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 class SliderCard extends StatelessWidget {
+  // Titulo
   final String title;
+  // Descripcion
   final String description;
+  // imagen path
   final String imagePath;
+  // El numero de pagina
   final int currentIndex;
+  // Cantidad de item
   final int itemCount;
+  // boton de texto
   final String buttonText;
+  // color de comienzo 
   final Color startColor;
+  // color de final
   final Color endColor;
+  // navefacion 
   final String navegation;
 
   const SliderCard({
@@ -29,14 +38,20 @@ class SliderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        // Tamaño de la screen
         double screenWidth = constraints.maxWidth;
         double screenHeight = constraints.maxHeight;
-
+        //Card padding
         double cardPadding = screenWidth * 0.04;
+        //Ancho de la card
         double cardHeight = screenWidth < 600 ? screenHeight * 0.35 : screenHeight * 0.4;
+        // el tamaño de la imagen
         double imageSize = screenWidth * 0.2;
+        // Tamaño del titulo
         double titleFontSize = screenWidth * 0.06;
+        // tamaño de la descripcion
         double descriptionFontSize = screenWidth * 0.025;
+        // tamaño del boton
         double buttonFontSize = screenWidth * 0.035;
 
         return Container(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
  // filtro de busqueda de propiedades 
- Widget buildFilter(String text, bool isSelected, IconData icon, BuildContext context) {
+Widget buildFilter(String text, bool isSelected, IconData icon, BuildContext context) {
     return Padding( 
       // padding de 8 pixeles a la derecha
       padding: const EdgeInsets.only(right: 8),

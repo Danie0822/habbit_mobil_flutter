@@ -3,13 +3,21 @@ import 'package:habbit_mobil_flutter/common/widgets/search_input.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class HeaderScreen extends StatelessWidget {
+  // Indica si el campo de búsqueda es visible
   final bool isSearchVisible;
+  // Función para alternar la visibilidad del campo de búsqueda
   final VoidCallback onSearchToggle;
+  // Animación de desplazamiento
   final Animation<Offset> offsetAnimation;
+  // Función para cambiar el texto de búsqueda
   final Function(String) onSearchChanged;
+  // Texto de ayuda del campo de búsqueda
   final String hintTextt;
+  // Título de la pantalla
   final String titleHeader;
+  // Color de fondo
   final Color backgroundColor;
+  // Altura del SizedBox
   final double sizedBoxHeight;
 
   const HeaderScreen({
@@ -73,7 +81,7 @@ class HeaderScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (isSearchVisible)
                 SlideTransition(
                   position: offsetAnimation,
@@ -85,7 +93,6 @@ class HeaderScreen extends StatelessWidget {
             ],
           ),
         ),
-
       ],
     );
   }

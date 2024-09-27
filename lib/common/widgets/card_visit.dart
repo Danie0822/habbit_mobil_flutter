@@ -1,12 +1,16 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class EventCard extends StatelessWidget {
-
+  // Título del evento
   final String titulo;
+  // Estado del evento
   final String estado;
+  // Fecha de inicio del evento
   final String fecha_inicio;
 
   const EventCard({
@@ -19,10 +23,13 @@ class EventCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    // Color de fondo del contenedor
       final Color container = ThemeUtils.getColorBasedOnBrightness(
       context, primaryColorAzul, contenedorMensajeDark);
     
+    // Color de la chip del estado
     Color color;
+
     //Se cambia de color la chip del estado segun el mismo
     switch(estado){
       case 'Cancelada':
@@ -37,6 +44,8 @@ class EventCard extends StatelessWidget {
       default:
       color = Colors.blueGrey;
     }
+
+    // Diseño de la cards
     return Container(
       margin: const EdgeInsets.all(4.0),
       padding: const EdgeInsets.all(16.0),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+// Widget de característica
 Widget buildFeature(IconData iconData, String text) {
   return Column(
     children: [

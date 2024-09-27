@@ -16,20 +16,29 @@ class MyComboBox<T> extends StatelessWidget {
     this.title, // Título para el ComboBox
   }) : super(key: key);
 
+  // Hint del ComboBox
   final String hint;
+  // Lista de ítems del ComboBox
   final List<DropdownMenuItem<T>> items;
+  // Función que se ejecuta cuando se selecciona un ítem
   final ValueChanged<T?> onChanged;
+  // Valor seleccionado
   final T? value;
+  // Icono del ComboBox
   final IconData? icon;
+  // Validador del ComboBox
   final FormFieldValidator<T>? validator;
+  // Color del icono
   final Color? iconColor;
   final String? title; // Título opcional para mostrar encima del ComboBox
 
   @override
   Widget build(BuildContext context) {
+    // Colores de los campos de texto
     Color fillColor = ThemeUtils.getColorBasedOnBrightness(
         context, colorTextField, colorTextFieldDark);
 
+    // Colores de los iconos
     Color actualIconColor = iconColor ??
         ThemeUtils.getColorBasedOnBrightness(
             context, iconLightColor, iconDarkColor);

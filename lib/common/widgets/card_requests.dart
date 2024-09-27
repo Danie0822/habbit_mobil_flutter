@@ -5,6 +5,7 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class RequestsCards extends StatelessWidget {
+  // Modelo de solicitud
   final RequestModel request;
 
   const RequestsCards({
@@ -14,16 +15,23 @@ class RequestsCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Colores de los contenedores de mensaje
     final Color container = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
 
     // Iconos y colores personalizados según el estado
     IconData icono;
+    // Color del icono
     Color iconColor;
+    // Color de fondo del icono
     Color iconBgColor;
+    // Nombre del administrador
     final nombreAdmin = request.nombreAdministrador;
+    // Fecha de la solicitud
     final fecha = request.fechaSolicitud; 
+    // Cambiar el icono y el color según el estado de la solicitud
     switch (request.estadoSolicitud) {
+      // Casos de estados de solicitudes
       case 'Revisando':
         icono = Icons.hourglass_top;
         iconColor = Colors.orangeAccent;
@@ -107,6 +115,7 @@ class RequestsCards extends StatelessWidget {
               ],
             ),
           ),
+          // Botón de edición de la solicitud cuando está en estado de revisión
           if (request.estadoSolicitud == 'Revisando')
             IconButton(
               icon: const Icon(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
+
 // Área de texto personalizada
 class MyTextArea extends StatelessWidget {
   const MyTextArea({
@@ -16,11 +17,16 @@ class MyTextArea extends StatelessWidget {
     this.keyboardType,
     this.maxLines = 2, // Máximo de líneas por defecto
   }) : super(key: key);
+
   // Campos de texto
   final String hint;
+  // Icon 
   final IconData icon;
+  // context
   final BuildContext context;
+  // contolador
   final TextEditingController? controller;
+  // Validor
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;

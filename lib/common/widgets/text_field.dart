@@ -19,7 +19,9 @@ class MyTextField extends StatelessWidget {
   }) : super(key: key);
   // Campos de texto
   final String hint;
+  // si es contraseña
   final bool isPassword;
+  // ICON
   final IconData icon;
   final BuildContext context;
   final TextEditingController? controller;

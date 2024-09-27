@@ -7,9 +7,10 @@ class EstadisticasController {
   late EstadisticasBusquedas estadisticasBusquedas;
 
   EstadisticasController() {
-    _initialize();
+    _initialize(); // Inicializa la estadística de búsqueda al crear una instancia del controlador
   }
 
+  // Inicializa la estadística de búsqueda con datos predeterminados y el ID del cliente
   Future<void> _initialize() async {
     final clientId = await StorageService.getClientId();
     estadisticasBusquedas = EstadisticasBusquedas(
@@ -25,6 +26,7 @@ class EstadisticasController {
     );
   }
 
+  // Actualiza la ubicación preferida del usuario
   void actualizarUbicacion({
     required String ubicacion,
     required double latitud,
@@ -35,6 +37,7 @@ class EstadisticasController {
     estadisticasBusquedas.longitudPreferida = longitud;
   }
 
+  // Actualiza el rango de precios preferido del usuario
   void actualizarPrecio({
     required double min,
     required double max,
@@ -43,29 +46,32 @@ class EstadisticasController {
     estadisticasBusquedas.precioMax = max;
   }
 
+  // Actualiza la categoría preferida del usuario
   void actualizarCat({
     required int idCat,
   }) {
     estadisticasBusquedas.idCategoria = idCat;
   }
 
+  // Actualiza la zona preferida del usuario
   void actualizarZone({
     required int idZona,
   }) {
     estadisticasBusquedas.idZona = idZona;
   }
 
+  // Envía las estadísticas al servidor
   Future<void> enviarEstadisticas() async {
     try {
+      // Actualiza la fecha de modificación antes de enviar los datos
       estadisticasBusquedas.fecha_modificacion =
           DateFormat('yyyy-MM-dd').format(DateTime.now());
 
       final json = estadisticasBusquedas.toJson();
 
+      // Realiza una solicitud POST para enviar las estadísticas al servidor
       final response =
           await ApiService.sendData('/preferencias/save/', 'POST', json);
-
-      print(json);
 
       if (response['success'] == true) {
         print('Estadísticas enviadas correctamente');
@@ -74,31 +80,30 @@ class EstadisticasController {
             'Error al enviar las estadísticas ${response['message']}');
       }
     } catch (error) {
-      throw Exception('Error al enviar las estadísticas sjj: $error');
+      throw Exception('Error al enviar las estadísticas: $error');
     }
   }
 
+  // Obtiene las estadísticas de búsqueda del cliente desde el servidor
   Future<EstadisticasBusquedas> obtenerEstadisticas() async {
     try {
       final idCliente = await StorageService.getClientId();
-      if (idCliente == null)
+      if (idCliente == null) {
         throw Exception('Hubo un error al encontrar el ID del cliente.');
+      }
 
+      // Realiza una solicitud GET para obtener las estadísticas del cliente
       final response = await ApiService.fetchData('/preferencias/$idCliente');
 
       if (response['success'] == true) {
-        final nestedData = response['data']; // Obtén el mapa anidado
+        final nestedData = response['data'];
 
-        // Verifica si 'data' es un mapa que contiene otra clave 'data' que es una lista
         if (nestedData is Map<String, dynamic>) {
-          final listData = nestedData['data']; // Obtén la lista dentro del mapa
+          final listData = nestedData['data'];
 
-          // Verifica si 'listData' es una lista
           if (listData is List && listData.isNotEmpty) {
-            final estadisticaData =
-                listData[0]; // Accede al primer elemento de la lista
+            final estadisticaData = listData[0];
 
-            // Verifica si el primer elemento es un mapa
             if (estadisticaData is Map<String, dynamic>) {
               final estadisticas =
                   EstadisticasBusquedas.fromJson(estadisticaData);
@@ -124,26 +129,20 @@ class EstadisticasController {
   }
 
   // Método para actualizar las preferencias del usuario
-Future<bool> updatePreferences(Map<String, dynamic>? formData) async {
-  try {
-    if (formData == null) {
-      throw Exception('Los datos del formulario no pueden ser nulos.');
-    }
+  Future<bool> updatePreferences(Map<String, dynamic>? formData) async {
+    try {
+      if (formData == null) {
+        throw Exception('Los datos del formulario no pueden ser nulos.');
+      }
 
-    // No conviertas formData a JSON, pásalo tal cual
-    final response = await ApiService.sendData('/preferencias/update', 'PUT', formData);
+      // Realiza una solicitud PUT para actualizar las preferencias
+      final response =
+          await ApiService.sendData('/preferencias/update', 'PUT', formData);
 
-    if (response['success'] == true) {
-      return true;
-    } else {
-      return false;
+      return response['success'] == true;
+    } catch (error) {
+      print('Error al actualizar las preferencias: $error');
+      throw Exception('Error al actualizar las preferencias: $error');
     }
-  } catch (error) {
-    print('Error al actualizar las preferencias: $error');
-    throw Exception('Error al actualizar las preferencias: $error');
   }
-}
-
-
-
 }

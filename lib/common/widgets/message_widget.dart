@@ -6,9 +6,13 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:intl/intl.dart';
 
 class MessageWidget extends StatelessWidget {
+  // Mensaje
   final String message;
+  // Si es mandado por el usuario
   final bool isSentByMe;
+  // Leido
   final bool readMessage;
+  // Tiempo
   final String time;
 
   const MessageWidget({
@@ -42,6 +46,7 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
+      //Definicion de los colores 
       final Color mandado = ThemeUtils.getColorBasedOnBrightness(
           context, colorBackGroundMessageLight, contenedorMensajeDark);
 

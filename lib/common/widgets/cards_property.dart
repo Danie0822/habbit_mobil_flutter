@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PropertyCard extends StatefulWidget {
+  // Propiedades del widget
+  // Indica si la propiedad es favorita
   final bool isFavorites;
+  // ID de la propiedad
   final int idPropiedad;
+  // Título de la propiedad
   final String title;
+  // Tipo de propiedad
   final String type;
+  // Precio de la propiedad
   final double price;
+  // Estado de la propiedad
   final String status;
+  // Dirección de la propiedad
   final String direction;
+  // URL de la imagen
   final String imageUrl;
 
   // Método copyWith que permite crear una copia del PropertyCard y modificar valores específicos
@@ -51,6 +60,7 @@ class PropertyCard extends StatefulWidget {
 }
 
 class _PropertyCardState extends State<PropertyCard> {
+  // Estado de favorito
   late bool isFavorite;
 
   @override
@@ -62,6 +72,7 @@ class _PropertyCardState extends State<PropertyCard> {
 
   @override
   Widget build(BuildContext context) {
+    // Altura del contenedor
     double containerHeight = MediaQuery.of(context).size.width * 0.6;
 
     // Trunca el título si es muy largo
@@ -72,6 +83,7 @@ class _PropertyCardState extends State<PropertyCard> {
     // Trunca y limpia la dirección
     String truncatedDirection = cleanAndTruncateDirection(widget.direction);
 
+    // Contenedor de la tarjeta
     return GestureDetector(
       onTap: () {
         context.push('/detalle', extra: {
@@ -184,6 +196,7 @@ class _PropertyCardState extends State<PropertyCard> {
     );
   }
 
+  // Función que limpia y trunca la dirección
   String cleanAndTruncateDirection(String direction) {
     String cleanedDirection = direction.length > 10 ? direction.substring(10) : direction;
     return cleanedDirection.length > 50
@@ -191,6 +204,7 @@ class _PropertyCardState extends State<PropertyCard> {
         : cleanedDirection;
   }
 
+  // Función que carga la imagen
   Widget _buildImage() {
     try {
       if (widget.imageUrl.isNotEmpty) {
@@ -211,6 +225,7 @@ class _PropertyCardState extends State<PropertyCard> {
     return _defaultIcon();
   }
 
+  // Función que muestra un icono por defecto
   Widget _defaultIcon() {
     return Container(
       color: Colors.grey,

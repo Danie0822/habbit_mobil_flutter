@@ -1,4 +1,5 @@
 class SliderResponse {
+  // Atributos de la clase
   final bool success;
   final int? status;
   final int? idProperty;

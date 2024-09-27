@@ -1,4 +1,5 @@
 class VisitModel {
+  // Atributos de la clase
   final int IdVisita;
   final String tituloVisita;
   final DateTime fechaHoraInicio;
@@ -8,7 +9,7 @@ class VisitModel {
   final String estadoVisita;
   final int idAdmin;
   final String nombreAdmin;
-
+  // Constructor de la clase
   VisitModel({
     required this.IdVisita,
     required this.tituloVisita,
@@ -20,7 +21,7 @@ class VisitModel {
     required this.idAdmin,
     required this.nombreAdmin
   });
-
+  // Método de fábrica para convertir un mapa en un objeto de tipo VisitModel
   factory VisitModel.fromJson(Map<String, dynamic> json) {
     return VisitModel(
       IdVisita: json['id_visita'],
@@ -34,7 +35,7 @@ class VisitModel {
       nombreAdmin: json['nombre_administrador'],
     );
   }
-
+  // Método estático para crear una lista de instancias de VisitModel a partir de una lista de JSON
   static List<VisitModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList
         .map((json) => VisitModel.fromJson(json as Map<String, dynamic>))

@@ -3,11 +3,17 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 class SectionCardWithImage extends StatelessWidget {
+  // TITULO
   final String title;
+  // DESCRIPCION
   final String description;
+  // FONDO DE COLOR GRADIENTE
   final LinearGradient backgroundGradient;
+  // Texto del boton
   final String buttonText;
+  // imagen path
   final String imagePath;
+  // navegacion
   final String navegation;
 
 

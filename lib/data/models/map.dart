@@ -1,4 +1,5 @@
 class MapResponse {
+  // Atributos de la clase MapResponse
   final bool success;
   final int? status;
   final int? idProperty;
@@ -27,6 +28,7 @@ class MapResponse {
     this.statutsProperty,
   });
 
+  // Método de fábrica para crear una instancia de MapResponse a partir de un JSON
   factory MapResponse.fromJson(Map<String, dynamic> json) {
     return MapResponse(
       success: json['success'] ?? false,
@@ -55,7 +57,7 @@ class MapResponse {
       statutsProperty: json['estado_propiedad'] as String?,
     );
   }
-
+  // Método estático para crear una lista de instancias de MapResponse a partir de una lista de JSON
   static List<MapResponse> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => MapResponse.fromJson(json)).toList();
   }

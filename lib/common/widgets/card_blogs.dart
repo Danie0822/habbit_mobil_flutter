@@ -5,6 +5,7 @@ import 'package:habbit_mobil_flutter/data/models/blogs_main.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
 
 class BlogCard extends StatelessWidget {
+  // Datos del blog
   final BlogsResponse dataBlogs;
 
   const BlogCard({
@@ -14,9 +15,11 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Valoración del blog
     final double valoracion = dataBlogs.rating ?? 0.0;
+    // Verificar si el tema actual es oscuro
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    // Contenedor de la tarjeta
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 5.0),

@@ -4,10 +4,15 @@ import 'package:habbit_mobil_flutter/utils/constants/colors_menu.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 
 class CustomAlertDialogAcceptCancel extends StatelessWidget {
+  // Título de la alerta
   final String title;
+  // Mensaje de la alerta
   final String message;
+  // Tipo de alerta
   final int type;
+  // Función al aceptar
   final void Function() onAccept;
+  // Función al cancelar
   final void Function() onCancel;
 
   const CustomAlertDialogAcceptCancel({
@@ -176,6 +181,7 @@ class CustomAlertDialogAcceptCancel extends StatelessWidget {
   }
 }
 
+// Mostrar alerta con botón de aceptar y cancelar
 Future<bool?> showAlertDialogAcceptCancel(
   String title,
   String message,
@@ -184,6 +190,7 @@ Future<bool?> showAlertDialogAcceptCancel(
   void Function() onAccept,
   void Function() onCancel,
 ) {
+  // Mostrar la alerta
   return showDialog<bool?>(
     context: context,
     builder: (BuildContext context) {

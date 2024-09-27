@@ -5,10 +5,10 @@ import 'package:habbit_mobil_flutter/common/styles/text.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class PrefWidget extends StatefulWidget {
-  final String text;
-  final String lottieUrl;
-  final String destinationRoute;
-  final int index;
+  final String text; // texto
+  final String lottieUrl; // url de la animación
+  final String destinationRoute; // ruta de destino
+  final int index; // índice
 
   const PrefWidget({
     Key? key,
@@ -23,21 +23,26 @@ class PrefWidget extends StatefulWidget {
 }
 
 class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
+  // Controlador de animación de desvanecimiento
   late AnimationController _fadeController;
+  // Animación de desvanecimiento
   late Animation<double> _fadeAnimation;
+  // Controlador de animación de Lottie
   late AnimationController _lottieController;
 
   @override
   void initState() {
     super.initState();
-
+    // Inicializar controlador de animación de desvanecimiento
     _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    // Inicializar animación de desvanecimiento
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+    // Iniciar animación de desvanecimiento
     _fadeController.forward();
-
+    // Inicializar controlador de animación de Lottie
     _lottieController = AnimationController(
       vsync: this,
     );
@@ -52,6 +57,7 @@ class _PrefWidgetState extends State<PrefWidget> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // Altura de la animación de Lottie
     final double lottieHeight = MediaQuery.of(context).size.height * 0.12;
 
     return AnimatedContainer(

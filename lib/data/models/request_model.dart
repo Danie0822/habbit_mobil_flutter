@@ -1,5 +1,6 @@
 // Contiene la clase RequestModel que es un modelo de datos de una solicitud de un cliente
 class RequestModel {
+  // Atributos de la clase RequestModel
   final int idSolicitud;
   final String tituloSolicitud;
   final String descripcionSolicitud;
@@ -17,7 +18,7 @@ class RequestModel {
   final String nombreCategoria;
   final int? idAdministrador;
   final String nombreAdministrador;
-
+  // Constructor de la clase RequestModel
   RequestModel({
     required this.idSolicitud,
     required this.tituloSolicitud,

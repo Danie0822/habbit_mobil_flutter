@@ -33,6 +33,7 @@ class RequestService {
     }
   }
 
+  // Método para cargar una solicitud
   Future<int> requestSave(titulo, descripcion, dirrecion, precio, ganancia,
       categoria, zona, exclusividad) async {
     try {
@@ -70,6 +71,7 @@ class RequestService {
     }
   }
 
+  // Método para actualizar una solicitud
   Future<int> requestUpdate(
       titulo, descripcion, dirrecion, precio, ganancia, idSolicitud) async {
     try {
@@ -89,7 +91,7 @@ class RequestService {
         data,
       );
       // Convertir la respuesta en el modelo
-        final loginResponse = SendChatResponse.fromJson(response);
+      final loginResponse = SendChatResponse.fromJson(response);
       if (loginResponse.status == 200) {
         return 1;
         // 401 es un error de validaciones
@@ -103,6 +105,7 @@ class RequestService {
     }
   }
 
+  // Método para eliminar una solicitud
   Future<bool> requestDelete(idRequest) async {
     try {
       // Enviar la petición de eliminación al servidor

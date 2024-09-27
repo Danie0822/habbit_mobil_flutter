@@ -3,9 +3,11 @@ import 'package:habbit_mobil_flutter/data/models/send_chat.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 
+// Clase para manejar las propiedades y sus detalles
 class PropertiesService {
+  // Método para obtener todas las propiedades del cliente actual
   Future<List<PropertiesResponse>> getProperties() async {
-     try {
+    try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
       final idCliente = await StorageService.getClientId();
 
@@ -13,14 +15,14 @@ class PropertiesService {
         throw Exception('Client ID is null');
       }
 
-      // Define el payload del mensaje
+      // Define el payload de la solicitud con el ID del cliente
       final formData = {'id_cliente': idCliente};
 
-      // Envía los datos a la API usando POST
+      // Envía los datos a la API usando una solicitud POST
       final response = await ApiService.sendData(
         '/propiedades/movil',
-        'POST', // Cambia a POST
-        formData, // Envía el cuerpo de la solicitud
+        'POST',
+        formData,
       );
 
       // Verifica que la respuesta tenga la estructura esperada
@@ -28,6 +30,7 @@ class PropertiesService {
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
         if (data is List<dynamic>) {
+          // Convierte la lista de datos a una lista de objetos PropertiesResponse
           return PropertiesResponse.fromJsonList(data);
         } else {
           throw Exception('Unexpected data format in response');
@@ -41,10 +44,13 @@ class PropertiesService {
     }
   }
 
+  // Método para obtener propiedades con un filtro específico (filt1)
   Future<List<PropertiesResponse>> getPropertiesInm() async {
     try {
+      // Realiza una solicitud GET al endpoint '/propiedades/movilFilt1'
       final response = await ApiService.fetchData('/propiedades/movilFilt1');
 
+      // Verifica la estructura de la respuesta
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
@@ -61,22 +67,26 @@ class PropertiesService {
     }
   }
 
+  // Método para obtener propiedades usando filtros de categoría, zona, precio mínimo y máximo
   Future<List<PropertiesResponse>> getPropertiesFilters(
       category, zone, min, max) async {
     try {
+      // Define los datos para los filtros
       final data = {
         'categoria': category,
         'zona': zone,
         'min': min,
         'max': max
       };
+
+      // Envía los datos a la API usando una solicitud POST
       final response =
           await ApiService.sendData('/propiedades/movilFilt3', 'POST', data);
 
+      // Verifica la estructura de la respuesta
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
-
         if (data is List<dynamic>) {
           return PropertiesResponse.fromJsonList(data);
         } else {
@@ -90,10 +100,13 @@ class PropertiesService {
     }
   }
 
+  // Método para obtener propiedades que son proyectos (filt2)
   Future<List<PropertiesResponse>> getPropertiesProyects() async {
     try {
+      // Realiza una solicitud GET al endpoint '/propiedades/movilFilt2'
       final response = await ApiService.fetchData('/propiedades/movilFilt2');
 
+      // Verifica la estructura de la respuesta
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
@@ -111,6 +124,7 @@ class PropertiesService {
     }
   }
 
+  // Método para obtener propiedades favoritas del cliente actual
   Future<List<PropertiesResponse>> getPropertiesFavorites() async {
     try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
@@ -120,17 +134,17 @@ class PropertiesService {
         throw Exception('Client ID is null');
       }
 
-      // Define el payload del mensaje
+      // Define el payload de la solicitud con el ID del cliente
       final formData = {'id_cliente': idCliente};
 
-      // Envía los datos a la API usando POST
+      // Envía los datos a la API usando una solicitud POST
       final response = await ApiService.sendData(
         '/propiedades/movilFavoritos',
-        'POST', // Cambia a POST
-        formData, // Envía el cuerpo de la solicitud
+        'POST',
+        formData,
       );
 
-      // Verifica que la respuesta tenga la estructura esperada
+      // Verifica la estructura de la respuesta
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
@@ -148,6 +162,7 @@ class PropertiesService {
     }
   }
 
+  // Método para agregar una propiedad a los favoritos del cliente
   Future<bool> addPropertyToFavorites(int idPropiedad) async {
     try {
       // Obtiene el ID del cliente desde el servicio de almacenamiento
@@ -157,24 +172,25 @@ class PropertiesService {
         throw Exception('Client ID is null');
       }
 
-      // Define el payload del mensaje
+      // Define el payload de la solicitud con el ID del cliente y de la propiedad
       final formData = {
         'id_cliente': idCliente,
         'id_propiedad': idPropiedad,
       };
 
-      // Envía los datos a la API usando POST
+      // Envía los datos a la API usando una solicitud POST
       final response = await ApiService.sendData(
         '/propiedades/agregarFavorito',
-        'POST', // Cambia a POST
-        formData, // Envía el cuerpo de la solicitud
+        'POST',
+        formData,
       );
-      // Convertir la respuesta en el modelo
+
+      // Convierte la respuesta en el modelo SendChatResponse
       final loginResponse = SendChatResponse.fromJson(response);
       if (loginResponse.success) {
-        return true;
+        return true; // Retorna true si la propiedad se agregó correctamente
       } else {
-        return false;
+        return false; // Retorna false si no se pudo agregar la propiedad
       }
     } catch (error) {
       throw Exception('Error adding property to favorites: $error');

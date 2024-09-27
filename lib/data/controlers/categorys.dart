@@ -5,15 +5,18 @@ class CategorysService {
   Future<List<Category>> getCategories() async {
     try {
       // Llamada a la API
-
       final response = await ApiService.fetchData('/categorias');
 
       // Print de la respuesta completa
       final innerData = response['data'];
-      if (innerData is Map<String, dynamic>) {
-        final data = innerData['data'];
 
+      // Verifica si los datos internos tienen el formato esperado (un mapa)
+      if (innerData is Map<String, dynamic>) {
+        // Extrae la lista de categooria de los datos internos
+        final data = innerData['data'];
+        // Verifica si la lista tiene el formato esperado (una lista dinámica)
         if (data is List<dynamic>) {
+          // Convierte la lista dinámica a una lista
           return Category.fromJsonList(data);
         } else {
           throw Exception('Unexpected API response');

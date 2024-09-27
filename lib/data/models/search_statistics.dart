@@ -1,4 +1,5 @@
 class EstadisticasBusquedas {
+  // Atributos
   String? idCliente;
   String ubicacionPreferida;
   double latitudPreferida;
@@ -8,7 +9,7 @@ class EstadisticasBusquedas {
   String fecha_modificacion;
   int idCategoria;
   int idZona;
-
+  // Constructor
   EstadisticasBusquedas({
     this.idCliente,
     required this.ubicacionPreferida,
@@ -20,7 +21,7 @@ class EstadisticasBusquedas {
     required this.idCategoria,
     required this.idZona,
   });
-
+  // Método para convertir JSON a un objeto EstadisticasBusquedas
   Map<String, dynamic> toJson() => {
     'id_cliente': idCliente,
     'ubicacion_preferida': ubicacionPreferida,
@@ -32,7 +33,7 @@ class EstadisticasBusquedas {
     'id_categoria': idCategoria,
     'id_zona': idZona,
   };
-
+  // Método de fábrica para crear una instancia de EstadisticasBusquedas a partir de un JSON
   factory EstadisticasBusquedas.fromJson(Map<String, dynamic> json) {
     return EstadisticasBusquedas(
       idCliente: json['id_cliente'] is int
@@ -60,7 +61,7 @@ class EstadisticasBusquedas {
           : (json['id_zona'] as num).toInt(),
     );
   }
-
+  // Método estático para crear una lista de instancias de EstadisticasBusquedas a partir de una lista de JSON
   @override
   String toString() {
     return 'EstadisticasBusquedas(idCliente: $idCliente, ubicacionPreferida: $ubicacionPreferida, latitudPreferida: $latitudPreferida, longitudPreferida: $longitudPreferida, precioMin: $precioMin, precioMax: $precioMax, fecha_modificacion: $fecha_modificacion, idCategoria: $idCategoria, idZona: $idZona)';

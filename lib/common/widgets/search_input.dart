@@ -3,7 +3,9 @@ import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 // Entrada de búsqueda
 class SearchInput extends StatelessWidget {
+  // Cambio
   final ValueChanged<String>? onChanged;
+  // Hint del texto
   final String? hintText;
 
   const SearchInput({super.key, this.onChanged, this.hintText});

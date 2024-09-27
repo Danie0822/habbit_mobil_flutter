@@ -1,7 +1,8 @@
 class PrecioRange {
+  // Atributos de la clase PrecioRange
   final double minimo;
   final double maximo;
-
+  // Constructor de la clase PrecioRange
   PrecioRange({required this.minimo, required this.maximo});
 
   // Método para convertir JSON a un objeto PrecioRange

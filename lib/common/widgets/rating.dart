@@ -18,7 +18,9 @@ class _RatingModalState extends State<RatingModal> {
 
   @override
   Widget build(BuildContext context) {
+    // Tamaño
     final size = MediaQuery.of(context).size;
+    // Si esta en modo oscuro
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -31,11 +33,13 @@ class _RatingModalState extends State<RatingModal> {
 
 void _updateInfo() async {
   try {
+    //Resultado
     final result = await _updateController.ratingSend(widget.idSolicitud, _userRating);
 
     // Cerrar el modal de RatingModal antes de mostrar la alerta
     Navigator.pop(context); 
 
+    // Resultado dependiendo de que si ya se mando 
     if (result == 1) {
       showAlertDialog(
         'Éxito',
@@ -122,8 +126,6 @@ void _updateInfo() async {
                       });
                     } else {
                       _updateInfo();
-                     
-                     
                     }
                   },
                   style: ElevatedButton.styleFrom(

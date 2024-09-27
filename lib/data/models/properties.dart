@@ -1,4 +1,5 @@
 class PropertiesResponse {
+  // Definimos los campos que vamos a recibir del JSON
   final int? idPropiedad;
   final String? title;
   final String? status;
@@ -15,7 +16,7 @@ class PropertiesResponse {
   final String? imageUrl;
   final String? admin;
   final int isFavorite; // Campo agregado para isFavorite
-
+  // Constructor de la clase PropertiesResponse
   PropertiesResponse({
     required this.idPropiedad,
     this.title,
@@ -34,7 +35,7 @@ class PropertiesResponse {
     this.admin,
     this.isFavorite = 0, // Inicializamos isFavorite como false por defecto
   });
-
+  // Método de fábrica para crear una instancia de PropertiesResponse a partir de un JSON
   factory PropertiesResponse.fromJson(Map<String, dynamic> json) {
     return PropertiesResponse(
       idPropiedad: json['id_propiedad'] as int?,
@@ -57,7 +58,7 @@ class PropertiesResponse {
       isFavorite: json['isFavorite'] as int? ?? 0, // Obtener isFavorite del JSON
     );
   }
-  
+  // Método estático para crear una lista de instancias de PropertiesResponse a partir de una lista de JSON
   static List<PropertiesResponse> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => PropertiesResponse.fromJson(json)).toList();
   }

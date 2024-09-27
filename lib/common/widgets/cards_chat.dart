@@ -4,13 +4,21 @@ import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 
 class ChatCard extends StatelessWidget {
+  // ID de la conversación
   final int idConversacion;
+  // Título de la conversación
   final String title;
+  // Nombre del usuario
   final String name;
+  // Mensaje
   final String message;
+  // Hora del mensaje
   final String time;
+  // URL de la imagen
   final String imageUrl;
+  // Indica si el mensaje ha sido leído
   final bool isRead;
+  // Indica si el usuario es administrador
   final bool isAdmin;
 
   const ChatCard({
@@ -26,21 +34,32 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ancho de la pantalla
     double screenWidth = MediaQuery.of(context).size.width;
+    // tamaño de fuente de titulo
     double titleFontSize = screenWidth * 0.05;
+    // tamaño de fuente de mensaje
     double messageFontSize = screenWidth * 0.035;
+    // tamaño de fuente de nombre
     double nameFontSize = screenWidth * 0.04;
+    // tamaño de fuente de hora
     double timeFontSize = screenWidth * 0.03;
 
+    // Color de fondo del contenedor
     final Color containerMessage = ThemeUtils.getColorBasedOnBrightness(
         context, contenedorMensajeLight, contenedorMensajeDark);
+    // Color del texto
     final Color textName = ThemeUtils.getColorBasedOnBrightness(
         context, textColorNegro, lightTextColor);
 
+    // Formatear la fecha
     String formattedDate = 'Fecha inválida';
     try {
+      // Si la fecha no está vacía
       if (time.isNotEmpty) {
+        // Parsear la fecha
         DateTime parsedDate = DateTime.parse(time);
+        // Formatear la fecha
         formattedDate =
             '${parsedDate.day.toString().padLeft(2, '0')}/${parsedDate.month.toString().padLeft(2, '0')}/${parsedDate.year}';
       }
@@ -48,11 +67,14 @@ class ChatCard extends StatelessWidget {
       print('Error parsing date: $e');
     }
 
+    // Truncar el título y el mensaje
     String truncatedTitle =
         title.length > 18 ? '${title.substring(0, 18)}...' : title;
+    // Truncar el mensaje
     String truncatedMessage =
         message.length > 30 ? '${message.substring(0, 30)}...' : message;
 
+    // Tarjeta de chat
     return GestureDetector(
       onTap: () {
         context.push('/chat', extra: {
@@ -161,7 +183,7 @@ class ChatCard extends StatelessWidget {
       ),
     );
   }
-
+  // Construir imagen
   Widget _buildImage() {
     try {
       if (imageUrl.isNotEmpty) {
@@ -181,7 +203,7 @@ class ChatCard extends StatelessWidget {
     }
     return _defaultIcon();
   }
-
+  // Icono por defecto
   Widget _defaultIcon() {
     return const Icon(
       Icons.account_circle,
