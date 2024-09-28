@@ -4,6 +4,7 @@ import 'package:photo_view/photo_view.dart';
 
 // Pantalla para mostrar una foto en detalle desde una URL en línea
 class PhotoDetailScreen extends StatelessWidget {
+  // URL de la imagen
   final String imageUrl;
 
   const PhotoDetailScreen({required this.imageUrl});

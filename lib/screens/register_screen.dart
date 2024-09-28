@@ -21,18 +21,27 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen>
     with TickerProviderStateMixin {
+  //Creacion de la llave global para el formulario
   final _formKey = GlobalKey<FormState>();
+  //Variable para mostrar la contraseña
   bool showPassword = false;
+  //Instancia de la clase AuthService
   final AuthService _authService = AuthService();
-
+  //Controlador de animacion para el texto
   late AnimationController _textController;
+  //Animacion para el texto
   late Animation<Offset> _textAnimation;
+  //Controlador de animacion para los inputs
   late AnimationController _inputsController;
+  //Animacion para los inputs
   late Animation<Offset> _inputsAnimation;
-
+  //Controlador para el input de nombre
   final TextEditingController _nameController = TextEditingController();
+  //Controlador para el input de email
   final TextEditingController _emailController = TextEditingController();
+  //Controlador para el input de telefono
   final TextEditingController _phoneController = TextEditingController();
+  //Controlador para el input de contraseña
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -44,6 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    //Animacion para el texto
     _textAnimation = Tween<Offset>(
       begin: const Offset(-1.0, 0.0),
       end: Offset.zero,
@@ -62,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     ).animate(
       CurvedAnimation(parent: _inputsController, curve: Curves.easeInOut),
     );
-
+    //Iniciar la animacion
     _textController.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         _inputsController.forward();
@@ -82,7 +92,11 @@ class _RegisterScreenState extends State<RegisterScreen>
       if (success) {
         context.go('/thanks_register');
       } else {
-        showAlertDialog('Error', 'Este correo ya ha sido registrado en el programa por favor intente con otro', 1, context);
+        showAlertDialog(
+            'Error',
+            'Este correo ya ha sido registrado en el programa por favor intente con otro',
+            1,
+            context);
       }
     }
   }
@@ -213,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         ),
                         SizedBox(height: height * 0.02),
                         Stack(
-                          children: [ 
+                          children: [
                             //Widget del input para la contraseña
                             MyTextField(
                               context: context,

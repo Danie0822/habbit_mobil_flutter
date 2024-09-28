@@ -26,11 +26,14 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
 
   // Inicializa el rango con valores predeterminados que se actualizarán más tarde.
   var selectedRange = RangeValues(0, 0);
+  // Inicializa los valores mínimo y máximo con 0.
   double minPrice = 0;
   double maxPrice = 0;
+  // Inicializa isLoading en true para mostrar un indicador de carga.
   bool isLoading = true;
-
+  // Inicializa el controlador de precios y estadísticas.
   final DataPrices _dataPreferences = DataPrices();
+  // Inicializa el controlador de estadísticas.
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -51,6 +54,7 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
     _fetchData();
   }
 
+  //Funcion para cerrar el controlador de animación
   void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
     //print('Datos de EstadisticasBusquedas: $estadisticas');
@@ -60,6 +64,7 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
     await _fetchPrices();
   }
 
+  //Funcion para cerrar el controlador de animación
   Future<void> _fetchPrices() async {
     try {
       // Cargar el rango de precios desde la API
@@ -96,24 +101,29 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
   //Funcion para enviar datos al controlador
   void _handlePrecioUpdate() async {
     try {
+      // Obtener el ID del cliente del almacenamiento local
       final clientId = await StorageService.getClientId();
+      // Si no se puede obtener el ID del cliente, lanza una excepción
       if (clientId == null) {
+        /// Lanza una excepción si no se puede obtener el ID del cliente.
         throw Exception('No se pudo obtener el ID del cliente.');
       }
+      // Validar el rango de precios seleccionado
       String? validationError = CustomValidator.validatePriceRange(
         selectedRange.start.toDouble(),
         selectedRange.end.toDouble(),
       );
-
+      // Si hay un error de validación, muestra un cuadro de diálogo de advertencia
       if (validationError != null) {
         showAlertDialog('Advertencia', validationError, 1, context);
       } else {
+        // Si no hay errores de validación, envía los datos al controlador
         final formData = {
           'id_cliente': clientId,
           'precio_min': selectedRange.start.toDouble(),
           'precio_max': selectedRange.end.toDouble(),
         };
-
+        // Actualiza las preferencias de precios en la API
         final success =
             await _estadisticasController.updatePreferences(formData);
         if (success) {

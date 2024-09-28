@@ -25,11 +25,14 @@ class _PriceScreenState extends State<PriceScreen>
 
   // Inicializa el rango con valores predeterminados que se actualizarán más tarde.
   var selectedRange = RangeValues(0, 0);
+  // Inicializa los valores mínimo y máximo con 0.
   double minPrice = 0;
   double maxPrice = 0;
+  // Inicializa isLoading en verdadero.
   bool isLoading = true;
-
+  // Inicializa el controlador de estadísticas.
   final DataPrices _dataPreferences = DataPrices();
+  // Inicializa el controlador de estadísticas.
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -65,11 +68,12 @@ class _PriceScreenState extends State<PriceScreen>
 
   //Funcion para enviar datos al controlador
   void _handlePrecio() async {
+    // Valida el rango de precios seleccionado.
     String? validationError = CustomValidator.validatePriceRange(
       selectedRange.start.toDouble(),
       selectedRange.end.toDouble(),
     );
-
+    // Si hay un error de validación, muestra una alerta.
     if (validationError != null) {
       showAlertDialog('Advertencia', validationError, 1, context);
     } else {

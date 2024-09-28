@@ -25,9 +25,7 @@ class ThanksRegister extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05,
-            vertical: height * 0.12
-          ),
+              horizontal: width * 0.05, vertical: height * 0.12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -52,8 +50,7 @@ class ThanksRegister extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppStyles.subtitle1(context),
               ),
-              SizedBox(
-                  height: height * 0.08), 
+              SizedBox(height: height * 0.08),
               Align(
                 alignment: Alignment.center,
                 //Widget del boton para seguir a la siguiente pantalla

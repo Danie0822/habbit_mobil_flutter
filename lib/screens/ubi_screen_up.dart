@@ -249,11 +249,9 @@ class _UbiScreenStateUp extends State<UbiScreenUp> {
                 _selectedLocationAddress ?? "No hay una ubicación seleccionada",
                 style:
                     AppStyles.subtitle1(context)?.copyWith(color: colorTexto),
-                overflow: TextOverflow
-                    .ellipsis,
-                maxLines:
-                    2,
-                softWrap: true, 
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                softWrap: true,
               ),
             ),
             SizedBox(height: height * 0.08),

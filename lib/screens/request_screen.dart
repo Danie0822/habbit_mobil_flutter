@@ -23,12 +23,19 @@ class _RequestsScreenState extends State<RequestsScreen>
     with SingleTickerProviderStateMixin {
   // Lista de solicitudes
   List<RequestModel> requestsData = [];
+  // Lista de solicitudes filtradas
   List<RequestModel> filteredRequests = [];
+  // Variables de estado
   bool isLoading = true;
+  // Mensaje de error
   String? errorMessage;
+  // Visibilidad de la búsqueda
   bool isSearchVisible = false;
+  // Consulta de búsqueda
   String searchQuery = '';
+  // Controlador de animación
   late AnimationController _controller;
+  // Animación de desplazamiento
   late Animation<Offset> _offsetAnimation;
   // Método para inicializar el estado
   @override
@@ -54,6 +61,7 @@ class _RequestsScreenState extends State<RequestsScreen>
       setState(() {
         isLoading = true;
       });
+      // Cargar las solicitudes
       final loadedRequests = await RequestService().cargarRequest();
       setState(() {
         requestsData = loadedRequests;
@@ -71,10 +79,14 @@ class _RequestsScreenState extends State<RequestsScreen>
   // Método para alternar la visibilidad de la búsqueda
   void _toggleSearch() {
     setState(() {
+      // Cambiar la visibilidad de la búsqueda
       isSearchVisible = !isSearchVisible;
+      // Iniciar la animación
       if (isSearchVisible) {
+        // Iniciar la animación
         _controller.forward();
       } else {
+        // Iniciar la animación
         _controller.reverse();
         setState(() {
           filteredRequests = requestsData;

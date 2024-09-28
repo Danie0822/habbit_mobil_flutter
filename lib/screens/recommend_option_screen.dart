@@ -23,37 +23,47 @@ class RecommendOptionScreen extends StatefulWidget {
 }
 
 class RecommendOptionScreenState extends State<RecommendOptionScreen> {
+  // Inicializa el rango con valores predeterminados que se actualizarán más tarde.
   var selectedRange = RangeValues(0, 0);
+  // Inicializa los valores mínimo y máximo con 0.
   double minPrice = 0;
   double maxPrice = 0;
+  // Latitud y longitud se inicializan en 0.
   double latitud = 0.0;
   double longitud = 0.0;
-  double _distance =
-      50.0; // Default value for distance (for El Salvador length)
+  // Inicializa la distancia en 50.
+  double _distance = 50.0;
   bool isLoading = true;
-  int selectedEstadoPropiedad = 0; // 0: Ambos, 1: Venta, 2: Alquiler
-  int selectedTipoPropiedad = 0; // 0: Ambos, 1: Proyecto, 2: Inmueble
-  bool isLoadingRequest =
-      false; // Nuevo booleano para manejar el estado de carga
-
+  // 0: Ambos, 1: Venta, 2: Alquiler
+  int selectedEstadoPropiedad = 0;
+  // 0: Ambos, 1: Proyecto, 2: Inmueble
+  int selectedTipoPropiedad = 0;
+  // Inicializa isLoadingRequest en falso.
+  bool isLoadingRequest = false;
+  // Inicializa el controlador de estadísticas.
   final DataPrices _dataPreferences = DataPrices();
+  //  Inicializa el controlador de estadísticas.
   final SliderServices _sliderServices = SliderServices();
+  // Inicializa el controlador de estadísticas.
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
+  // Inicializa las categorías y zonas con una lista vacía.
   final DataPreferences _preferences = DataPreferences();
-
+  // Inicializa las categorías y zonas con una lista vacía.
   List<Category> _categories = [];
   List<Zone> _zones = [];
+  // Inicializa la categoría y la zona seleccionadas en nulo.
   Category? _selectedCategory;
   Zone? _selectedZone;
 
   @override
   void initState() {
     super.initState();
+    // Cargar datos secuencialmente
     _loadDataSequentially();
   }
 
-  // Function to load data in sequence (Price -> Zone -> Category)
+  // Método para cargar datos secuencialmente
   Future<void> _loadDataSequentially() async {
     try {
       // Paso 1: Obtener rango de precios
@@ -88,6 +98,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     });
   }
 
+  // Funcion para obtener la ubicación actual
   Future<void> _getCurrentLocation() async {
     // Verifica si los permisos están otorgados
     var status = await Permission.location.status;
@@ -115,34 +126,43 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     }
   }
 
-  // Function to fetch zones
+  // Funcion para cargar zonas
   Future<void> _loadZones() async {
+    // Obtener las zonas de la API
     final zones = await _preferences.fetchZones();
+    // Actualizar el estado con las zonas
     setState(() {
+      // Agregar la zona "Todo" al inicio de la lista
       _zones = [Zone(id: 0, name: "Todo"), ...zones];
+      // Seleccionar la primera zona por defecto
       _selectedZone = _zones[0];
     });
   }
 
-  // Function to fetch categories
+  // Funcion para cargar categorías
   Future<void> _loadCategories() async {
+    // Obtener las categorías de las preferencias
     final categories = await _preferences.fetchCategories();
+    // Actualizar el estado con las categorías
     setState(() {
+      // Agregar la categoría "Todo" al inicio de la lista
       _categories = [Category(id: 0, name: "Todo"), ...categories];
       _selectedCategory = _categories[0];
     });
   }
 
-  // Function to handle the price range selection
+  // función para manejar el estado de la propiedad
   void _handlePrecio() async {
+    // Valida el rango de precios seleccionado.
     String? validationError = CustomValidator.validatePriceRange(
       selectedRange.start.toDouble(),
       selectedRange.end.toDouble(),
     );
-
+    // Si hay un error de validación, muestra una alerta.
     if (validationError != null) {
       showAlertDialog('Advertencia', validationError, 1, context);
     } else {
+      // Actualiza el precio en el controlador de estadísticas
       _estadisticasController.actualizarPrecio(
         min: selectedRange.start.round().toDouble(),
         max: selectedRange.end.round().toDouble(),
@@ -152,14 +172,22 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
 
   void _handleConfirmar() {
     setState(() {
-      isLoadingRequest = true; // Muestra el indicador de carga
+      // Muestra el indicador de carga
+      isLoadingRequest = true;
     });
+    // Obtener los valores seleccionados
     final int selectedCategoryId = _selectedCategory?.id ?? 0;
+    // Obtener los valores seleccionados
     final int selectedZoneId = _selectedZone?.id ?? 0;
+    // Obtener los valores seleccionados
     final double precioMin = selectedRange.start;
+    // Obtener los valores seleccionados
     final double precioMax = selectedRange.end;
+    // Obtener los valores seleccionados
     final double distancia = _distance;
+    // Obtener los valores seleccionados
     final int selectedEstadoPropiedadValue = selectedEstadoPropiedad;
+    // Obtener los valores seleccionados
     final int selectedTipoPropiedadValue = selectedTipoPropiedad;
 
     // Enviar estos datos a la API o realizar la acción necesaria
@@ -174,15 +202,16 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
       latitud,
       longitud,
     );
-
+    // Manejar la respuesta de la API
     cards.then((cardList) {
+      // Si la lista no está vacía, navega a la pantalla de tarjetas
       if (cardList.isNotEmpty) {
         context.push('/slider',
             extra: cardList); // Asegúrate de que cardList no sea null o vacío
       } else {
         showAlertDialog(
           'Advertencia',
-          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.',
+          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo con otro criterios.',
           1,
           context,
         );
@@ -190,7 +219,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     }).catchError((error) {
       // Si la lista está vacía, muestra un mensaje en un modal
       _showModal(context,
-          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo más tarde.');
+          'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo con otros criterios.');
       print('Error cargando las tarjetas: $error');
     });
     setState(() {
@@ -198,6 +227,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     });
   }
 
+  // Función para mostrar un modal con un mensaje
   void _showModal(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -218,6 +248,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     );
   }
 
+  // Método para construir un botón de alternancia
   Widget buildToggleButton(
       String label, int value, int groupValue, Function(int) onChanged) {
     final Color primaryBackground = ThemeUtils.getColorBasedOnBrightness(
@@ -232,8 +263,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     return GestureDetector(
       onTap: () => onChanged(value),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-            vertical: 8, horizontal: 22), // Ajuste del padding
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 22),
         decoration: BoxDecoration(
           color: groupValue == value ? primaryColorAzul : primaryBackground,
           borderRadius: BorderRadius.circular(30),
@@ -262,6 +292,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
     );
   }
 
+  // Método para construir un grupo de botones de alternancia
   Widget buildToggleButtonsGroup(
       List<String> labels, int groupValue, Function(int) onChanged) {
     return SingleChildScrollView(
@@ -301,7 +332,8 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         backgroundColor: primaryBackground,
         elevation: 0, // Elimina la sombra del AppBar
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: secondaryTextColor), // Ícono de regreso
+          icon: Icon(Icons.arrow_back,
+              color: secondaryTextColor), // Ícono de regreso
           onPressed: () {
             Navigator.pop(context); // Navega hacia atrás
           },
@@ -371,7 +403,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                         ],
                       ),
                       const SizedBox(height: 36),
-
                       // Tipo de Propiedad
                       Text(
                         'Seleccione el tipo de propiedad',
@@ -406,7 +437,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                         ],
                       ),
                       const SizedBox(height: 36),
-
                       // Menú desplegable de categorías
                       Text(
                         'Seleccione una categoría',
@@ -479,9 +509,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 36),
-
                       // Menú desplegable de zonas
                       Text(
                         'Seleccione una zona',
@@ -559,9 +587,7 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 36),
-
                       // Rango de precios
                       Text(
                         'Ponga un rango de precios',
@@ -613,7 +639,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
                         ),
                       ),
                       const SizedBox(height: 36),
-
                       // Rango de distancia
                       Text(
                         'Ponga un rango de distancia',

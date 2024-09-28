@@ -15,22 +15,28 @@ class ProfileScreen extends StatefulWidget {
 
 // Estado de ProfileScreen que maneja la lógica y la interfaz de usuario
 class _ProfileScreenState extends State<ProfileScreen> {
+  // Nombre del cliente
   String nombre = '';
 
   @override
   void initState() {
     super.initState();
+    // Cargar el nombre del cliente
     _loadClientName();
   }
 
+  // Método para cargar el nombre del cliente
   Future<void> _loadClientName() async {
     final String clientName = await StorageService.getClientName() ?? '';
     setState(() {
+      // Actualizar el nombre del cliente
       nombre = clientName;
     });
   }
 
+  // Método para cerrar sesión
   void _logout() async {
+    // Limpiar el almacenamiento
     await StorageService.clear();
     context.go('/login');
   }

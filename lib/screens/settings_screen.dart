@@ -12,7 +12,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  // Página actual
   int _currentPage = 0;
+  // Controlador de CarouselSlider
   final CarouselSliderController _carouselController =
       CarouselSliderController();
 
@@ -80,6 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   // Página de configuración de tema
   Widget _buildThemeSettingsPage(
       ThemeProvider themeProvider, bool isDarkMode, BuildContext context) {

@@ -19,13 +19,16 @@ class ZoneScreen extends StatefulWidget {
 }
 
 class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
+  //Creacion de las variables para la animacion de la pantalla
   late AnimationController _fadeInController;
+  //Creacion de la variable para la animacion de la pantalla
   late Animation<double> _fadeInAnimation;
 
-//Creacion de la lista de strings para los radio items
+  //Creacion de la lista de strings para los radio items
   List<Zone> _zoneItems = [];
+  // Creacion de la variable para el radio item seleccionado
   Zone? _selectedRadioItem;
-
+  // Creacion de la variable para el controlador de estadisticas
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -38,15 +41,17 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    //Creacion de la animacion de la pantalla
     _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
     );
+    // Iniciar la animacion
     _fadeInController.forward();
-
+    // Llama a la funcion _fetchData
     _fetchZone();
   }
 
-//Funcion asincrona para manejar la respuesta del servidor.
+  //Funcion asincrona para manejar la respuesta del servidor.
   Future<void> _fetchZone() async {
     try {
       //Obtenemos las zonas del controlador
@@ -72,6 +77,7 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    // Detiene la animacion
     _fadeInController.dispose();
     super.dispose();
   }

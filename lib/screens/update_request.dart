@@ -23,28 +23,41 @@ class UpdateRequest extends StatefulWidget {
 class _UpdateRequestState extends State<UpdateRequest> {
   final _formKey = GlobalKey<FormState>();
   // Controladores para los campos de texto
+  // Titulo de la solicitud
   TextEditingController _titleController = TextEditingController();
+  // Descripción de la solicitud
   TextEditingController _descriptionController = TextEditingController();
+  // Dirección de la propiedad
   TextEditingController _addressController = TextEditingController();
+  // Precio de la propiedad
   TextEditingController _priceController = TextEditingController();
+  // Ganancia de la empresa
   TextEditingController _gananciaController = TextEditingController();
+  // Controlador de la solicitud
   final RequestService _updateController = RequestService();
+  // Id de la solicitud
   int? idSolicitud;
 
   // Método para cargar categorías y zonas
   @override
   void initState() {
     super.initState();
+    // Cargar la información de la solicitud
     _addressController =
         TextEditingController(text: widget.request.direccionPropiedad);
+    // Cargar la información de la solicitud
     _titleController =
         TextEditingController(text: widget.request.tituloSolicitud);
+    // Cargar la información de la solicitud
     _descriptionController =
         TextEditingController(text: widget.request.descripcionSolicitud);
+    // Cargar la información de la solicitud
     _priceController =
         TextEditingController(text: widget.request.precioCasa.toString());
+    // Cargar la información de la solicitud
     _gananciaController =
         TextEditingController(text: widget.request.gananciaEmpresa.toString());
+    // Cargar el id de la solicitud
     idSolicitud = widget.request.idSolicitud;
   }
 
@@ -53,10 +66,15 @@ class _UpdateRequestState extends State<UpdateRequest> {
     // Validar los campos
     if (_formKey.currentState?.validate() ?? false) {
       // Obtener los valores de los campos
+      // Título de la solicitud
       final title = _titleController.text;
+      // Descripción de la solicitud
       final descripcion = _descriptionController.text;
+      // Dirección de la propiedad
       final dirrecion = _addressController.text;
+      // Precio de la propiedad
       final precio = double.parse(_priceController.text);
+      // Ganancia de la empresa
       final ganancia = double.parse(_gananciaController.text);
       // Enviar la solicitud
       final result = await _updateController.requestUpdate(

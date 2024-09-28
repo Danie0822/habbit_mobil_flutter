@@ -18,9 +18,10 @@ class UbiScreen extends StatefulWidget {
 }
 
 class _UbiScreenState extends State<UbiScreen> {
+  // Controlador para el mapa
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-
+  // Posición inicial del mapa
   static const CameraPosition _kElSalvador = CameraPosition(
     target: LatLng(13.794185, -88.896530),
     zoom: 9.0,
@@ -33,17 +34,20 @@ class _UbiScreenState extends State<UbiScreen> {
     northeast:
         LatLng(14.433046, -87.649403), // Coordenada Nor Este de El Salvador
   );
-
+  // Marcador de ubicación seleccionada
   Marker? _selectedLocationMarker;
+  // Dirección de la ubicación seleccionada
   String? _selectedLocationAddress;
-
+  // Controlador de estadísticas
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
 //Para manejar ubicacion al mover el marcador
   void _onMapTapped(LatLng location) async {
+    // Verificar si la ubicación seleccionada está dentro de los límites
     if (_bounds.contains(location)) {
       setState(() {
+        // Actualizar el marcador de la ubicación seleccionada
         _selectedLocationMarker = Marker(
           markerId: const MarkerId('selected-location'),
           position: location,
@@ -52,11 +56,16 @@ class _UbiScreenState extends State<UbiScreen> {
       });
 
       try {
+        // Obtener la dirección de la ubicación seleccionada
         List<Placemark> placemarks = await placemarkFromCoordinates(
             location.latitude, location.longitude);
+        // Verificar si se encontró una dirección
         if (placemarks.isNotEmpty) {
+          // Obtener la primera dirección encontrada
           Placemark place = placemarks.first;
+          // Actualizar la dirección de la ubicación seleccionada
           setState(() {
+            // Actualizar la dirección de la ubicación seleccionada
             _selectedLocationAddress =
                 "${place.street}, ${place.locality}, ${place.country}";
           });
@@ -80,9 +89,11 @@ class _UbiScreenState extends State<UbiScreen> {
     }
   }
 
-//Manejemos la ubicacion
+  //Manejemos la ubicacion
   void _handleUbi() async {
+    // Verificar si se ha seleccionado una ubicación
     if (_selectedLocationMarker != null && _selectedLocationAddress != null) {
+      // Actualizar la ubicación en las estadísticas
       _estadisticasController.actualizarUbicacion(
         ubicacion: _selectedLocationAddress!,
         latitud: _selectedLocationMarker!.position.latitude,
@@ -139,11 +150,9 @@ class _UbiScreenState extends State<UbiScreen> {
                 _selectedLocationAddress ?? "No hay una ubicación seleccionada",
                 style:
                     AppStyles.subtitle1(context)?.copyWith(color: colorTexto),
-                overflow: TextOverflow
-                    .ellipsis,
-                maxLines:
-                    2, 
-                softWrap: true, 
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                softWrap: true,
               ),
             ),
             SizedBox(height: height * 0.08),

@@ -11,7 +11,7 @@ import 'package:habbit_mobil_flutter/data/controlers/search_statistics.dart';
 class ThankScreen extends StatelessWidget {
   const ThankScreen({super.key});
 
-// Método build que define la interfaz de usuario del widget
+  // Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -22,7 +22,7 @@ class ThankScreen extends StatelessWidget {
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Creamos una instancia de la clase del controlador
+    //Creamos una instancia de la clase del controlador
     final EstadisticasController estadisticasController = Get.find();
 
     // Función separada para manejar el envío de estadísticas
@@ -31,11 +31,11 @@ class ThankScreen extends StatelessWidget {
         await estadisticasController.enviarEstadisticas();
         context.push('/login');
       } catch (error) {
-       print(error);
+        print(error);
       }
     }
 
-//Incio de la construccion de la pantalla
+    //Incio de la construccion de la pantalla
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -61,7 +61,8 @@ class ThankScreen extends StatelessWidget {
                   style: AppStyles.subtitle1(context),
                 ),
                 SizedBox(
-                    height: height * 0.10), // Espacio entre el texto y la imagen
+                    height:
+                        height * 0.10), // Espacio entre el texto y la imagen
                 Image.asset(
                   'assets/images/thanks.png',
                   height: height * 0.3, // Ajusta la altura de la imagen

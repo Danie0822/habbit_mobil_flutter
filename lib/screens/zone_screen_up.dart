@@ -21,12 +21,15 @@ class ZoneScreenUp extends StatefulWidget {
 
 class _ZoneScreenUpState extends State<ZoneScreenUp>
     with TickerProviderStateMixin {
+  //Creacion de las variables para la animacion de la pantalla
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
-//Creacion de la lista de strings para los radio items
+  //Creacion de la lista de strings para los radio items
   List<Zone> _zoneItems = [];
+  //Creacion de la variable para el radio item seleccionado
   Zone? _selectedRadioItem;
+  //Creacion de la variable para el controlador de estadisticas
   final EstadisticasController _estadisticasController =
       Get.put(EstadisticasController());
 
@@ -66,7 +69,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
         // Verifica el valor de idZona
         final selectedIdZona =
             _estadisticasController.estadisticasBusquedas.idZona;
-        //print('ID Zona seleccionada: $selectedIdZona');
 
         // Buscar la zona seleccionada según el idZona en el modelo de EstadisticasBusquedas
         if (selectedIdZona != 0) {
@@ -74,7 +76,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
             (zone) => zone.id == selectedIdZona,
             orElse: () => _zoneItems[0], // Fallback
           );
-          //print('Zona seleccionada: $_selectedRadioItem');
         } else {
           _selectedRadioItem = _zoneItems[0];
           print('Zona seleccionada por defecto: $_selectedRadioItem');
@@ -104,16 +105,16 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
           context,
         );
       } else {
+        // Crear el formulario con los datos del cliente y la zona seleccionada
         final formData = {
           'id_cliente': clientId,
           'id_zona': _selectedRadioItem?.id,
         };
-        print(formData);
 
         // Llamar al controlador para actualizar las preferencias
         final success =
             await _estadisticasController.updatePreferences(formData);
-
+        // Mostrar un mensaje de éxito o error
         if (success) {
           showAlertDialogScreen(
             'Éxito',
@@ -151,7 +152,7 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     super.dispose();
   }
 
-// Método build que define la interfaz de usuario del widget
+  // Método build que define la interfaz de usuario del widget
   @override
   Widget build(BuildContext context) {
     final Color colorTexto = Theme.of(context).brightness == Brightness.light
@@ -162,7 +163,7 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
 
-//Incio de la construccion de la pantalla
+    //Incio de la construccion de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

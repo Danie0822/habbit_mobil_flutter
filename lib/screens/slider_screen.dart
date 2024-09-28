@@ -5,8 +5,10 @@ import 'package:habbit_mobil_flutter/data/models/slider.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/theme/theme_utils.dart';
 import 'package:habbit_mobil_flutter/utils/constants/config.dart';
+import 'package:habbit_mobil_flutter/common/widgets/show_modal_two_option.dart';
 
 class SliderScreen extends StatefulWidget {
+  // Lista de tarjetas
   final List<SliderResponse> cards;
 
   const SliderScreen({Key? key, required this.cards}) : super(key: key);
@@ -16,15 +18,23 @@ class SliderScreen extends StatefulWidget {
 }
 
 class SliderScreenState extends State<SliderScreen> {
+  // Controlador de CardSwiper
   late CardSwiperController controller;
+  // Lista de tarjetas
   late List<SliderResponse> cards;
+  // Lista de tarjetas originales
   late List<SliderResponse> originalCards;
 
   @override
   void initState() {
     super.initState();
+    // Inicializar el controlador y las listas de tarjetas
     controller = CardSwiperController();
+
+    /// Inicializar las tarjetas y las tarjetas originales
     cards = widget.cards;
+
+    /// Inicializar las tarjetas y las tarjetas originales
     originalCards = List.from(widget.cards);
   }
 
@@ -44,7 +54,7 @@ class SliderScreenState extends State<SliderScreen> {
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
+    // Verificar si no hay tarjetas
     if (cards.isEmpty) {
       return Scaffold(
         body: Center(
@@ -146,22 +156,25 @@ class SliderScreenState extends State<SliderScreen> {
     );
   }
 
+  // Método para construir una tarjeta
   Widget buildCard(SliderResponse card, BuildContext context) {
+    // Verificar si el título de la propiedad es mayor a 24 caracteres
     String truncatedTitle = card.propertyTitle!.length > 24
         ? '${card.propertyTitle!.substring(0, 24)}...'
         : card.propertyTitle!;
-
+    // Obtener el color de fondo de la tarjeta
     final primaryBackground = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageWidget, Colors.black);
-
+    // Obtener el color de texto
     final boxStyle = ThemeUtils.getColorBasedOnBrightness(
         context, colorBackGroundMessageWidget, Colors.black);
+    // Obtener el color de texto
     final Color texto =
         ThemeUtils.getColorBasedOnBrightness(context, whiteColor, whiteColor);
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
+    // Retornar una tarjeta
     return GestureDetector(
       onTap: () {
         context.push('/detalle', extra: {
@@ -260,43 +273,24 @@ class SliderScreenState extends State<SliderScreen> {
   }
 
   void showReloadDialog(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Recargar tarjetas",
-            style: TextStyle(fontSize: screenWidth * 0.05),
-          ),
-          content: Text(
-            "¿Deseas recargar las tarjetas?",
-            style: TextStyle(fontSize: screenWidth * 0.045),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text("Cancelar",
-                  style: TextStyle(fontSize: screenWidth * 0.045)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                context.push('/recommend_option');
-              },
-            ),
-            TextButton(
-              child: Text("Recargar",
-                  style: TextStyle(fontSize: screenWidth * 0.045)),
-              onPressed: () {
+        return ReloadAlertDialog(
+          onCancel: () {
+            Navigator.of(context).pop();
+            context.push('/recommend_option');
+          },
+          onReload: () {
                 setState(() {
                   cards = List.from(originalCards);
                   controller = CardSwiperController();
                 });
                 Navigator.of(context).pop();
-              },
-            ),
-          ],
+          },
         );
       },
     );
   }
+
 }
