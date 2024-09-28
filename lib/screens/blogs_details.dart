@@ -16,8 +16,11 @@ class _BlogDetailState extends State<BlogDetail> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el tamaño de la pantalla
     final size = MediaQuery.of(context).size;
+    // Obtener los datos del blog
     final _data = widget.blogsResponse;
+    // Verificar si el modo oscuro está activado
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(

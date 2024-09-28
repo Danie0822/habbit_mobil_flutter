@@ -16,21 +16,22 @@ class EditPreferences extends StatefulWidget {
 //Funcion para obtener los datos de la estadistica y pasarlos al modelo
 
 class _EditPreferencesState extends State<EditPreferences> {
+  EstadisticasBusquedas? estadisticas;
+  final EstadisticasController _estadisticasController =
+      EstadisticasController();
 
-   EstadisticasBusquedas? estadisticas;
-   final EstadisticasController _estadisticasController = EstadisticasController();
-  
   @override
   void initState() {
     super.initState();
     _cargarDatos();
   }
 
- // Función para obtener los datos y setearlos al modelo
+  // Función para obtener los datos y setearlos al modelo
   Future<void> _cargarDatos() async {
     try {
       // Obtén las estadísticas usando el controlador
-      final estadisticasObtenidas = await _estadisticasController.obtenerEstadisticas();
+      final estadisticasObtenidas =
+          await _estadisticasController.obtenerEstadisticas();
       setState(() {
         // Actualiza el estado con las estadísticas obtenidas
         estadisticas = estadisticasObtenidas;
@@ -41,6 +42,7 @@ class _EditPreferencesState extends State<EditPreferences> {
       print('Error al cargar estadísticas: $error');
     }
   }
+
   // Lista de tarjetas de preferencia
   final List<Map<String, String>> preferences = [
     {
@@ -112,10 +114,12 @@ class _EditPreferencesState extends State<EditPreferences> {
                   return GridView.builder(
                     itemCount: preferences.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount, // Ajusta el número de columnas
+                      crossAxisCount:
+                          crossAxisCount, // Ajusta el número de columnas
                       crossAxisSpacing: 10.0,
                       mainAxisSpacing: 10.0,
-                      childAspectRatio: 1.0, // Relación de aspecto 1:1 para círculos
+                      childAspectRatio:
+                          1.0, // Relación de aspecto 1:1 para círculos
                     ),
                     itemBuilder: (context, index) {
                       return GestureDetector(
@@ -133,7 +137,8 @@ class _EditPreferencesState extends State<EditPreferences> {
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Lottie.network(preferences[index]['lottieUrl']!),
+                                  child: Lottie.network(
+                                      preferences[index]['lottieUrl']!),
                                 ),
                               ),
                               Padding(

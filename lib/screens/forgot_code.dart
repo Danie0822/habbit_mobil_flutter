@@ -7,6 +7,7 @@ import 'package:habbit_mobil_flutter/data/models/confirm_password.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/services.dart';
+
 // Vista de código de verificación
 class CodeView extends StatefulWidget {
   final int idUsuario;
@@ -15,6 +16,7 @@ class CodeView extends StatefulWidget {
   @override
   _CodeViewState createState() => _CodeViewState();
 }
+
 // Estado de la vista de código
 class _CodeViewState extends State<CodeView> {
   final RecoveryController _recoveryController = RecoveryController();
@@ -51,7 +53,11 @@ class _CodeViewState extends State<CodeView> {
       if (result == 1) {
         context.push('/pass', extra: arguments);
       } else {
-        showAlertDialog('Error', 'El código ingresado es incorrecto. Por favor, verifica el código e inténtalo nuevamente.', 1, context);
+        showAlertDialog(
+            'Error',
+            'El código ingresado es incorrecto. Por favor, verifica el código e inténtalo nuevamente.',
+            1,
+            context);
       }
     } else {
       showAlertDialog(
@@ -62,7 +68,9 @@ class _CodeViewState extends State<CodeView> {
   // Diseño de la pantalla
   @override
   Widget build(BuildContext context) {
+    // Obtener el ancho de la pantalla
     final screenWidth = MediaQuery.of(context).size.width;
+    // Definir el tamaño de los elementos según el ancho de la pantalla
     final horizontalPadding = screenWidth < 600 ? 16.0 : 32.0;
     final textFontSize = screenWidth < 600 ? 16.0 : 20.0;
     final headingFontSize = screenWidth < 600 ? 30.0 : 36.0;

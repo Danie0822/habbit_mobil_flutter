@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PhotoDetailScreen extends StatelessWidget {
+  // Constructor de la clase
   final String imageUrl;
 
   const PhotoDetailScreen({Key? key, required this.imageUrl}) : super(key: key);
@@ -16,7 +17,8 @@ class PhotoDetailScreen extends StatelessWidget {
         child: Center(
           child: Hero(
             tag: imageUrl, // Hero tag compartido
-            child: Image.network(imageUrl, fit: BoxFit.contain), // Imagen a pantalla completa
+            child: Image.network(imageUrl,
+                fit: BoxFit.contain), // Imagen a pantalla completa
           ),
         ),
       ),

@@ -15,9 +15,13 @@ class blogMain extends StatefulWidget {
 }
 
 class _blogMainState extends State<blogMain> {
+  // Controlador de la lista de blogs
   List<BlogsResponse> requestsData = [];
+  // Lista de blogs filtrada
   List<BlogsResponse> filteredRequests = [];
+  // Indice actual del carrusel
   int _current = 0;
+  // Indicador de carga
   bool isLoading = true;
 
   @override
@@ -31,10 +35,14 @@ class _blogMainState extends State<blogMain> {
       setState(() {
         isLoading = true;
       });
+      // Obtener la lista de blogs
       final loadedRequests = await BlogsService().getBlogs();
       setState(() {
+        // Asignar la lista de blogs a las variables
         requestsData = loadedRequests;
-        requestsData.shuffle(); // Mezclar la lista
+        // Mezclar la lista de blogs
+        requestsData.shuffle(); 
+        // Asignar la lista de blogs mezclada a la lista filtrada
         filteredRequests = requestsData;
         isLoading = false;
       });

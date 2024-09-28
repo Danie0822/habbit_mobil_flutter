@@ -38,15 +38,18 @@ class _CategoryScreenState extends State<CategoryScreen>
     _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _fadeInController, curve: Curves.easeInOut),
     );
+    //Iniciar la animacion
     _fadeInController.forward();
-
+    //Cargar las categorias
     _fetchCategories();
   }
 
 //Funcion para cargar los datos de categorias
   Future<void> _fetchCategories() async {
     try {
+      //Obtener las categorias
       final categories = await DataPreferences().fetchCategories();
+      //Actualizar el estado
       setState(() {
         _categories = categories;
       });

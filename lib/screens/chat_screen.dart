@@ -23,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<ReadChatResponse> _mensajes = [];
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
-
+  // Lista de sugerencias para mensajes
   List<String> sugerencias = [
     '¿Cuál es la dirección exacta del inmueble?',
     '¿Cuántos años tiene la propiedad?',
@@ -52,36 +52,48 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    // Carga los mensajes al iniciar
     _loadMessages();
-    _seleccionarSugerenciasAleatorias(); // Selecciona sugerencias al iniciar
+    // Selecciona sugerencias al iniciar
+    _seleccionarSugerenciasAleatorias();
   }
 
   Future<void> _loadMessages() async {
     try {
+      // Carga los mensajes del chat
       List<ReadChatResponse> mensajes =
           await ChatService().getClientMessages(widget.idConversacion);
+          // Actualiza el estado de los mensajes
       setState(() {
         _mensajes = mensajes;
       });
+      // Actualiza el estado de lectura
       _updateReadStatus();
+      // Desplaza la pantalla hacia abajo
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     } catch (e) {
       print('Error cargando mensajes: $e');
       _showErrorSnackBar('Error al cargar mensajes.');
     }
   }
-
+  // Método para actualizar el estado de lectura
   Future<void> _updateReadStatus() async {
     try {
+      // Verifica si hay mensajes
       if (_mensajes.isNotEmpty) {
+        // Obtiene el último mensaje
         final ultimoMensaje = _mensajes.last;
+        // Verifica si el mensaje fue enviado por el administrador
         bool isSentByAdmin = ultimoMensaje.mensajeAdmin != null;
+        // Verifica si el mensaje fue leído
         bool isRead = ultimoMensaje.readMessage ?? false;
-
+        // Verifica si el mensaje fue enviado por el administrador y no ha sido leído
         if (isSentByAdmin && !isRead) {
+          // Actualiza el estado de lectura
           bool success = await ChatService()
               .updateMessageReadStatus(widget.idConversacion);
           if (success) {
+            // Actualiza el estado de lectura
             setState(() {
               ultimoMensaje.updateReadStatus(true);
             });
@@ -96,10 +108,13 @@ class _ChatScreenState extends State<ChatScreen> {
       _showErrorSnackBar('Error al actualizar estado de lectura.');
     }
   }
-
+  // Método para desplazar la pantalla hacia abajo
   void _scrollToBottom() {
+    /// Verifica si el controlador de desplazamiento tiene clientes
     if (_scrollController.hasClients) {
+      // Desplaza la pantalla hacia abajo
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      // Anima el desplazamiento
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(seconds: 1),
@@ -107,17 +122,22 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
   }
-
+  // Método para enviar un mensaje
   Future<void> _sendMessage(String messageText) async {
     try {
+      // Verifica si el mensaje está vacío
       if (messageText.isEmpty) return;
-
+      // Envía el mensaje
       bool success =
           await ChatService().sendMessage(widget.idConversacion, messageText);
       if (success) {
+        //  Carga los mensajes
         _loadMessages();
+        // Limpia el controlador de mensajes
         _messageController.clear();
-        _seleccionarSugerenciasAleatorias(); // Cambia sugerencias al enviar mensaje
+        // Cambia sugerencias al enviar mensaje
+        _seleccionarSugerenciasAleatorias(); 
+        // Desplaza la pantalla hacia abajo
         WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
       } else {
         print('Error al enviar el mensaje');
@@ -128,17 +148,17 @@ class _ChatScreenState extends State<ChatScreen> {
       _showErrorSnackBar('Error al enviar el mensaje.');
     }
   }
-
+  // Método para mostrar un mensaje de error
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
   }
-
+  // Método para manejar el toque de sugerencias
   void _handleSuggestionTap(String suggestion) {
     _messageController.text = suggestion;
   }
-
+  // Método para seleccionar sugerencias aleatorias
   void _seleccionarSugerenciasAleatorias() {
     setState(() {
       sugerenciasActuales = List<String>.from(sugerencias)
@@ -150,6 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Verifica si hay mensajes
     bool hasMessages = _mensajes.isNotEmpty;
 
     // Define el color basado en el tema (brillo de la pantalla)
@@ -198,6 +219,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
+            // Muestra sugerencias si no hay mensajes
             if (!hasMessages)
               Container(
                 height: 80,
@@ -211,7 +233,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: Text(
                                 sugerencia,
                                 style: TextStyle(
-                                  color: colorTextoTitulo, // Cambia este color por el que desees
+                                  color: colorTextoTitulo, 
                                 ),
                               ),
                             ),

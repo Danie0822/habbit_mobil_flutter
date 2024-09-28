@@ -39,6 +39,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
   }
 
   Future<void> _loadClientId() async {
+    //Obtener el id del cliente
     final String idCliente = await StorageService.getClientId() ?? '';
     setState(() {
       id = idCliente;
@@ -48,8 +49,11 @@ class _ChangeProfileState extends State<ChangeProfile> {
   // Método para cargar la información
 Future<void> _loadClientInfo(String id) async {
   try {
+    //Obtener la información del cliente
     final clientInfo = await _updateInfoController.infoClient(id);
+    //Verificar si la lista de clientes no está vacía
     if (clientInfo.clients != null && clientInfo.clients!.isNotEmpty) {
+      //Obtener el cliente
       final client = clientInfo.clients!.first;
       setState(() {
         _nameController.text = client.name ?? '';
@@ -68,11 +72,17 @@ Future<void> _loadClientInfo(String id) async {
 
   // Método para actualizar la información
 void _updateInfo() async {
+  //Validar el formulario
   if (_formKey.currentState?.validate() ?? false) {
+    //Obtener los datos del formulario
     final name = _nameController.text;
+    //Obtener el correo
     final email = _emailController.text;
+    //Obtener el teléfono
     final phone = _phoneController.text;
+    //Actualizar la información del cliente
     final result = await _updateInfoController.updateClient(id, name, email, phone);
+    //Verificar si la actualización fue exitosa
     if (result) {
       showAlertDialogScreen('Éxito', 'Su información se ha actualizado correctamente', 3, context, () {
         context.push("/main", extra: 3);

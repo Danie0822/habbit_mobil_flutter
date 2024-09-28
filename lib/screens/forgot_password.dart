@@ -8,6 +8,7 @@ import 'package:habbit_mobil_flutter/data/controlers/forgot_password.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/utils/validators/validaciones.dart';
 import 'package:lottie/lottie.dart';
+
 // Vista de olvido de contraseña
 class ForgotView extends StatefulWidget {
   const ForgotView({super.key});
@@ -15,6 +16,7 @@ class ForgotView extends StatefulWidget {
   @override
   State<ForgotView> createState() => _ForgotViewState();
 }
+
 // Estado de la vista de olvido de contraseña
 class _ForgotViewState extends State<ForgotView> {
   final TextEditingController _emailController = TextEditingController();

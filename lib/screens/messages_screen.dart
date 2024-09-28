@@ -15,14 +15,21 @@ class MessagesScreen extends StatefulWidget {
 
 class _MessagesScreenState extends State<MessagesScreen>
     with TickerProviderStateMixin {
-  final List<ChatCard> _chatCards = []; // Lista de tarjetas de chat
+  // Lista de tarjetas de chat
+  final List<ChatCard> _chatCards = []; 
+  // Clave para la lista animada
   final GlobalKey<AnimatedListState> _listKey =
-      GlobalKey<AnimatedListState>(); // Clave para la lista animada
-  bool _isSearchVisible = false; // Estado de visibilidad de la búsqueda
-  bool _isLoading = true; // Estado de carga
-  late final AnimationController _controller; // Controlador de animación
-  late final Animation<Offset> _offsetAnimation; // Animación de desplazamiento
-  String _searchQuery = ''; // Consulta de búsqueda
+      GlobalKey<AnimatedListState>(); 
+  // Estado de visibilidad de la búsqueda
+  bool _isSearchVisible = false; 
+  // Estado de carga
+  bool _isLoading = true; 
+  /// Controlador de animación
+  late final AnimationController _controller; 
+  // Animación de desplazamiento
+  late final Animation<Offset> _offsetAnimation;
+  // Consulta de búsqueda
+  String _searchQuery = ''; 
 
   @override
   void initState() {

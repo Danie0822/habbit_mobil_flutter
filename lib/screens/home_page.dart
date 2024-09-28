@@ -14,15 +14,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedFilter = 'Tus preferencias';
+  /// Lista de tarjetas de propiedades
   final List<PropertyCard> _propertyCards = [];
-  final List<PropertyCard> _allProperties = []; // Lista completa de propiedades
+  // Lista completa de propiedades
+  final List<PropertyCard> _allProperties = [];
+  // Clave global para la lista animada 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  // Indicador de carga
   bool _isLoading = false;
-  late TextEditingController _searchController; // Controlador de búsqueda
+  // Controlador de búsqueda
+  late TextEditingController _searchController; 
 
   @override
   void initState() {
     super.initState();
+    //  Inicializa el controlador de búsqueda
     _searchController = TextEditingController();
     _searchController.addListener(_filterProperties);
     _loadPropertiesPreferences();
@@ -48,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
+  // Método para construir la barra de búsqueda
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 10),
@@ -63,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
+  // Método para construir las opciones de filtro
   Widget _buildFilterOptions() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
@@ -98,47 +104,47 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
+  // Método para construir una opción de filtro
   Widget _buildFilterOption(String filter, IconData icon) {
     return GestureDetector(
       onTap: () => _onFilterSelected(filter),
       child: buildFilter(filter, selectedFilter == filter, icon, context),
     );
   }
-
-Widget _buildPropertyList() {
-  return Expanded(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
-              itemCount: _propertyCards.length,
-              itemBuilder: (context, index) {
-                return _buildPropertyItem(_propertyCards[index]);
-              },
-            ),
-    ),
-  );
-}
-
-Widget _buildPropertyItem(PropertyCard propertyCard) {
-  return Hero(
-    tag: propertyCard.imageUrl,
-    child: PropertyCard(
-      idPropiedad: propertyCard.idPropiedad,
-      title: propertyCard.title,
-      type: propertyCard.type,
-      direction: propertyCard.direction,
-      price: propertyCard.price,
-      status: propertyCard.status,
-      imageUrl: propertyCard.imageUrl,
-      isFavorites: propertyCard.isFavorites,
-    ),
-  );
-}
-
+  // Método para construir la lista de propiedades
+  Widget _buildPropertyList() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                padding: const EdgeInsets.only(right: 24, left: 24, top: 5),
+                itemCount: _propertyCards.length,
+                itemBuilder: (context, index) {
+                  return _buildPropertyItem(_propertyCards[index]);
+                },
+              ),
+      ),
+    );
+  }
+  // Método para construir un elemento de propiedad
+  Widget _buildPropertyItem(PropertyCard propertyCard) {
+    return Hero(
+      tag: propertyCard.imageUrl,
+      child: PropertyCard(
+        idPropiedad: propertyCard.idPropiedad,
+        title: propertyCard.title,
+        type: propertyCard.type,
+        direction: propertyCard.direction,
+        price: propertyCard.price,
+        status: propertyCard.status,
+        imageUrl: propertyCard.imageUrl,
+        isFavorites: propertyCard.isFavorites,
+      ),
+    );
+  }
+  // Método para mostrar la hoja inferior
   void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -161,14 +167,14 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
       },
     );
   }
-
+  // Método para manejar la selección de filtro
   void _onFilterSelected(String filter) {
     setState(() {
       selectedFilter = filter;
     });
-
+    // Limpia la lista de propiedades
     _clearPropertyList();
-
+    // Carga propiedades según el filtro seleccionado
     switch (filter) {
       case 'Tus preferencias':
         _loadPropertiesPreferences();
@@ -181,7 +187,7 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
         break;
     }
   }
-
+  // Método para limpiar la lista de propiedades
   void _clearPropertyList() {
     for (int i = _propertyCards.length - 1; i >= 0; i--) {
       PropertyCard removedCard = _propertyCards.removeAt(i);
@@ -192,33 +198,33 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
       );
     }
   }
-
+  // Método para cargar propiedades de preferencias
   Future<void> _loadPropertiesPreferences() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
+      // Obtener la lista de propiedades
       final properties = await PropertiesService().getProperties();
-
+      // Limpiar la lista de propiedades
       _allProperties.clear();
+      // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
-          idPropiedad: property.idPropiedad ?? 0,
-          title: property.title ?? 'Propiedad no encontrada',
-          type: property.type ?? 'Error de datos',
-          status: property.status ?? 'Error de datos',
-          direction: property.direction ?? 'Error de datos',
-          price: property.price ?? 0.0,
-          imageUrl: property.imageUrl != null
-              ? '${Config.imagen}${property.imageUrl}'
-              : '',
-          isFavorites:  false
-        );
+            idPropiedad: property.idPropiedad ?? 0,
+            title: property.title ?? 'Propiedad no encontrada',
+            type: property.type ?? 'Error de datos',
+            status: property.status ?? 'Error de datos',
+            direction: property.direction ?? 'Error de datos',
+            price: property.price ?? 0.0,
+            imageUrl: property.imageUrl != null
+                ? '${Config.imagen}${property.imageUrl}'
+                : '',
+            isFavorites: false);
       }).toList());
-
-      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
-
+      // Filtra propiedades con base en el texto de búsqueda
+      _filterProperties(); 
     } catch (e) {
       print('Error cargando propiedades: $e');
     } finally {
@@ -231,28 +237,34 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
   }
 
   void _filterProperties() {
+    // Filtra propiedades con base en el texto de búsqueda
     final query = _searchController.text.toLowerCase();
+    // Filtra propiedades con base en el texto de búsqueda
     final filteredProperties = _allProperties.where((property) {
       return property.title.toLowerCase().contains(query);
     }).toList();
-
+    // Limpia la lista de propiedades
     _clearPropertyList();
-
+    // Agrega las propiedades filtradas a la lista
     if (mounted) {
       setState(() {
+        // Limpia la lista de propiedades
         _propertyCards.clear();
+        // Agrega las propiedades filtradas a la lista
         _propertyCards.addAll(filteredProperties);
-
+        // Agrega las propiedades a la lista animada
         for (int i = 0; i < filteredProperties.length; i++) {
           _listKey.currentState?.insertItem(i);
         }
       });
     }
   }
-
+  // Método para gestionar favoritos
   Future<void> _toggleFavorite(int idPropiedad) async {
     try {
-      final response = await PropertiesService().addPropertyToFavorites(idPropiedad);
+      // Agrega la propiedad a favoritos
+      final response =
+          await PropertiesService().addPropertyToFavorites(idPropiedad);
 
       if (response == 200) {
         setState(() {
@@ -277,9 +289,11 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
     });
 
     try {
+      // Obtener la lista de propiedades
       final properties = await PropertiesService().getPropertiesInm();
-
+      // Limpiar la lista de propiedades
       _allProperties.clear();
+      // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
           idPropiedad: property.idPropiedad ?? 0,
@@ -294,9 +308,8 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
           isFavorites: false,
         );
       }).toList());
-
-      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
-
+      // Filtra propiedades con base en el texto de búsqueda
+      _filterProperties(); 
     } catch (e) {
       print('Error cargando inmuebles: $e');
     } finally {
@@ -307,16 +320,18 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
       }
     }
   }
-
+  // Método para cargar proyectos
   Future<void> _loadPropertiesProyects() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
+      // Obtener la lista de propiedades
       final properties = await PropertiesService().getPropertiesProyects();
-
+      // Limpiar la lista de propiedades
       _allProperties.clear();
+      // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
           idPropiedad: property.idPropiedad ?? 0,
@@ -331,9 +346,8 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
           isFavorites: false,
         );
       }).toList());
-
-      _filterProperties(); // Filtra propiedades con base en el texto de búsqueda
-
+      // Filtra propiedades con base en el texto de búsqueda
+      _filterProperties(); 
     } catch (e) {
       print('Error cargando proyectos: $e');
     } finally {
@@ -344,15 +358,18 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
       }
     }
   }
-
- Future<void> _onFilterApplied(int category, int zone, double min, double max) async {
+  // Método para aplicar filtros
+  Future<void> _onFilterApplied(
+      int category, int zone, double min, double max) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final properties = await PropertiesService().getPropertiesFilters(category, zone, min, max);
-
+      // Obtener propiedades filtradas
+      final properties = await PropertiesService()
+          .getPropertiesFilters(category, zone, min, max);
+      // Mapear propiedades a tarjetas
       List<PropertyCard> newPropertyCards = properties.map((property) {
         return PropertyCard(
           idPropiedad: property.idPropiedad ?? 0,
@@ -367,12 +384,13 @@ Widget _buildPropertyItem(PropertyCard propertyCard) {
           isFavorites: false,
         );
       }).toList();
-
+      // Limpiar la lista de propiedades
       _clearPropertyList();
-
+      // Agregar propiedades filtradas a la lista
       setState(() {
+        // Limpiar la lista de propiedades
         _propertyCards.addAll(newPropertyCards);
-
+        // Agregar las propiedades a la lista animada
         for (int i = 0; i < newPropertyCards.length; i++) {
           _listKey.currentState?.insertItem(i);
         }

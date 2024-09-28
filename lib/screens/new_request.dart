@@ -38,7 +38,7 @@ class _NewRequestState extends State<NewRequest> {
   Zone? _selectedZone;
   Category? _selectedCategory;
   String? _selectedOption;
-    // Variable para controlar el estado de carga
+  // Variable para controlar el estado de carga
   bool _isLoading = false;
 
   // Método para cargar categorías y zonas
@@ -82,7 +82,7 @@ class _NewRequestState extends State<NewRequest> {
   void _saveInfo() async {
     // Validar los campos
     if (_formKey.currentState?.validate() ?? false) {
-            setState(() {
+      setState(() {
         _isLoading = true; // Inicia la carga
       });
 
@@ -102,7 +102,7 @@ class _NewRequestState extends State<NewRequest> {
           _selectedCategory?.id,
           _selectedZone?.id,
           _selectedOption);
-          
+
       setState(() {
         _isLoading = false; // Finaliza la carga
       });
@@ -281,7 +281,7 @@ class _NewRequestState extends State<NewRequest> {
                       ),
                 const SizedBox(height: 20),
                 // Botón para agregar solicitud
-                 Align(
+                Align(
                   alignment: Alignment.center,
                   child: _isLoading
                       ? const CircularProgressIndicator()

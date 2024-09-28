@@ -31,8 +31,9 @@ class _HomeScreenState extends State<HomeScreenOne> {
     userNameFuture = StorageService.getClientName();
   }
 
-  int _currentIndex = 0; // Índice actual para el slider
-
+  // Índice actual para el slider
+  int _currentIndex = 0;
+  // Lista de elementos del slider
   final List<Map<String, String>> habitItems = [
     {
       "title": "Habit inmobiliaria",
@@ -85,30 +86,34 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Text(
                         'Cargando...',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: colorTextoSub,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: colorTextoSub,
+                                ),
                       );
                     } else if (snapshot.hasError) {
                       return Text(
                         'Error al cargar el nombre',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: colorTextoSub,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: colorTextoSub,
+                                ),
                       );
                     } else if (snapshot.hasData && snapshot.data != null) {
                       return Text(
                         '${snapshot.data}, ¡bienvenido!',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: colorTextoSub,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: colorTextoSub,
+                                ),
                       );
                     } else {
                       return Text(
                         '¡Bienvenido!',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: colorTextoSub,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: colorTextoSub,
+                                ),
                       );
                     }
                   },
@@ -205,7 +210,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                     SectionCardWithImage(
                       title: 'Descubre',
                       description:
@@ -219,7 +223,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
                       imagePath: 'planet.png',
                       navegation: '/map_screen',
                     ),
-                    
                     SizedBox(height: 16),
                     SectionCardWithImage(
                       title: 'Encuentra',

@@ -11,7 +11,8 @@ class LikeScreen extends StatefulWidget {
   _LikeScreenState createState() => _LikeScreenState();
 }
 
-class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateMixin {
+class _LikeScreenState extends State<LikeScreen>
+    with SingleTickerProviderStateMixin {
   bool _isSearchVisible = false;
   List<PropertyCard> _favoritePropertyCards = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
@@ -48,21 +49,26 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
       _isLoading = true;
     });
     try {
+      // Obtener las propiedades favoritas
       final properties = await PropertiesService().getPropertiesFavorites();
+      // Actualizar el estado con las propiedades favoritas
       setState(() {
-        _favoritePropertyCards = properties.map((property) => PropertyCard(
-          idPropiedad: property.idPropiedad ?? 0,
-          title: property.title ?? 'Propiedad no encontrada',
-          type: property.type ?? 'Error de datos',
-          status: property.status ?? 'Error de datos',
-          direction: property.direction ?? 'Error de datos',
-          price: property.price ?? 0.0,
-          imageUrl: property.imageUrl != null
-              ? '${Config.imagen}${property.imageUrl}'
-              : '',
-          isFavorites: true,
-        )).toList();
+        _favoritePropertyCards = properties
+            .map((property) => PropertyCard(
+                  idPropiedad: property.idPropiedad ?? 0,
+                  title: property.title ?? 'Propiedad no encontrada',
+                  type: property.type ?? 'Error de datos',
+                  status: property.status ?? 'Error de datos',
+                  direction: property.direction ?? 'Error de datos',
+                  price: property.price ?? 0.0,
+                  imageUrl: property.imageUrl != null
+                      ? '${Config.imagen}${property.imageUrl}'
+                      : '',
+                  isFavorites: true,
+                ))
+            .toList();
       });
+      // Insertar las propiedades favoritas en la lista animada
       for (int i = 0; i < _favoritePropertyCards.length; i++) {
         _listKey.currentState?.insertItem(i);
       }
@@ -77,24 +83,30 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
       });
     }
   }
-
+  // Método para actualizar la información
   Future<void> _onRefresh() async {
     await _loadFavoriteProperties();
   }
-
+  // Método para abrir el modal de valoración
   void _toggleSearch() {
+    // Cambiar la visibilidad del campo de búsqueda
     setState(() {
+      // Cambiar la visibilidad del campo de búsqueda
       _isSearchVisible = !_isSearchVisible;
+      // Iniciar o detener la animación
       if (_isSearchVisible) {
+        // Iniciar la animación
         _controller.forward();
       } else {
+        // Detener la animación
         _controller.reverse();
         _searchQuery = '';
       }
     });
   }
-
+  // Método para filtrar las propiedades
   void _filterProperties(String query) {
+    // Actualizar el estado con la consulta de búsqueda
     setState(() {
       _searchQuery = query.toLowerCase();
     });
@@ -143,7 +155,7 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
       ),
     );
   }
-
+  // Método para construir el encabezado
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -164,9 +176,13 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
                 onPressed: _toggleSearch,
                 icon: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
                     return RotationTransition(
-                      turns: child.key == ValueKey('search') ? animation : Tween<double>(begin: 1, end: 0.75).animate(animation),
+                      turns: child.key == ValueKey('search')
+                          ? animation
+                          : Tween<double>(begin: 1, end: 0.75)
+                              .animate(animation),
                       child: FadeTransition(opacity: animation, child: child),
                     );
                   },
@@ -183,13 +199,15 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
           if (_isSearchVisible)
             SlideTransition(
               position: _offsetAnimation,
-              child: SearchInput(onChanged: _filterProperties, hintText: 'Buscador por medio de título propiedades...'),
+              child: SearchInput(
+                  onChanged: _filterProperties,
+                  hintText: 'Buscador por medio de título propiedades...'),
             ),
         ],
       ),
     );
   }
-
+  // Método para construir la lista de propiedades
   Widget _buildPropertyList() {
     return Expanded(
       child: Padding(
@@ -210,30 +228,34 @@ class _LikeScreenState extends State<LikeScreen> with SingleTickerProviderStateM
       ),
     );
   }
-
+  // Método para construir los elementos filtrados
   Widget _buildFilteredItem(int index, Animation<double> animation) {
-    if (_searchQuery.isEmpty || _favoritePropertyCards[index].title.toLowerCase().contains(_searchQuery)) {
+    if (_searchQuery.isEmpty ||
+        _favoritePropertyCards[index]
+            .title
+            .toLowerCase()
+            .contains(_searchQuery)) {
       return _buildPropertyItem(_favoritePropertyCards[index], animation);
     } else {
       return Container();
     }
   }
-
-  Widget _buildPropertyItem(PropertyCard propertyCard, Animation<double> animation) {
+  // Método para construir un elemento de propiedad
+  Widget _buildPropertyItem(
+      PropertyCard propertyCard, Animation<double> animation) {
     return SizeTransition(
       sizeFactor: animation,
       child: Hero(
         tag: propertyCard.imageUrl,
         child: PropertyCard(
-          idPropiedad: propertyCard.idPropiedad,
-          title: propertyCard.title,
-          type: propertyCard.type,
-          direction: propertyCard.direction,
-          price: propertyCard.price,
-          status: propertyCard.status,
-          imageUrl: propertyCard.imageUrl,
-          isFavorites: true
-        ),
+            idPropiedad: propertyCard.idPropiedad,
+            title: propertyCard.title,
+            type: propertyCard.type,
+            direction: propertyCard.direction,
+            price: propertyCard.price,
+            status: propertyCard.status,
+            imageUrl: propertyCard.imageUrl,
+            isFavorites: true),
       ),
     );
   }

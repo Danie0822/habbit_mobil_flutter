@@ -20,15 +20,21 @@ class PropertyDetailsScreen extends StatefulWidget {
 }
 
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
+  // Indicador de favorito
   int isFavorite = 0;
+  // Detalles de la propiedad
   List<PropertiesResponse>? _propertyDetails;
+  // Imágenes de la propiedad
   List<ImageModel>? _propertyImages;
+  // Indicador de carga
   bool _isLoading = true;
+  // Indicador de error
   bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
+    // Cargar los datos de la propiedad
     _loadPropertyData();
   }
 
@@ -37,16 +43,22 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       // Cargar detalles de la propiedad e imágenes en paralelo
       final propertyDetailsFuture = await PropertiesDetailService()
           .getPropertiesDetails(widget.idPropiedad);
+      //Obtener las imagenes de la propiedad
       final propertyImagesFuture = await PropertiesDetailService()
           .getPropertiesDetailsImage(widget.idPropiedad);
-
-      final propertyDetails = await propertyDetailsFuture;
-      final propertyImages = await propertyImagesFuture;
+      // Esperar a que ambas operaciones finalicen
+      final propertyDetails = propertyDetailsFuture;
+      //Esperar a que ambas operaciones finalicen
+      final propertyImages = propertyImagesFuture;
 
       setState(() {
+        // Asignar los datos a las variables
         _propertyDetails = propertyDetails;
+        //Asignar las imagenes a las variables
         _propertyImages = propertyImages;
+        // Asignar el indicador de favorito
         isFavorite = _propertyDetails![0].isFavorite;
+        // Restablecer los indicadores de carga y error
         _isLoading = false;
       });
     } catch (e) {
@@ -57,23 +69,28 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     }
   }
 
+  //Indicador de creacion de chat
   bool _isCreatingChat = false;
 
   Future<void> _handleCreateChat() async {
-    if (_isCreatingChat)
-      return; // Evita que se vuelva a presionar el botón mientras se está creando el chat
+    // Evita que se vuelva a presionar el botón mientras se está creando el chat
+    if (_isCreatingChat) return;
 
     setState(() {
-      _isCreatingChat = true; // Indica que se está creando un chat
+      // Indica que se está creando un chat
+      _isCreatingChat = true;
     });
 
     try {
+      // Verifica que existan detalles de la propiedad
       if (_propertyDetails != null && _propertyDetails!.isNotEmpty) {
+        // Obtiene los detalles de la propiedad
         final property = _propertyDetails![0];
-
+        // Crea un chat con el administrador de la propiedad
         final response = await MessageService().crearChat(widget.idPropiedad);
+        // Obtiene el id de la conversación
         final idConversacion = response.idConversacion;
-
+        // Verifica que el administrador de la propiedad y el id de la conversación no sean nulos
         if (property.admin != null && idConversacion != null) {
           context.push('/chat', extra: {
             'idConversacion': idConversacion,
@@ -104,8 +121,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       );
     } finally {
       setState(() {
-        _isCreatingChat =
-            false; // Restablece el estado cuando la operación termine
+        // Restablece el estado cuando la operación termine
+        _isCreatingChat = false;
       });
     }
   }
@@ -117,6 +134,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
           await PropertiesService().addPropertyToFavorites(widget.idPropiedad);
       if (response) {
         setState(() {
+          // Cambia el indicador de favorito
           isFavorite = isFavorite == 0 ? 1 : 0;
         });
       } else {
@@ -154,9 +172,12 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
 
   Widget _buildPropertyDetails(BuildContext context, Size size,
       Color colorTexto, double horizontalPadding, double verticalPadding) {
+    // Asume que siempre habrá al menos un detalle de propiedad
     final property = _propertyDetails![
-        0]; // Asume que siempre habrá al menos un detalle de propiedad
-String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No disponible');
+        0];
+    // Limpia y trunca la dirección
+    String truncatedDirection =
+        cleanAndTruncateDirection(property.direction ?? 'No disponible');
 
     // Define el color basado en el tema (brillo de la pantalla)
     final Color colorTextoTitulo =
@@ -218,7 +239,6 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                         size: 24,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -305,7 +325,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                         ),
                         SizedBox(width: size.width * 0.01),
                         Text(
-                         truncatedDirection,
+                          truncatedDirection,
                           style: const TextStyle(
                             color: Color.fromARGB(255, 236, 227, 227),
                             fontSize: 16,
@@ -368,7 +388,6 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                         ),
                       ],
                     ),
-
                     SizedBox(height: verticalPadding),
                     Text(
                       "Descripción",
@@ -420,7 +439,6 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
                               itemCount: _propertyImages!.length,
                               itemBuilder: (context, index) {
                                 return null;
-                              
                               },
                             ),
                     ),
@@ -433,7 +451,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
       ],
     );
   }
-
+  // Construye la lista de fotos de la propiedad
   Widget _buildPhotosList(Size size, double verticalPadding) {
     return SizedBox(
       height: size.height * 0.2, // Altura de las fotos
@@ -453,7 +471,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
             ),
     );
   }
-
+  // Limpia y trunca la dirección
   String cleanAndTruncateDirection(String direction) {
     String cleanedDirection =
         direction.length > 10 ? direction.substring(10) : direction;
@@ -461,7 +479,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
         ? '${cleanedDirection.substring(0, 40)}...'
         : cleanedDirection;
   }
-
+  // Construye un widget de foto
   Widget _buildPhoto(BuildContext context, String url) {
     return GestureDetector(
       onTap: () {
@@ -517,7 +535,7 @@ String truncatedDirection = cleanAndTruncateDirection(property.direction ?? 'No 
     );
   }
 }
-
+// Construye un widget de característica
 Widget buildFeature(IconData icon, String label) {
   return Column(
     children: [
@@ -528,7 +546,7 @@ Widget buildFeature(IconData icon, String label) {
     ],
   );
 }
-
+// Construye un ícono predeterminado
 Widget _defaultIcon() {
   return const Icon(
     Icons.image_not_supported_outlined,
