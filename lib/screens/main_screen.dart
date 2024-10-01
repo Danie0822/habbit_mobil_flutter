@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = widget.initialIndex; // Inicializa el índice actual
     _pageController = PageController(initialPage: widget.initialIndex);
     _screens = [
-      // Inicializa las pantallas con el callback para actualizar el estado del menú
       StartHome(onMenuStateChange: (isOpen) {
         setState(() {
           _isMenuOpen = isOpen;
@@ -46,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  // Método para navegar entre páginas, solo si el menú está cerrado
+  // Método para navegar entre páginas
   void _navigateToPage(int index) {
     if (!_isMenuOpen) { // Solo navega si el menú está cerrado
       _pageController.jumpToPage(index);
@@ -59,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomPageView(
+      body: PageView.builder(
         controller: _pageController,
         onPageChanged: (index) {
           if (!_isMenuOpen) { // Permite el cambio de página solo si el menú está cerrado
@@ -68,8 +67,20 @@ class _MainScreenState extends State<MainScreen> {
             });
           }
         },
-        isMenuOpen: _isMenuOpen,
-        screens: _screens,
+        itemCount: _screens.length,
+        itemBuilder: (context, index) {
+          return PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
+              return FadeThroughTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                child: child,
+              );
+            },
+            child: _screens[index],
+          );
+        },
       ),
       bottomNavigationBar: _isMenuOpen
           ? null // Oculta la barra de navegación cuando el menú está abierto
@@ -77,45 +88,6 @@ class _MainScreenState extends State<MainScreen> {
               currentIndex: _currentIndex, // Usa la variable de índice actual
               onTap: _navigateToPage,
             ),
-    );
-  }
-}
-// Custom PageView para controlar la animación de transición de página
-class CustomPageView extends StatelessWidget {
-  final PageController controller;
-  final ValueChanged<int> onPageChanged;
-  final bool isMenuOpen;
-  final List<Widget> screens;
-
-  const CustomPageView({
-    Key? key,
-    required this.controller,
-    required this.onPageChanged,
-    required this.isMenuOpen,
-    required this.screens,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-      controller: controller,
-      onPageChanged: onPageChanged,
-      physics: isMenuOpen ? const NeverScrollableScrollPhysics() : null, // Deshabilita el desplazamiento si el menú está abierto
-      children: screens.map((screen) {
-        return isMenuOpen
-            ? screen // Muestra la pantalla directamente sin animación
-            : PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
-                  return FadeThroughTransition(
-                    animation: animation,
-                    secondaryAnimation: secondaryAnimation,
-                    child: child,
-                  );
-                },
-                child: screen,
-              );
-      }).toList(),
     );
   }
 }
