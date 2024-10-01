@@ -1,4 +1,5 @@
 import 'package:habbit_mobil_flutter/data/models/properties.dart';
+import 'package:habbit_mobil_flutter/data/models/properties_small.dart';
 import 'package:habbit_mobil_flutter/data/models/send_chat.dart';
 import 'package:habbit_mobil_flutter/data/services/api_service.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
@@ -41,6 +42,44 @@ class PropertiesService {
     } catch (error) {
       print('Error loading properties favorites: $error');
       throw Exception('Error loading properties favorites: $error');
+    }
+  }
+
+  Future<List<PropertiesSmallResponse>> getPropertiesRecently() async {
+    try {
+      final response = await ApiService.fetchData('/propiedades/movil/reciente');
+      final innerData = response['data'];
+      if (innerData is Map<String, dynamic>) {
+        final data = innerData['data'];
+        if (data is List<dynamic>) {
+          return PropertiesSmallResponse.fromJsonList(data);
+        } else {
+          throw Exception('Unexpected API response');
+        }
+      } else {
+        throw Exception('Unexpected API response');
+      }
+    } catch (error) {
+      throw Exception('Error loading properties: $error');
+    }
+  }
+
+  Future<List<PropertiesSmallResponse>> getPropertiesPopular() async {
+    try {
+      final response = await ApiService.fetchData('/propiedades/movil/propiedades/deseadas');
+      final innerData = response['data'];
+      if (innerData is Map<String, dynamic>) {
+        final data = innerData['data'];
+        if (data is List<dynamic>) {
+          return PropertiesSmallResponse.fromJsonList(data);
+        } else {
+          throw Exception('Unexpected API response');
+        }
+      } else {
+        throw Exception('Unexpected API response');
+      }
+    } catch (error) {
+      throw Exception('Error loading properties: $error');
     }
   }
 
