@@ -125,4 +125,21 @@ class CustomValidator {
     }
     return null;
   }
+
+  // Nueva validación de precios decimales
+  static String? validateDecimalPrice(String? value) {
+    final regExp = RegExp(
+        r'^\d{1,8}(\.\d{1,2})?$'); // Acepta hasta 10 dígitos antes del punto y hasta 2 dígitos después
+
+    if (value == null || value.isEmpty) {
+      return 'El precio es obligatorio';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Ingrese un precio válido con hasta 8 dígitos enteros y hasta 2 decimales';
+    } else if (double.tryParse(value) == null) {
+      return 'El precio debe ser un número válido';
+    } else if (double.tryParse(value)! <= 0) {
+      return 'El precio debe ser mayor a 0';
+    }
+    return null;
+  }
 }

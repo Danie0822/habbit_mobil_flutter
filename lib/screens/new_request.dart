@@ -205,7 +205,7 @@ class _NewRequestState extends State<NewRequest> {
                     context: context,
                     key: const Key('precio'),
                     keyboardType: TextInputType.number,
-                    validator: CustomValidator.validateDecimal,
+                    validator: CustomValidator.validateDecimalPrice,
                     controller: _priceController),
                 const SizedBox(height: 10),
                 MyTextField(
@@ -215,7 +215,7 @@ class _NewRequestState extends State<NewRequest> {
                     context: context,
                     key: const Key('ganancia'),
                     keyboardType: TextInputType.number,
-                    validator: CustomValidator.validateDecimal,
+                    validator: CustomValidator.validateDecimalPrice,
                     controller: _gananciaController),
                 const SizedBox(height: 10),
                 // Combobox de exclusividad

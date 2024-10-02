@@ -177,8 +177,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
                     icon: Icons.price_change,
                     context: context,
                     key: const Key('precio'),
-                    keyboardType: TextInputType.number,
-                    validator: CustomValidator.validateDecimal,
+                    validator: CustomValidator.validateDecimalPrice,
                     controller: _priceController),
                 const SizedBox(height: 10),
                 MyTextField(
@@ -188,7 +187,7 @@ class _UpdateRequestState extends State<UpdateRequest> {
                     context: context,
                     key: const Key('ganancia'),
                     keyboardType: TextInputType.number,
-                    validator: CustomValidator.validateDecimal,
+                    validator: CustomValidator.validateDecimalPrice,
                     controller: _gananciaController),
                 const SizedBox(height: 20),
                 // Botón para agregar solicitud
