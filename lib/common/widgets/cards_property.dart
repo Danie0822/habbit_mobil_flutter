@@ -3,24 +3,17 @@ import 'package:go_router/go_router.dart';
 
 class PropertyCard extends StatefulWidget {
   // Propiedades del widget
-  // Indica si la propiedad es favorita
   final bool isFavorites;
-  // ID de la propiedad
   final int idPropiedad;
-  // Título de la propiedad
   final String title;
-  // Tipo de propiedad
   final String type;
-  // Precio de la propiedad
   final double price;
-  // Estado de la propiedad
   final String status;
-  // Dirección de la propiedad
   final String direction;
-  // URL de la imagen
   final String imageUrl;
-
-  // Método copyWith que permite crear una copia del PropertyCard y modificar valores específicos
+  final int? EcoFriendly;
+  final int? InteresSocial;
+  // Método para copiar el widget con nuevas propiedades
   PropertyCard copyWith({
     bool? isFavorites,
     int? idPropiedad,
@@ -31,6 +24,7 @@ class PropertyCard extends StatefulWidget {
     String? direction,
     String? imageUrl,
   }) {
+    // Devuelve una nueva instancia del widget con las propiedades actualizadas
     return PropertyCard(
       idPropiedad: idPropiedad ?? this.idPropiedad,
       isFavorites: isFavorites ?? this.isFavorites,
@@ -40,6 +34,8 @@ class PropertyCard extends StatefulWidget {
       status: status ?? this.status,
       direction: direction ?? this.direction,
       imageUrl: imageUrl ?? this.imageUrl,
+      EcoFriendly: EcoFriendly ?? this.EcoFriendly,
+      InteresSocial: InteresSocial ?? this.InteresSocial,
     );
   }
 
@@ -53,43 +49,36 @@ class PropertyCard extends StatefulWidget {
     required this.status,
     required this.direction,
     required this.imageUrl,
+    required this.EcoFriendly,
+    required this.InteresSocial,
   }) : super(key: key);
 
   @override
   _PropertyCardState createState() => _PropertyCardState();
 }
-
+// Estado del widget
 class _PropertyCardState extends State<PropertyCard> {
-  // Estado de favorito
   late bool isFavorite;
-
+  // Inicializa el estado del widget
   @override
   void initState() {
     super.initState();
-    // Inicializamos el estado de favorito con el valor inicial del widget
     isFavorite = widget.isFavorites;
   }
-
+  // Construye el widget
   @override
   Widget build(BuildContext context) {
-    // Altura del contenedor
     double containerHeight = MediaQuery.of(context).size.width * 0.6;
-
-    // Trunca el título si es muy largo
     String truncatedTitle = widget.title.length > 25
         ? '${widget.title.substring(0, 25)}...'
         : widget.title;
-
-    // Trunca y limpia la dirección
     String truncatedDirection = cleanAndTruncateDirection(widget.direction);
-
-    // Contenedor de la tarjeta
+    // Devuelve un widget de tipo GestureDetector para detalles de la propiedad
     return GestureDetector(
       onTap: () {
-        context.push('/detalle', extra: {
-          'id_propiedad': widget.idPropiedad,
-        });
-      },
+        context.push('/detalle', extra: {'id_propiedad': widget.idPropiedad});
+      }, 
+      // Devuelve un widget de tipo Card con la información de la propiedad
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
         clipBehavior: Clip.antiAlias,
@@ -102,8 +91,9 @@ class _PropertyCardState extends State<PropertyCard> {
             SizedBox(
               width: double.infinity,
               height: containerHeight,
-              child: _buildImage(), // Función que carga la imagen
+              child: _buildImage(),
             ),
+            // Gradiente sobre la imagen
             Container(
               height: containerHeight,
               decoration: BoxDecoration(
@@ -111,13 +101,11 @@ class _PropertyCardState extends State<PropertyCard> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.7),
-                  ],
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
                 ),
               ),
             ),
+            // Estado de la propiedad
             Positioned(
               top: containerHeight * 0.08,
               left: 16,
@@ -137,6 +125,7 @@ class _PropertyCardState extends State<PropertyCard> {
                 ),
               ),
             ),
+            // Información de la propiedad
             Positioned(
               bottom: 16,
               left: 16,
@@ -155,7 +144,6 @@ class _PropertyCardState extends State<PropertyCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -190,21 +178,56 @@ class _PropertyCardState extends State<PropertyCard> {
                 ],
               ),
             ),
+            // Icono de Eco Friendly si es aplicable
+            if (widget.EcoFriendly == 1)
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: const Icon(
+                    Icons.eco,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
+            // Icono de Interés Social si es aplicable
+            if (widget.InteresSocial == 1)
+              Positioned(
+                top: 10,
+                right: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: const Icon(
+                    Icons.group,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
-
-  // Función que limpia y trunca la dirección
+  // Método para limpiar y truncar la dirección
   String cleanAndTruncateDirection(String direction) {
-    String cleanedDirection = direction.length > 10 ? direction.substring(10) : direction;
+    String cleanedDirection =
+        direction.length > 10 ? direction.substring(10) : direction;
     return cleanedDirection.length > 50
         ? '${cleanedDirection.substring(0, 50)}...'
         : cleanedDirection;
   }
-
-  // Función que carga la imagen
+  // Método para construir la imagen de la propiedad
   Widget _buildImage() {
     try {
       if (widget.imageUrl.isNotEmpty) {
@@ -224,8 +247,7 @@ class _PropertyCardState extends State<PropertyCard> {
     }
     return _defaultIcon();
   }
-
-  // Función que muestra un icono por defecto
+  // Método para construir el icono por defecto
   Widget _defaultIcon() {
     return Container(
       color: Colors.grey,

@@ -14,16 +14,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedFilter = 'Tus preferencias';
+
   /// Lista de tarjetas de propiedades
   final List<PropertyCard> _propertyCards = [];
   // Lista completa de propiedades
   final List<PropertyCard> _allProperties = [];
-  // Clave global para la lista animada 
+  // Clave global para la lista animada
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   // Indicador de carga
   bool _isLoading = false;
   // Controlador de búsqueda
-  late TextEditingController _searchController; 
+  late TextEditingController _searchController;
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   // Método para construir la barra de búsqueda
   Widget _buildSearchBar() {
     return Padding(
@@ -69,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   // Método para construir las opciones de filtro
   Widget _buildFilterOptions() {
     return Padding(
@@ -104,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   // Método para construir una opción de filtro
   Widget _buildFilterOption(String filter, IconData icon) {
     return GestureDetector(
@@ -111,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: buildFilter(filter, selectedFilter == filter, icon, context),
     );
   }
+
   // Método para construir la lista de propiedades
   Widget _buildPropertyList() {
     return Expanded(
@@ -128,11 +133,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   // Método para construir un elemento de propiedad
   Widget _buildPropertyItem(PropertyCard propertyCard) {
     return Hero(
       tag: propertyCard.imageUrl,
       child: PropertyCard(
+        EcoFriendly: propertyCard.EcoFriendly,
+        InteresSocial: propertyCard.InteresSocial,
         idPropiedad: propertyCard.idPropiedad,
         title: propertyCard.title,
         type: propertyCard.type,
@@ -144,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   // Método para mostrar la hoja inferior
   void _showBottomSheet() {
     showModalBottomSheet(
@@ -167,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
   // Método para manejar la selección de filtro
   void _onFilterSelected(String filter) {
     setState(() {
@@ -187,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
     }
   }
+
   // Método para limpiar la lista de propiedades
   void _clearPropertyList() {
     for (int i = _propertyCards.length - 1; i >= 0; i--) {
@@ -198,6 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
   }
+
   // Método para cargar propiedades de preferencias
   Future<void> _loadPropertiesPreferences() async {
     setState(() {
@@ -212,6 +224,8 @@ class _HomeScreenState extends State<HomeScreen> {
       // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
+            EcoFriendly: property.EcoFriendly,
+            InteresSocial: property.InteresSocial,
             idPropiedad: property.idPropiedad ?? 0,
             title: property.title ?? 'Propiedad no encontrada',
             type: property.type ?? 'Error de datos',
@@ -224,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isFavorites: false);
       }).toList());
       // Filtra propiedades con base en el texto de búsqueda
-      _filterProperties(); 
+      _filterProperties();
     } catch (e) {
       print('Error cargando propiedades: $e');
     } finally {
@@ -259,6 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+
   // Método para gestionar favoritos
   Future<void> _toggleFavorite(int idPropiedad) async {
     try {
@@ -296,6 +311,8 @@ class _HomeScreenState extends State<HomeScreen> {
       // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
+          EcoFriendly: property.EcoFriendly,
+          InteresSocial: property.InteresSocial,
           idPropiedad: property.idPropiedad ?? 0,
           title: property.title ?? 'Propiedad no encontrada',
           type: property.type ?? 'Error de datos',
@@ -309,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }).toList());
       // Filtra propiedades con base en el texto de búsqueda
-      _filterProperties(); 
+      _filterProperties();
     } catch (e) {
       print('Error cargando inmuebles: $e');
     } finally {
@@ -320,6 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+
   // Método para cargar proyectos
   Future<void> _loadPropertiesProyects() async {
     setState(() {
@@ -334,6 +352,8 @@ class _HomeScreenState extends State<HomeScreen> {
       // Agregar las propiedades a la lista
       _allProperties.addAll(properties.map((property) {
         return PropertyCard(
+          EcoFriendly: property.EcoFriendly,
+          InteresSocial: property.InteresSocial,
           idPropiedad: property.idPropiedad ?? 0,
           title: property.title ?? 'Propiedad no encontrada',
           type: property.type ?? 'Error de datos',
@@ -347,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }).toList());
       // Filtra propiedades con base en el texto de búsqueda
-      _filterProperties(); 
+      _filterProperties();
     } catch (e) {
       print('Error cargando proyectos: $e');
     } finally {
@@ -358,9 +378,9 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+
   // Método para aplicar filtros
-  Future<void> _onFilterApplied(
-      int category, int zone, double min, double max) async {
+  Future<void> _onFilterApplied(int category, int zone, double min, double max) async {
     setState(() {
       _isLoading = true;
     });
@@ -372,6 +392,8 @@ class _HomeScreenState extends State<HomeScreen> {
       // Mapear propiedades a tarjetas
       List<PropertyCard> newPropertyCards = properties.map((property) {
         return PropertyCard(
+          EcoFriendly: property.EcoFriendly,
+          InteresSocial: property.InteresSocial,
           idPropiedad: property.idPropiedad ?? 0,
           title: property.title ?? 'Propiedad no encontrada',
           type: property.type ?? 'Error de datos',

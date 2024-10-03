@@ -147,13 +147,14 @@ class _FilterState extends State<Filter> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
+ @override
+Widget build(BuildContext context) {
+  return isLoading
+      ? const Center(child: CircularProgressIndicator())
+      : Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView( // Añadido SingleChildScrollView
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -198,8 +199,7 @@ class _FilterState extends State<Filter> {
                         ],
                       )
                     : const Center(
-                        child:
-                            CircularProgressIndicator(), // Loader mientras carga precios
+                        child: CircularProgressIndicator(), // Loader mientras carga precios
                       ),
                 const SizedBox(height: 16),
                 const Text(
@@ -255,6 +255,8 @@ class _FilterState extends State<Filter> {
                 ),
               ],
             ),
-          );
-  }
+          ),
+        );
+}
+
 }

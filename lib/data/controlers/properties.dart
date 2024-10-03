@@ -47,7 +47,8 @@ class PropertiesService {
 
   Future<List<PropertiesSmallResponse>> getPropertiesRecently() async {
     try {
-      final response = await ApiService.fetchData('/propiedades/movil/reciente');
+      final response =
+          await ApiService.fetchData('/propiedades/movil/reciente');
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
@@ -66,7 +67,8 @@ class PropertiesService {
 
   Future<List<PropertiesSmallResponse>> getPropertiesPopular() async {
     try {
-      final response = await ApiService.fetchData('/propiedades/movil/propiedades/deseadas');
+      final response =
+          await ApiService.fetchData('/propiedades/movil/propiedades/deseadas');
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];

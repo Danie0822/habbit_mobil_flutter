@@ -55,6 +55,8 @@ class _LikeScreenState extends State<LikeScreen>
       setState(() {
         _favoritePropertyCards = properties
             .map((property) => PropertyCard(
+                  EcoFriendly: property.EcoFriendly,
+                  InteresSocial: property.InteresSocial,
                   idPropiedad: property.idPropiedad ?? 0,
                   title: property.title ?? 'Propiedad no encontrada',
                   type: property.type ?? 'Error de datos',
@@ -248,6 +250,8 @@ class _LikeScreenState extends State<LikeScreen>
       child: Hero(
         tag: propertyCard.imageUrl,
         child: PropertyCard(
+            EcoFriendly: propertyCard.EcoFriendly,
+            InteresSocial: propertyCard.InteresSocial,
             idPropiedad: propertyCard.idPropiedad,
             title: propertyCard.title,
             type: propertyCard.type,
