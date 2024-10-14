@@ -54,27 +54,34 @@ class _RequestsScreenState extends State<RequestsScreen>
       curve: Curves.easeInOut,
     ));
   }
-
-  // Método para cargar las solicitudes
-  Future<void> _loadRequests() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      // Cargar las solicitudes
-      final loadedRequests = await RequestService().cargarRequest();
+// Load requests 
+Future<void> _loadRequests() async {
+  try {
+    setState(() {
+      isLoading = true;
+    });
+    // Cargar las solicitudes
+    final loadedRequests = await RequestService().cargarRequest();
+    
+    // Verificar si el estado está montado antes de llamar a setState
+    if (mounted) {
       setState(() {
         requestsData = loadedRequests;
         filteredRequests = requestsData;
         isLoading = false;
       });
-    } catch (error) {
+    }
+  } catch (error) {
+    // Verificar si el estado está montado antes de llamar a setState
+    if (mounted) {
       setState(() {
         errorMessage = 'Error al cargar solicitudes: $error';
         isLoading = false;
       });
     }
   }
+}
+
 
   // Método para alternar la visibilidad de la búsqueda
   void _toggleSearch() {
