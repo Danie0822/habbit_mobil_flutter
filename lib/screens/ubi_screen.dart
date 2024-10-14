@@ -78,7 +78,6 @@ class _UbiScreenState extends State<UbiScreen> {
         setState(() {
           _selectedLocationAddress = "Error al obtener la dirección";
         });
-        print(e);
       }
     } else {
       showAlertDialog(

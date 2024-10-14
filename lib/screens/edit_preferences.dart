@@ -35,11 +35,8 @@ class _EditPreferencesState extends State<EditPreferences> {
       setState(() {
         // Actualiza el estado con las estadísticas obtenidas
         estadisticas = estadisticasObtenidas;
-        print('Estadísticas cargadas');
       });
     } catch (error) {
-      // Manejo de errores
-      print('Error al cargar estadísticas: $error');
     }
   }
 

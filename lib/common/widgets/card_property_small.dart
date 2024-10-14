@@ -40,7 +40,6 @@ class _PropertyCardSmallState extends State<PropertyCardSmall> {
     // Ancho de la tarjeta (un tercio del ancho total de la pantalla)
     double cardWidth = MediaQuery.of(context).size.width / 3;
     double imageHeight = cardWidth * 0.9;
-    print('Url Imagen ${Config.imagen}${widget.imageUrl}');
     // Trunca el título si es muy largo y asegura que sea responsivo
     String truncatedTitle = widget.title.length > 16
         ? '${widget.title.substring(0, 16)}...'

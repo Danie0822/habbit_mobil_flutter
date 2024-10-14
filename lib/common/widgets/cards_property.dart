@@ -237,13 +237,11 @@ class _PropertyCardState extends State<PropertyCard> {
           height: double.infinity,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            print('Error loading image: $error');
             return _defaultIcon();
           },
         );
       }
     } catch (e) {
-      print('Exception loading image: $e');
     }
     return _defaultIcon();
   }

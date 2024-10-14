@@ -134,8 +134,6 @@ class ApiService {
 
   // Método para manejar los errores
   static Map<String, dynamic> _handleError(Object error) {
-    // ignore: avoid_print
-    print("Error: $error");
     return {'success': false, 'message': error.toString()};
   }
 }

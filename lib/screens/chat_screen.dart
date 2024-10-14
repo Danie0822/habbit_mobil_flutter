@@ -72,7 +72,6 @@ class _ChatScreenState extends State<ChatScreen> {
       // Desplaza la pantalla hacia abajo
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     } catch (e) {
-      print('Error cargando mensajes: $e');
       _showErrorSnackBar('Error al cargar mensajes.');
     }
   }
@@ -98,13 +97,11 @@ class _ChatScreenState extends State<ChatScreen> {
               ultimoMensaje.updateReadStatus(true);
             });
           } else {
-            print('Error al actualizar el estado de leído.');
             _showErrorSnackBar('Error al actualizar estado de leído.');
           }
         }
       }
     } catch (e) {
-      print('Error actualizando estado de lectura: $e');
       _showErrorSnackBar('Error al actualizar estado de lectura.');
     }
   }
@@ -140,11 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
         // Desplaza la pantalla hacia abajo
         WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
       } else {
-        print('Error al enviar el mensaje');
         _showErrorSnackBar('Error al enviar el mensaje.');
       }
     } catch (e) {
-      print('Error enviando mensaje: $e');
       _showErrorSnackBar('Error al enviar el mensaje.');
     }
   }

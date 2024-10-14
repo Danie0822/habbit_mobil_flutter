@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
       // 1. Cargar las propiedades recientes
       final recentProperties =
           await PropertiesService().getPropertiesRecently();
-      print('Propiedades recientes: $recentProperties');
 
       // Asignar el resultado al Future de propiedades recientes
       setState(() {
@@ -55,14 +54,12 @@ class _HomeScreenState extends State<HomeScreenOne> {
       // 2. Después, cargar las propiedades más deseadas
       final popularProperties =
           await PropertiesService().getPropertiesPopular();
-      print('Propiedades populares: $popularProperties');
 
       // Asignar el resultado al Future de propiedades populares
       setState(() {
         popularPropertiesFuture = Future.value(popularProperties);
       });
     } catch (e) {
-      print('Error al cargar las propiedades: $e');
     }
   }
 

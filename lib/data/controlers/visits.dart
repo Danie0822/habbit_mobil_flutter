@@ -48,7 +48,6 @@ class VisitControler {
         return false;
       }
     } catch (error) {
-      print('Error al actualizar estado: $error');
       return false;
     }
   }
@@ -62,7 +61,6 @@ class VisitControler {
 
       // Convertir la respuesta en el modelo LoginResponse
       final loginResponse = SendChatResponse.fromJson(response);
-      print(loginResponse.status);
       if (loginResponse.status == 200) {
         return true;
       } else {

@@ -64,7 +64,6 @@ class ChatCard extends StatelessWidget {
             '${parsedDate.day.toString().padLeft(2, '0')}/${parsedDate.month.toString().padLeft(2, '0')}/${parsedDate.year}';
       }
     } catch (e) {
-      print('Error parsing date: $e');
     }
 
     // Truncar el título y el mensaje
@@ -193,13 +192,11 @@ class ChatCard extends StatelessWidget {
           height: 75,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            print('Error loading image: $error');
             return _defaultIcon();
           },
         );
       }
     } catch (e) {
-      print('Exception loading image: $e');
     }
     return _defaultIcon();
   }

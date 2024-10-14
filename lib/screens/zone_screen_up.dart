@@ -78,11 +78,9 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
           );
         } else {
           _selectedRadioItem = _zoneItems[0];
-          print('Zona seleccionada por defecto: $_selectedRadioItem');
         }
       });
     } catch (error) {
-      print('Error al obtener las zonas: $error');
     }
   }
 
@@ -136,7 +134,6 @@ class _ZoneScreenUpState extends State<ZoneScreenUp>
       }
     } catch (error) {
       // Manejo de errores
-      print('Error al manejar la actualización de zonas: $error');
       showAlertDialog(
         'Error',
         'Hubo un problema al actualizar los datos.',

@@ -6,8 +6,7 @@ class CategorysService {
     try {
       // Llamada a la API
       final response = await ApiService.fetchData('/categorias');
-
-      // Print de la respuesta completa
+      // Obtiene los datos principales de la respuesta
       final innerData = response['data'];
 
       // Verifica si los datos internos tienen el formato esperado (un mapa)
@@ -25,8 +24,6 @@ class CategorysService {
         throw Exception('Unexpected API response');
       }
     } catch (error) {
-      // Print del error en caso de fallo
-
       throw Exception('Error loading Categories: $error');
     }
   }

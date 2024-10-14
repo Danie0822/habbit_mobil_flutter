@@ -31,7 +31,6 @@ class ThankScreen extends StatelessWidget {
         await estadisticasController.enviarEstadisticas();
         context.push('/login');
       } catch (error) {
-        print(error);
       }
     }
 

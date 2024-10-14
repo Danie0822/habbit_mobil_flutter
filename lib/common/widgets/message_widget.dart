@@ -38,7 +38,6 @@ class MessageWidget extends StatelessWidget {
         return DateFormat('dd/MM/yyyy').format(dateTime); // Mostrar día, mes y año
       }
     } catch (error) {
-      print('Error formateando la fecha y hora: $error');
       return dateTimeStr; // En caso de error, retorna el string original
     }
   }
@@ -113,7 +112,6 @@ class MessageWidget extends StatelessWidget {
         ),
       );
     } catch (error) {
-      print('Error construyendo el widget: $error');
       return Container(); // Retorna un contenedor vacío en caso de error
     }
   }

@@ -114,7 +114,6 @@ class RequestService {
       );
       // Convertir la respuesta en el modelo LoginResponse
       final loginResponse = SendChatResponse.fromJson(response);
-      print(loginResponse.status);
       if (loginResponse.status == 200) {
         return true;
       } else {

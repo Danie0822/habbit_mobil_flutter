@@ -47,7 +47,6 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
 //Funcion que se encarga primero de cargar las estadisticas y luego se setearlo para llena la lista
   void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
-    //print('Datos de EstadisticasBusquedas: $estadisticas');
     _estadisticasController.estadisticasBusquedas = estadisticas;
 
     // Luego, llama a _categories
@@ -64,21 +63,16 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
         final selectedIdCategory =
             _estadisticasController.estadisticasBusquedas.idCategoria;
 
-        print('ID categoria seleccionada> $selectedIdCategory');
-
         if (selectedIdCategory != 0) {
           _selectedRadioItem = _categories.firstWhere(
             (category) => category.id == selectedIdCategory,
             orElse: () => _categories[0],
           );
-          print('Categoria seleccionada: $_selectedRadioItem');
         } else {
           _selectedRadioItem = _categories[0];
-          print('Zona seleccionada por defecto: $_selectedRadioItem');
         }
       });
     } catch (error) {
-      print('Error al obtener las categorías: $error');
     }
   }
 
@@ -104,7 +98,6 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
           'id_cliente': clientId,
           'id_categoria': _selectedRadioItem?.id,
         };
-        //print(formData);
 
         // Llamar al controlador para actualizar las preferencias
         final success =
@@ -131,7 +124,6 @@ class _CategoryScreenStateUp extends State<CategoryScreenUp>
       }
     } catch (error) {
       // Manejo de errores
-      print('Error al manejar la actualización de zonas: $error');
       showAlertDialog(
         'Error',
         'Hubo un problema al actualizar los datos.',

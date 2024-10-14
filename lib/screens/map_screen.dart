@@ -66,7 +66,6 @@ class MapScreenState extends State<MapScreen> {
         );
         // El permiso fue denegado p
         //ermanentemente o no se otorgó
-        print("Permiso de ubicación denegado.");
         // Opcional: Mostrar un mensaje o abrir configuración de la app
       }
     } else {
@@ -102,7 +101,6 @@ class MapScreenState extends State<MapScreen> {
 
       Set<Marker> newMarkers =
           (await Future.wait(properties.map((property) async {
-        print('property: $property');
         Uint8List markerIcon = await _getCustomMarkerWithBorder(
           '${Config.imagen}${property.imageUrl}',
           markerSize,
@@ -124,7 +122,6 @@ class MapScreenState extends State<MapScreen> {
         _propertyMarkers = newMarkers;
       });
     } catch (e) {
-      print('Error al cargar propiedades: $e');
     }
   }
 

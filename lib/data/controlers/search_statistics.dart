@@ -74,7 +74,6 @@ class EstadisticasController {
           await ApiService.sendData('/preferencias/save/', 'POST', json);
 
       if (response['success'] == true) {
-        print('Estadísticas enviadas correctamente');
       } else {
         throw Exception(
             'Error al enviar las estadísticas ${response['message']}');
@@ -141,7 +140,6 @@ class EstadisticasController {
 
       return response['success'] == true;
     } catch (error) {
-      print('Error al actualizar las preferencias: $error');
       throw Exception('Error al actualizar las preferencias: $error');
     }
   }

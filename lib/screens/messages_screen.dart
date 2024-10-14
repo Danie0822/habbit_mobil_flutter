@@ -78,7 +78,6 @@ class _MessagesScreenState extends State<MessagesScreen>
         }
       }
     } catch (e) {
-      print('Error cargando chats: $e'); // Manejo de errores
     } finally {
       if (!mounted) {
         return; // Evitar llamar a setState si el widget no está montado
@@ -135,7 +134,6 @@ class _MessagesScreenState extends State<MessagesScreen>
       });
       await _loadMessages(); // Cargar mensajes nuevamente
     } catch (e) {
-      print('Error refrescando mensajes: $e'); // Manejo de errores
     }
   }
 

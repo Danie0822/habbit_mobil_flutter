@@ -59,7 +59,6 @@ class _PriceScreenState extends State<PriceScreen>
         isLoading = false;
       });
     }).catchError((error) {
-      print('Error al cargar el rango de precios: $error');
       setState(() {
         isLoading = false;
       });

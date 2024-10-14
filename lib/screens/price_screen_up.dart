@@ -57,7 +57,7 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
   //Funcion para cerrar el controlador de animación
   void _fetchData() async {
     final estadisticas = await _estadisticasController.obtenerEstadisticas();
-    //print('Datos de EstadisticasBusquedas: $estadisticas');
+    // Actualiza el estado con las estadísticas obtenidas
     _estadisticasController.estadisticasBusquedas = estadisticas;
 
     // Luego, llama a _fetchPrices
@@ -88,13 +88,11 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
           isLoading = false;
         });
       }).catchError((error) {
-        print('Error al cargar el rango de precios: $error');
         setState(() {
           isLoading = false;
         });
       });
     } catch (error) {
-      print(error);
     }
   }
 
@@ -146,7 +144,7 @@ class _PriceScreenStateUp extends State<PriceScreenUp>
         }
       }
     } catch (error) {
-      print(error);
+      showAlertDialog('Error', 'No se pudo actualizar los datos.', 1, context);
     }
   }
 

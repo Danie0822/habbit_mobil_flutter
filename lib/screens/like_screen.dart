@@ -75,7 +75,6 @@ class _LikeScreenState extends State<LikeScreen>
         _listKey.currentState?.insertItem(i);
       }
     } catch (e) {
-      print('Error al cargar propiedades favoritas: $e');
     } finally {
       if (!mounted) {
         return; // Evitar llamar a setState si el widget no está montado

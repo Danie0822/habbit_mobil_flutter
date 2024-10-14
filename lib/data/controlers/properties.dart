@@ -40,7 +40,6 @@ class PropertiesService {
         throw Exception('Unexpected response structure');
       }
     } catch (error) {
-      print('Error loading properties favorites: $error');
       throw Exception('Error loading properties favorites: $error');
     }
   }
@@ -151,7 +150,6 @@ class PropertiesService {
       final innerData = response['data'];
       if (innerData is Map<String, dynamic>) {
         final data = innerData['data'];
-        print(data);
         if (data is List<dynamic>) {
           return PropertiesResponse.fromJsonList(data);
         } else {
@@ -198,7 +196,6 @@ class PropertiesService {
         throw Exception('Unexpected response structure');
       }
     } catch (error) {
-      print('Error loading properties favorites: $error');
       throw Exception('Error loading properties favorites: $error');
     }
   }

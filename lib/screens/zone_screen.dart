@@ -60,7 +60,6 @@ class _ZoneScreenState extends State<ZoneScreen> with TickerProviderStateMixin {
         _zoneItems = zones;
       });
     } catch (error) {
-      print(error);
     }
   }
 

@@ -15,19 +15,15 @@ class AuthService {
         'PUT',
         data,
       );
-      print('Respuesta del servidor: $response');
 
       if (response['success'] == true) {
         // Actualizar el nombre del cliente en el almacenamiento local
         StorageService.saveClientName(name);
         return true;
       } else {
-        final errorMessage = response['message'] ?? 'Unknown error';
-        print('Error en la respuesta del servidor: $errorMessage');
         return false;
       }
     } catch (error) {
-      print('Error al actualizar cliente: $error');
       return false;
     }
   }

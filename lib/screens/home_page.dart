@@ -240,7 +240,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Filtra propiedades con base en el texto de búsqueda
       _filterProperties();
     } catch (e) {
-      print('Error cargando propiedades: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -294,7 +293,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     } catch (e) {
-      print('Error gestionando favoritos: $e');
     }
   }
 
@@ -328,7 +326,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Filtra propiedades con base en el texto de búsqueda
       _filterProperties();
     } catch (e) {
-      print('Error cargando inmuebles: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -369,7 +366,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Filtra propiedades con base en el texto de búsqueda
       _filterProperties();
     } catch (e) {
-      print('Error cargando proyectos: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -418,7 +414,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     } catch (e) {
-      print('Error cargando propiedades filtradas: $e');
     } finally {
       setState(() {
         _isLoading = false;

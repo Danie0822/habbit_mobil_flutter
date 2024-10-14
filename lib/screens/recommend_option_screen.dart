@@ -81,7 +81,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         isLoading = false; // Finaliza la carga
       });
     } catch (e) {
-      print('Error durante la carga secuencial: $e');
       setState(() {
         isLoading = false;
       });
@@ -114,8 +113,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
         longitud = position.longitude;
       } else {
         // El permiso fue denegado permanentemente o no se otorgó
-        print("Permiso de ubicación denegado.");
-        // Opcional: Mostrar un mensaje o abrir configuración de la app
       }
     } else {
       // Los permisos ya están otorgados, obtener la ubicación
@@ -220,7 +217,6 @@ class RecommendOptionScreenState extends State<RecommendOptionScreen> {
       // Si la lista está vacía, muestra un mensaje en un modal
       _showModal(context,
           'No se encontró ninguna propiedad con ese criterio, vuelve a intentarlo con otros criterios.');
-      print('Error cargando las tarjetas: $error');
     });
     setState(() {
       isLoadingRequest = false; // Oculta el indicador de carga

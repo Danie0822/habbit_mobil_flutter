@@ -102,7 +102,6 @@ class _UbiScreenStateUp extends State<UbiScreenUp> {
       setState(() {
         _selectedLocationAddress = "Error al obtener la dirección";
       });
-      print(e);
     }
   }
 
@@ -135,7 +134,6 @@ class _UbiScreenStateUp extends State<UbiScreenUp> {
         setState(() {
           _selectedLocationAddress = "Error al obtener la dirección";
         });
-        print(e);
       }
     } else {
       showAlertDialog(
@@ -191,7 +189,6 @@ class _UbiScreenStateUp extends State<UbiScreenUp> {
             context);
       }
     } catch (error) {
-      print(error);
     }
   }
 

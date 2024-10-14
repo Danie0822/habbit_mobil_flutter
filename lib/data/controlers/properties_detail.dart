@@ -49,7 +49,6 @@ class PropertiesDetailService {
     try {
       // Realiza una petición GET al endpoint que devuelve las imágenes de una propiedad
       final response = await ApiService.fetchData('/imagenes/movil/$idPropiedad');
-      print('API response: $response');
 
       // Accede al campo 'data' de la respuesta en el primer nivel
       final responseData = response['data'];
@@ -65,8 +64,6 @@ class PropertiesDetailService {
           final List<ImageModel> images = innerData.values
               .map((item) => ImageModel.fromJson(item as Map<String, dynamic>))
               .toList();
-          
-          print('images: $images'); // Imprime las imágenes para verificar
           return images;
         } else {
           // Lanza una excepción si 'data' no es un mapa
@@ -77,8 +74,6 @@ class PropertiesDetailService {
         throw Exception('Unexpected API response: "data" is not a Map');
       }
     } catch (error) {
-      // Maneja cualquier error y lanza una excepción con el mensaje de error
-      print('Error loading properties: $error');
       throw Exception('Error loading properties: $error');
     }
   }

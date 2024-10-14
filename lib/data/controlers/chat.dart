@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 
 import 'package:habbit_mobil_flutter/data/models/update_chat.dart';
 import 'package:habbit_mobil_flutter/data/models/send_chat.dart';
@@ -16,8 +15,6 @@ class ChatService {
       // Convierte la lista de datos en una lista de ReadChatResponse y la retorna
       return ReadChatResponse.fromJsonList(data);
     } catch (error) {
-      // Imprime el error y retorna una lista vacía en caso de excepción
-      print('Error en getClientMessages: $error');
       return [];
     }
   }
@@ -43,8 +40,6 @@ class ChatService {
       final sendChatResponse = SendChatResponse.fromJson(response);
       return sendChatResponse.success;
     } catch (error) {
-      // Retorna false en caso de excepción
-      print('Error en sendMessage: $error');
       return false;
     }
   }
@@ -69,8 +64,6 @@ class ChatService {
       final updateChatResponse = UpdateChatResponse.fromJson(response);
       return updateChatResponse.success;
     } catch (error) {
-      // Retorna false en caso de excepción
-      print('Error en updateMessageReadStatus: $error');
       return false;
     }
   }

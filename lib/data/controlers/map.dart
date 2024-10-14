@@ -15,16 +15,12 @@ class MapService{
         'lngSW': lngSW
         };
 
-        print('body: $body');
-
         // Envía los datos a la API
       final response = await ApiService.sendData(
         '/propiedades/mapa/cliente',
         'POST',
         body,
       );
-
-      print('response: $response');
 
       // Extrae los datos internos de la respuesta
       final innerData = response['data'];

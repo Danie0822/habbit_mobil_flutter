@@ -12,8 +12,6 @@ class BlogDetail extends StatefulWidget {
 }
 
 class _BlogDetailState extends State<BlogDetail> {
-  int _userRating = 0; // Valoración seleccionada por el usuario
-
   @override
   Widget build(BuildContext context) {
     // Obtener el tamaño de la pantalla
@@ -123,9 +121,8 @@ class _BlogDetailState extends State<BlogDetail> {
 
     if (selectedRating != null) {
       setState(() {
-        _userRating = selectedRating; // Guardar la valoración seleccionada
+// Guardar la valoración seleccionada
       });
-      print('Valoración seleccionada: $_userRating');
     }
   }
 

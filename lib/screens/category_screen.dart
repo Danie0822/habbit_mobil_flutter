@@ -54,7 +54,6 @@ class _CategoryScreenState extends State<CategoryScreen>
         _categories = categories;
       });
     } catch (error) {
-      print(error);
     }
   }
 

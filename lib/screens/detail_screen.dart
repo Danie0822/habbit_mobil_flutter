@@ -146,7 +146,6 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
         );
       }
     } catch (e) {
-      print('Error al agregar/quitar de favoritos: $e');
     }
   }
 
