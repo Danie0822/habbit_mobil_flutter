@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:habbit_mobil_flutter/common/widgets/section_card_images.dart';
 import 'package:habbit_mobil_flutter/common/widgets/slider_card.dart';
 import 'package:habbit_mobil_flutter/common/widgets/informative_card.dart';
-import 'package:habbit_mobil_flutter/common/widgets/card_property_small.dart';
 import 'package:habbit_mobil_flutter/utils/constants/colors.dart';
 import 'package:habbit_mobil_flutter/data/services/storage_service.dart';
 import 'package:habbit_mobil_flutter/data/controlers/home_screen.dart';
-import 'package:habbit_mobil_flutter/data/controlers/properties.dart';
 import 'package:habbit_mobil_flutter/data/models/home_screen.dart';
-import 'package:habbit_mobil_flutter/data/models/properties_small.dart';
 
 class HomeScreenOne extends StatefulWidget {
   const HomeScreenOne({super.key});
@@ -22,10 +19,6 @@ class HomeScreenOne extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreenOne> {
   late Future<HomeScreenResponse?> homeDataFuture;
   late Future<String?> userNameFuture;
-
-  Future<List<PropertiesSmallResponse>>? recentPropertiesFuture;
-  Future<List<PropertiesSmallResponse>>? popularPropertiesFuture;
-
   @override
   void initState() {
     super.initState();
@@ -35,35 +28,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
         .then((data) => data.isNotEmpty ? data.first : null);
     // Cargar el nombre del usuario al iniciar la pantalla
     userNameFuture = StorageService.getClientName();
-
-    // Ejecución en secuencia para las propiedades recientes y populares
-    _loadPropertiesInSequence();
-  }
-
-  Future<void> _loadPropertiesInSequence() async {
-    try {
-      // 1. Cargar las propiedades recientes
-      final recentProperties =
-          await PropertiesService().getPropertiesRecently();
-      print('Propiedades recientes: $recentProperties');
-
-      // Asignar el resultado al Future de propiedades recientes
-      setState(() {
-        recentPropertiesFuture = Future.value(recentProperties);
-      });
-
-      // 2. Después, cargar las propiedades más deseadas
-      final popularProperties =
-          await PropertiesService().getPropertiesPopular();
-      print('Propiedades populares: $popularProperties');
-
-      // Asignar el resultado al Future de propiedades populares
-      setState(() {
-        popularPropertiesFuture = Future.value(popularProperties);
-      });
-    } catch (e) {
-      print('Error al cargar las propiedades: $e');
-    }
   }
 
   // Índice actual para el slider
@@ -232,107 +196,6 @@ class _HomeScreenState extends State<HomeScreenOne> {
                     },
                   ),
                 ),
-                const SizedBox(height: 10),
-                // Propiedades más recientes
-                Text(
-                  'Propiedades más recientes',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorTexto,
-                      ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 210, // Ajusta la altura según lo necesites
-                  child: FutureBuilder<List<PropertiesSmallResponse>>(
-                    future: recentPropertiesFuture,
-                    builder: (context, snapshot) {
-                      if (recentPropertiesFuture == null) {
-                        return const Center(child: Text('Inicializando...'));
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                            child: Text(
-                                'Error al cargar las propiedades recientes'));
-                      } else if (snapshot.hasData &&
-                          snapshot.data!.isNotEmpty) {
-                        final properties = snapshot.data!;
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: properties.length,
-                          itemBuilder: (context, index) {
-                            final property = properties[index];
-                            return PropertyCardSmall(
-                              idPropiedad: property.idPropiedad!,
-                              isFavorites:
-                                  false, // Puedes agregar lógica para saber si es favorito
-                              title: property.title ?? '',
-                              type: property.type ?? '',
-                              price: property.price ?? 0.0,
-                              status: property.status ?? '',
-                              imageUrl: property.imageUrl ?? '',
-                            );
-                          },
-                        );
-                      } else {
-                        return const Center(
-                            child: Text('No hay propiedades recientes'));
-                      }
-                    },
-                  ),
-                ),
-
-// Las propiedades más deseadas
-                const SizedBox(height: 10),
-                Text(
-                  'Las propiedades más deseadas',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorTexto,
-                      ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 210, // Ajusta la altura según lo necesites
-                  child: FutureBuilder<List<PropertiesSmallResponse>>(
-                    future: popularPropertiesFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                            child: Text(
-                                'Error al cargar las propiedades deseadas'));
-                      } else if (snapshot.hasData &&
-                          snapshot.data!.isNotEmpty) {
-                        final properties = snapshot.data!;
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: properties.length,
-                          itemBuilder: (context, index) {
-                            final property = properties[index];
-                            return PropertyCardSmall(
-                              idPropiedad: property.idPropiedad!,
-                              isFavorites:
-                                  false, // Puedes agregar lógica para saber si es favorito
-                              title: property.title ?? '',
-                              type: property.type ?? '',
-                              price: property.price ?? 0.0,
-                              status: property.status ?? '',
-                              imageUrl: property.imageUrl ?? '',
-                            );
-                          },
-                        );
-                      } else {
-                        return const Center(
-                            child: Text('No hay propiedades deseadas'));
-                      }
-                    },
-                  ),
-                ),
-
                 const SizedBox(height: 10),
                 // Sección Explorar con mismo padding/margin
                 Text(

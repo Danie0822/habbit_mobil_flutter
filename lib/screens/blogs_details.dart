@@ -212,7 +212,7 @@ class _BlogDetailState extends State<BlogDetail> {
               Icon(Icons.star, color: Colors.yellow, size: size.width * 0.06),
               SizedBox(width: size.width * 0.02),
               Text(
-                '4.5',
+                _data.rating.toString(),
                 style: TextStyle(
                   color: isDarkMode ? Colors.white : Colors.black,
                   fontSize: size.width * 0.05,
