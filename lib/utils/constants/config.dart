@@ -7,5 +7,5 @@ class Config {
   // URL base de las imágenes
   static const String imagen = "$url/";
   // Clave de la API
-  static const String apiKey = "7gFtu8Lz2BqAnW3PmDhAeSKSWNS";
+  static const String apiKey = "H";
 }
